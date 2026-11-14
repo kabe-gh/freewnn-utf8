@@ -100,7 +100,7 @@ wnn_sStrncpy (s1, s2, n)
      register w_char *s2;
      register int n;
 {
-  eeuc_to_ieuc (s1, s2, n / sizeof (w_char));
+  ieuc_to_eeuc (s1, s2, n / sizeof (w_char));
   return s1;
 }
 

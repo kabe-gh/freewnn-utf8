@@ -46,12 +46,12 @@
 #if HAVE_UNISTD_H
 #  include <unistd.h>
 #endif
-#include <time.h>
 
 #include "commonhd.h"
 #include "jslib.h"
 #include "wnn_os.h"
 #endif /* !JS */
+#include <time.h>
 
 #ifdef JS
 # define JS_STATIC static
