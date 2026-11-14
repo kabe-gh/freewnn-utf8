@@ -1,3 +1,6 @@
+Sat, Nov 14 2026 09:47:13  T.Kabe <kabe@>
+	* _BSD_SOURCE -> _DEFAULT_SOURCE
+
 Mon, 18 May 2015 02:25:00  Tomoki AONO <aonoto at users.osdn.me>
 
 	* ChangeLog, ChangeLog.en, configure, configure.in:
