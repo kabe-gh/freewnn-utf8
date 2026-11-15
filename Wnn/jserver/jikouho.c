@@ -477,8 +477,8 @@ jkt_get_syo (yomi_sno, yomi_eno, beginvect, fzkchar, endvect, endvect1, dsd_sbn)
 
 static int
 cmp_dsd_sbn (sbn1, sbn2)
-     struct DSD_SBN *sbn1;
-     struct DSD_SBN *sbn2;
+     const struct DSD_SBN *sbn1;
+     const struct DSD_SBN *sbn2;
 {
   return (sbn2->v_jc - sbn1->v_jc);
 }
