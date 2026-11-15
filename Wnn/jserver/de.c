@@ -197,7 +197,7 @@ static void socket_init_un (void);
 static void socket_init_in (void);
 static int  socket_accept_un (void);
 static int  socket_accept_in (int);
-static void xerror (char*);
+static void xerror (const char*);
 static void get_options (int, char **);
 static void usage (void);
 static void print_version (void);
@@ -1168,7 +1168,7 @@ socket_accept_in (int fd)
 }
 
 static void
-xerror (char *s)
+xerror (const char *s)
 {
   log_err ("%s (%s).", s, strerror(errno));
   exit (1);
