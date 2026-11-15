@@ -86,17 +86,16 @@ extern void output_ujis FRWNN_PARAMS((register FILE *, int, int));
 extern int init_heap FRWNN_PARAMS((int, int, int, int, FILE *));
 extern void init_jeary FRWNN_PARAMS((void));
 extern void exit1 FRWNN_PARAMS((void));
-extern int sort_func_je FRWNN_PARAMS((char *, char *));
-extern int sort_func_je_kanji FRWNN_PARAMS((char *, char *));
-extern int sort_func FRWNN_PARAMS((register char *, register char *, int));
+extern int sort_func_je FRWNN_PARAMS((const char *, const char *));
+extern int sort_func_je_v FRWNN_PARAMS((const void *, const void *));
 extern void sort FRWNN_PARAMS((void));
 extern void sort_if_not_sorted FRWNN_PARAMS((void));
 extern void sort_kanji FRWNN_PARAMS((void));
-extern void uniq_je FRWNN_PARAMS((int (*) ()));
+extern void uniq_je FRWNN_PARAMS( (int (*) (const void *, const void *)) );
 #ifdef nodef
 extern int make_kanji_str FRWNN_PARAMS((register UCHAR *, register UCHAR *));
 #endif	/* nodef  */
-extern int Sorted FRWNN_PARAMS((register char *, register int, int, int (*) ()));
+extern int Sorted FRWNN_PARAMS((register char *, register int, int, int (*) (const void *, const void *)));
 extern int is_katakana FRWNN_PARAMS((register char *, register char *));
 
 /* dic_head.c */

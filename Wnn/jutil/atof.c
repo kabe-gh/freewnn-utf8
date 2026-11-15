@@ -741,7 +741,7 @@ bsch (c, st, end)
 #ifndef NO_FZK
 static int
 sort_func_fz (a, b)
-     char *a, *b;
+     const void *a, *b;
 {
   int c;
 

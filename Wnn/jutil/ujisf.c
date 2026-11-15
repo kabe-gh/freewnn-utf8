@@ -82,6 +82,7 @@ static void Kanjistradd FRWNN_PARAMS((w_char *, w_char *, w_char *, register UCH
 static void bunpou_num FRWNN_PARAMS((register char *, register int *));
 static void read_kanji_str FRWNN_PARAMS((register char *, register char *));
 static void toesc FRWNN_PARAMS((char *, char *));
+static int sort_func FRWNN_PARAMS((const void *a, const void *b, const int which));
 
 /* extern variables */
 
@@ -716,27 +717,32 @@ sisheng_num (a, p)
 
 int
 sort_func_je (a, b)
-     char *a, *b;
+     const char *a, *b;
 {
   return (sort_func (a, b, D_YOMI));
 }
 
 int
+sort_func_je_v (const void *a, const void *b)
+{
+  return sort_func_je((const char *)a, (const char *)b);
+}
+
+static int
 sort_func_je_kanji (a, b)
-     char *a, *b;
+     const void *a, *b;
 {
   return (sort_func (a, b, D_KANJI));
 }
 
-int
+static int
 sort_func (a, b, which)
-     register char *a, *b;
-     int which;
+     const void *a, *b;
+     const int which;
 {
   register int tmp;
-  register struct je *pa, *pb;
-  pa = *((struct je **) a);
-  pb = *((struct je **) b);
+  register const struct je * pa = *((struct je **) a);
+  register const struct je * pb = *((struct je **) b);
   if (pa->hinsi == SAKUJO_HINSI)
     {
       if (pb->hinsi == SAKUJO_HINSI)
@@ -808,7 +814,7 @@ sort_func (a, b, which)
 void
 sort ()
 {
-  qsort ((char *) jeary, jt.maxserial, sizeof (struct je *), sort_func_je);
+  qsort ((char *) jeary, jt.maxserial, sizeof (struct je *), sort_func_je_v);
 }
 
 void

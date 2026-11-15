@@ -74,7 +74,7 @@ create_rev_dict (void)
 {
   r_alloc ();
   sort_if_not_sorted ();
-  uniq_je (sort_func_je);
+  uniq_je (sort_func_je_v);
   output_dic_data ();
   make_ri2 ();
   make_ri1 (D_YOMI);

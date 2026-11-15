@@ -154,7 +154,7 @@ static struct descpack *searchdesc (Wchar *hin);
 static void store_description (void);
 static long internkind (Wchar *s);
 static void listkinds (void);
-static int kindcompar (struct kindpack *k1, struct kindpack *k2);
+static int kindcompar (const void *k1, const void *k2);
 static void sortkind (void);
 static struct dicpack *intern (int key, Wchar *yomi, Wchar *kouho, Wchar *hinshi, int hindo, long kind, int *stat, long flags);
 static void storepd (FILE *file);
@@ -163,8 +163,8 @@ static void canna_output (FILE *cf, struct dicpack *p, Wchar *h, int n);
 static void entry_out (FILE *cf, struct dicpack *p, Wchar *h, int n, Wchar *ex);
 static void printentry (FILE *cf, struct dicpack *p);
 static void showentry (struct dicpack **pd, int n);
-static int diccompar (struct dicpack **p1, struct dicpack **p2);
-static int dichindocompar (struct dicpack **p1, struct dicpack **p2);
+static int diccompar (const void *vp1, const void *vp2);
+static int dichindocompar (const void *vp1, const void *vp2);
 void shrinkargs (char **argv, int n, int count);
 static void parseargs (int argc, char *argv[]);
 #endif
@@ -822,9 +822,9 @@ listkinds ()
 }
 
 static int
-kindcompar (k1, k2)
-     struct kindpack *k1, *k2;
+kindcompar (const void *vk1, const void *vk2)
 {
+  const struct kindpack *k1 = vk1, *k2 = vk2;
   return Wscmp (k1->kind, k2->kind);
 }
 
@@ -1364,9 +1364,10 @@ showentry (pd, n)
 }
 
 static int
-diccompar (p1, p2)
-     struct dicpack **p1, **p2;
+diccompar (const void *vp1, const void *vp2)
 {
+  const struct dicpack * const * p1 = vp1;
+  const struct dicpack * const * p2 = vp2;
   int n;
   if (n = Wscmp ((*p1)->yomi, (*p2)->yomi))
     {
@@ -1387,9 +1388,10 @@ diccompar (p1, p2)
 }
 
 static int
-dichindocompar (p1, p2)
-     struct dicpack **p1, **p2;
+dichindocompar (const void *vp1, const void *vp2)
 {
+  const struct dicpack * const * p1 = vp1;
+  const struct dicpack * const * p2 = vp2;
   int n;
   if (n = Wscmp ((*p1)->yomi, (*p2)->yomi))
     {

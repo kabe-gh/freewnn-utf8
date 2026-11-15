@@ -49,7 +49,7 @@
 #include        "kaiseki.h"
 
 static struct JKT_SBN *find_jktsbn (struct JKT_SBN **, struct JKT_SONE *, int, int j_c);
-static int cmp_dsd_sbn (struct DSD_SBN *, struct DSD_SBN *);
+static int cmp_dsd_sbn (const void *, const void *);
 static int cnt_jkt_sbn (register struct JKT_SBN *sbn);
 static int get_suuji_kouho (register struct JKT_SBN *);
 static int get_eisuu_kouho (struct JKT_SBN *);
@@ -476,10 +476,10 @@ jkt_get_syo (yomi_sno, yomi_eno, beginvect, fzkchar, endvect, endvect1, dsd_sbn)
 }
 
 static int
-cmp_dsd_sbn (sbn1, sbn2)
-     const struct DSD_SBN *sbn1;
-     const struct DSD_SBN *sbn2;
+cmp_dsd_sbn (const void *vsbn1, const void *vsbn2)
 {
+  const struct DSD_SBN *sbn1 = vsbn1;
+  const struct DSD_SBN *sbn2 = vsbn2;
   return (sbn2->v_jc - sbn1->v_jc);
 }
 
