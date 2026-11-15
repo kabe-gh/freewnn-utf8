@@ -45,6 +45,7 @@
 #include "commonhd.h"
 #include "sdefine.h"
 #include "sheader.h"
+#include "conv.h" /* convert_getterm() */
 
 /*
  * tparm() macro for fixed argument prototype systems:
