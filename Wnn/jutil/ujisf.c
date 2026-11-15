@@ -820,7 +820,7 @@ sort ()
 void
 sort_if_not_sorted ()
 {
-  if (!Sorted ((char *) jeary, jt.maxserial, sizeof (struct je *), sort_func_je))
+  if (!Sorted ((char *) jeary, jt.maxserial, sizeof (struct je *), sort_func_je_v))
     {
       sort ();
     }
