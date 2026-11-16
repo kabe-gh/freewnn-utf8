@@ -39,7 +39,7 @@ jserver	日本語マルチクライアントサーバ（インターネット対応版）
 .nf
 .ta 0.1i 3i 
 /usr/local/bin/Wnn4/jserver [-f file] [-s file] [-h file] [-N #]
-                            [-p port] [-u46]
+                            [-p port] [-u46] [-D] [-d]
 .br
 /usr/local/bin/Wnn4/jserver -v
 .fi
@@ -102,6 +102,12 @@ inet socket を使用する。
 inet6 socket を使用する。
 .PP
 -u, -4, -6 のいずれも指定しない場合は、全てのプロトコルが使用される。
+.TP 8
+-D
+フォアグラウンドのままで起動する。fork() でデーモン化しない。
+.TP 8
+-d
+デバッグ出力を有効にする。
 .TP 8
 -v
 jserverのバージョン(とヘルプ)を表示する。(サーバとしては起動しない)
