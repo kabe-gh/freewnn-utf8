@@ -104,9 +104,9 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #endif
 
 #ifndef INET6
-#  define OPTIONARGS  "Df:s:h:N:p:vu4"
+#  define OPTIONARGS  "dDf:s:h:N:p:vu4"
 #else
-#  define OPTIONARGS  "Df:s:h:N:p:vu46"
+#  define OPTIONARGS  "dDf:s:h:N:p:vu46"
 #endif /* INET6 */
 
 /*      Accept Socket   */
@@ -1222,6 +1222,7 @@ get_options (int argc, char **argv)
 	{"inet6",	0, NULL, '6'},
 	{"jserverrc",	1, NULL, 'f'},
 	{"version",	0, NULL, 'v'},
+	{"debug",	0, NULL, 'd'},
 	{0, 0, 0, 0}
       };
 
@@ -1242,7 +1243,7 @@ get_options (int argc, char **argv)
 
         case 's':
 	  /* should nuke noisy someday */
-          noisy = 1; option_flag |= OPT_VERBOSE;
+          /*noisy = 1; option_flag |= OPT_VERBOSE;*/
           if (strcmp ("-", optarg) != 0)
             {
 	      /** maybe FILE wnnerr = stderr; or wnnerr = open(optarg...) is better? or freopen is normal method? */
@@ -1293,6 +1294,10 @@ get_options (int argc, char **argv)
 	  listen_proto |= PROTO_INET6;
           break;
 #endif /* INET6 */
+
+	case 'd':
+          noisy = 1; option_flag |= OPT_VERBOSE;
+	  break;
 
         default:
           print_version();
