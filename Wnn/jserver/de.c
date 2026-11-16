@@ -1103,6 +1103,17 @@ socket_init_in (void)
 #endif /* SO_DONTLINGER */
 
 #ifdef INET6
+# ifdef IPV6_V6ONLY
+  /* only bind on IPv6, since we would individually bind to v6 and v4 socket. */
+  if (res->ai_family == AF_INET6)
+    {
+      const int one = 1;
+      setsockopt (sock_d_in, IPPROTO_IPV6, IPV6_V6ONLY, &one, sizeof(int));
+    }
+# endif
+#endif
+
+#ifdef INET6
   if (bind (sock_d_in, res->ai_addr, res->ai_addrlen) == ERROR)
 #else
   if (bind (sock_d_in, (struct sockaddr *) &saddr_in, sizeof (saddr_in)) == ERROR)

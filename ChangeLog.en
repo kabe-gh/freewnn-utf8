@@ -1,3 +1,9 @@
+Mon, Nov 16 2026 20:55:10   T.Kabe <kabe@>
+	* Only bind to IPv6 if IPV6_V6ONLY is defined in /usr/include,
+	  otherwise jserver will fail to start, since
+	  binding to IPv6 also tries to bind to IPv4 which is
+	  already bound.
+
 Sat, Nov 14 2026 09:47:13  T.Kabe <kabe@>
 	* _BSD_SOURCE -> _DEFAULT_SOURCE
 
