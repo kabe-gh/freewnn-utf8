@@ -28,12 +28,13 @@
 .\" Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 .\"
 .TH JSERVER \  "23 June 2001" 
+.na
+.fi
+.ad l
 .SH 名称
 .sv 1
-.nf
 .ta 0.1i 2i
 jserver	日本語マルチクライアントサーバ（インターネット対応版）
-.fi
 .SH 形式
 .sv 1
 .nf
@@ -42,7 +43,6 @@ jserver	日本語マルチクライアントサーバ（インターネット対応版）
                             [-p port] [-u46] [-D] [-d]
 .br
 /usr/local/bin/Wnn4/jserver -v
-.fi
 .SH 機能
 .HP 0
 .IP
@@ -66,17 +66,25 @@ jserver は、全ユーザの頻度、登録可能辞書を一括して管理する。
 以下のオプションによって、動作を指定する。
 .TP 8
 -f file
+.fi
+.ad l
 デフォルトの jserverrc の代わりに、file を初期化ファイル
 として読み込む
 .TP 8
 -s file
+.fi
+.ad l
 jserver のログファイルを取る。file が、"-" の時には、
 標準エラー出力に出力される。
 .TP 8
 -h file
+.fi
+.ad l
 品詞ファイル名を指定する。
 .TP 8
 -N 数字
+.fi
+.ad l
 serverNO を指定した数字に設定する。serverNO は、jserver を複数立ち上げ
 た時に、それぞれを区別する番号である。jserver を一つしか動かさない場合
 は serverNO の指定は不要で、デフォルト値として 0 が使われる。2つめ以降
@@ -84,6 +92,8 @@ serverNO を指定した数字に設定する。serverNO は、jserver を複数立ち上げ
 serverNO を増やして立ち上げなければならない。
 .TP 8
 -p 数字
+.fi
+.ad l
 ポート番号の基準値を指定した数字に設定する。serverNO を指定していない
 場合(つまり jserver を一つしか動かしていない場合)は、この値がそのまま
 ポート番号として使われる。複数の jserver を動かしている場合は、実際の
@@ -93,23 +103,33 @@ getservbyname で取得できない場合はヘッダファイル jd_sock.h で定義され
 ている WNN_PORT_IN の値が使われる。
 .TP 8
 -u
+.fi
+.ad l
 unix domain socket を使用する。
 .TP 8
 -4
+.fi
+.ad l
 inet socket を使用する。
 .TP 8
 -6
+.fi
+.ad l
 inet6 socket を使用する。
 .PP
 -u, -4, -6 のいずれも指定しない場合は、全てのプロトコルが使用される。
 .TP 8
 -D
+.fi
+.ad l
 フォアグラウンドのままで起動する。fork() でデーモン化しない。
 .TP 8
 -d
 デバッグ出力を有効にする。
 .TP 8
 -v
+.fi
+.ad l
 jserverのバージョン(とヘルプ)を表示する。(サーバとしては起動しない)
 .SH ファイル
  /tmp/jd_sockV4
