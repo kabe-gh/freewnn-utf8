@@ -39,18 +39,21 @@ jserver	日本語マルチクライアントサーバ（インターネット対応版）
 .sv 1
 .nf
 .ta 0.1i 3i 
-/usr/local/bin/Wnn4/jserver [-f file] [-s file] [-h file] [-N #]
-                            [-p port] [-u46] [-D] [-d]
+/usr/local/bin/Wnn4/jserver [\fB\-f\fP \fIfile\fP] [\fB\-s\fP \fIfile\fP] [\fB\-h\fP \fIfile\fP] [\fB\-N\fP #]
+                            [\fB\-p\fP \fIport\fP] [\fB\-u46\fP] [\fB\-D\fP] [\fB\-d\fP]
 .br
-/usr/local/bin/Wnn4/jserver -v
+/usr/local/bin/Wnn4/jserver \fB\-v\fP
 .SH 機能
 .HP 0
 .IP
 日本語入力における仮名漢字変換を、複数のユーザに提供する。
-日本語入出力環境は、uum(1)によって提供されるが、その際の日本語文法解析を
+日本語入出力環境は、
+.BR uum (1)
+によって提供されるが、その際の日本語文法解析を
 受け持つ。
 通常システム立ち上げ時に、(/etc/rc コマンドで) 起動される。
-jserver は、起動時に /usr/local/lib/wnn/ja_JP/jserverrc(4)
+jserver は、起動時に
+.BR /usr/local/lib/wnn/ja_JP/jserverrc (4)
 に設定された辞書を読み込む。
 jserver は、全ユーザの頻度、登録可能辞書を一括して管理する。
 それらの管理のためのディレクトリは jserverrc 中の jserver_dir というエントリ
@@ -65,24 +68,24 @@ jserver は、全ユーザの頻度、登録可能辞書を一括して管理する。
 
 以下のオプションによって、動作を指定する。
 .TP 8
--f file
+\fB\-f\fP \fIfile\fP
 .fi
 .ad l
 デフォルトの jserverrc の代わりに、file を初期化ファイル
 として読み込む
 .TP 8
--s file
+\fB\-s\fP \fIfile\fP
 .fi
 .ad l
-jserver のログファイルを取る。file が、"-" の時には、
+jserver のログファイルを取る。file が、 "\fB-\fP" の時には、
 標準エラー出力に出力される。
 .TP 8
--h file
+\fB\-h\fP \fIfile\fP
 .fi
 .ad l
 品詞ファイル名を指定する。
 .TP 8
--N 数字
+\fB\-N\fP \fI数字\fP
 .fi
 .ad l
 serverNO を指定した数字に設定する。serverNO は、jserver を複数立ち上げ
@@ -91,7 +94,7 @@ serverNO を指定した数字に設定する。serverNO は、jserver を複数立ち上げ
 の jserver を起動する時は -N 1, -N 2, -N 3 というように一つづつ 
 serverNO を増やして立ち上げなければならない。
 .TP 8
--p 数字
+\fB\-p\fP \fI数字\fP
 .fi
 .ad l
 ポート番号の基準値を指定した数字に設定する。serverNO を指定していない
@@ -102,35 +105,35 @@ serverNO を増やして立ち上げなければならない。
 getservbyname で取得できない場合はヘッダファイル jd_sock.h で定義され
 ている WNN_PORT_IN の値が使われる。
 .TP 8
--u
+\fB\-u\fP
 .fi
 .ad l
 unix domain socket を使用する。
 .TP 8
--4
+\fB\-4\fP
 .fi
 .ad l
 inet socket を使用する。
 .TP 8
--6
+\fB\-6\fP
 .fi
 .ad l
 inet6 socket を使用する。
-.PP
--u, -4, -6 のいずれも指定しない場合は、全てのプロトコルが使用される。
+.br
+\-u, \-4, \-6 のいずれも指定しない場合は、 全てのプロトコルが使用される。
 .TP 8
--D
+\fB\-D\fP
 .fi
 .ad l
 フォアグラウンドのままで起動する。fork() でデーモン化しない。
 .TP 8
--d
+\fB\-d\fP
 デバッグ出力を有効にする。
 .TP 8
--v
+\fB\-v\fP
 .fi
 .ad l
-jserverのバージョン(とヘルプ)を表示する。(サーバとしては起動しない)
+jserverのバージョン(とヘルプ)を表示する。 (サーバとしては起動しない)
 .SH ファイル
  /tmp/jd_sockV4
 .HP 0
@@ -138,7 +141,7 @@ jserverのバージョン(とヘルプ)を表示する。(サーバとしては起動しない)
 .SH 関連項目
 .sv 1
 .nf
-jserverrc(4)
+.BR jserverrc (4)
 .SH バグ
 現在の jlib の実装は unix domain, inet, inet6 の全ての port で接続可能
-であることを要求しているため -u,-4,-6 の各オプションは現在は役に立たない。
+であることを要求しているため \-u, \-4, \-6 の各オプションは現在は役に立たない。
