@@ -107,7 +107,8 @@ FZK_PP = @FZK_PP@
      INSTLIBFLAGS = -m 0644
      INSTINCFLAGS = -m 0444
      INSTMANFLAGS = -m 0444
-     INSTDATFLAGS = -m 0444
+     ## allow update by Wnn/jutil/wnntouch *.dic during install
+     INSTDATFLAGS = -m 0644
      INSTUUMFLAGS = @INSTUUMFLAGS@
 
         transform = @program_transform_name@
