@@ -297,6 +297,17 @@ AC_SUBST(DEPKWNNJLIB)
 AC_SUBST(EXTKWNNJINC)
 AC_SUBST(KHINSI_DATA)
 
+AC_ARG_WITH(utf8support,
+[  --with-utf8support            UTF-8 support [[default=no]]],
+[  with_utf8support=yes ], [ with_utf8support=no ])
+
+MANFILTER=cat
+if [ xwith_utf8support = xyes ]; then
+  AC_CHECK_PROG(MANFILTER, iconv, [iconv -f euc-jp -t utf-8], [cat])
+  AC_CHECK_PROG(MANFILTER, nkf  , [nkf -E -w], [cat])
+fi
+AC_SUBST(MANFILTER)
+
 dnl
 dnl Build Options
 dnl

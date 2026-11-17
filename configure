@@ -1050,6 +1050,7 @@ Optional Packages:
   --with-libkwnn            use installed kWnn library [default=no]
   --with-kwnn-includes=DIR  Installed kWnn include files are in DIR
   --with-kwnn-libraries=DIR Search for kWnn libraries in DIR [default=/usr/local/lib]
+  --with-utf8support        UTF-8 support [default=no]
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-pic              try to use only PIC/non-PIC objects [default=use
                           both]
@@ -1863,7 +1864,44 @@ else
 	EXTKWNNJINC=""
 fi
 
+# Check whether --with-utf8support or --without-utf8support was given.
+if test "${with_utf8support+set}" = set; then
+  with_utf8support=yes
+else
+  with_utf8support=no
+fi;
 
+if test x$with_utf8support = xyes; then
+echo "$as_me:$LINENO: checking utf8support program..." >&5
+echo $ECHO_N "checking utf8support program... $ECHO_C" >&6
+if test "${ac_cv_prog_MANFILTER+set}" = set; then
+  echo "$as_me:$LINENO: result: (cached) $ac_cv_prog_MANFILTER" >&5
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$MANFILTER"; then
+    ac_cv_prog_MANFILTER="$MANFILTER" # Let the user override the test.
+  else
+    ac_cv_prog_MANFILTER=cat
+    ac_word=iconv
+    if $ac_word </dev/null >/dev/null; then
+      ac_cv_prog_MANFILTER="iconv -f euc-jp -t utf-8"
+    else
+      ac_word=nkf
+      if $ac_word </dev/null >/dev/null; then
+        ac_cv_prog_MANFILTER="nkf -E -w"
+      fi
+    fi
+  fi
+fi
+MANFILTER="$ac_cv_prog_MANFILTER"
+if test "x$MANFILTER" = xcat; then
+  echo "$as_me:$LINENO: result: not found, using $MANFILTER" >&5
+  echo "${ECHO_T}not found" >&6
+else
+  echo "$as_me:$LINENO: result: $MANFILTER" >&5
+  echo "${ECHO_T}found, using $MANFILTER" >&6
+fi
+fi
 
 
 
@@ -21442,6 +21480,7 @@ s,@KWNNJLIB@,$KWNNJLIB,;t t
 s,@DEPKWNNJLIB@,$DEPKWNNJLIB,;t t
 s,@EXTKWNNJINC@,$EXTKWNNJINC,;t t
 s,@KHINSI_DATA@,$KHINSI_DATA,;t t
+s,@MANFILTER@,$MANFILTER,;t t
 s,@ipv6@,$ipv6,;t t
 s,@unsafe_path@,$unsafe_path,;t t
 s,@WNNSBINDIR@,$WNNSBINDIR,;t t
