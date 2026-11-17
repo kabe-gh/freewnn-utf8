@@ -1334,12 +1334,8 @@ keyin0 (void)
       time_out.tv_sec = 0;
       time_out.tv_usec = 200 * 1000;    /* 200 msec 間待つのだゾ! */
       for (rfds = sel_ptn;
-#ifdef linux
-           (sel_ret = select (FD_SETSIZE, &rfds, 0, 0, NULL)) < 0 && errno == EINTR;
-#else
 	   /* FD_SETSIZE should be 20 in classical env. */
            (sel_ret = select (FD_SETSIZE, &rfds, 0, 0, &time_out)) < 0 && errno == EINTR;
-#endif
            rfds = sel_ptn)
         ;
       if (sel_ret == 0)
