@@ -55,7 +55,6 @@ all::
    COMPRESSMANCMD = :
         MANFILTER = cat
 
-
                AR = ar cq
                AS = as
 
@@ -138,6 +137,8 @@ LDOPTIONS = $(LDFLAGS) @CDEBUGFLAGS@ $(CCOPTIONS)
     exec_prefix = @exec_prefix@
          bindir = @bindir@
         sbindir = @sbindir@
+         docdir = @docdir@
+
       WNNWNNDIR = $(exec_prefix)/lib/wnn
       WNNBINDIR = $(bindir)
      WNNSBINDIR = @WNNSBINDIR@
@@ -320,6 +321,18 @@ install.man::
 	do \
 	echo "installing man pages" "in $(CURRENT_DIR)/$$i..."; \
 	(cd $$i && $(MAKE) $(MFLAGS) $(PARALLELMFLAGS) install.man) \
+	|| if [ $$cont -eq 0 ]; then exit 1; fi; \
+	done
+
+install.doc::
+	@cont=0; \
+	for flag in ${MAKEFLAGS} ''; do \
+	case "$$flag" in *=*) ;; *[ik]*) cont=1;; esac; done; \
+	SUBDIRS="$(SUBDIRS)" ;\
+	for i in $$SUBDIRS ;\
+	do \
+	echo "installing documents" "in $(CURRENT_DIR)/$$i..."; \
+	(cd $$i && $(MAKE) $(MFLAGS) $(PARALLELMFLAGS) install.doc) \
 	|| if [ $$cont -eq 0 ]; then exit 1; fi; \
 	done
 

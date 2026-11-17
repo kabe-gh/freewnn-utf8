@@ -482,6 +482,7 @@ bindir='${exec_prefix}/bin'
 sbindir='${exec_prefix}/sbin'
 libexecdir='${exec_prefix}/libexec'
 datadir='${prefix}/share'
+docdir='${prefix}/share/doc/freewnn'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
@@ -541,6 +542,11 @@ do
    { (exit 1); exit 1; }; }
     ac_feature=`echo $ac_feature | sed 's/-/_/g'`
     eval "enable_$ac_feature=no" ;;
+
+  -docdir | --docdir)
+    ac_prev=docdir ;;
+  -docdir=* | --docdir=*)
+    docdir=$ac_optarg ;;
 
   -enable-* | --enable-*)
     ac_feature=`expr "x$ac_option" : 'x-*enable-\([^=]*\)'`
@@ -808,7 +814,7 @@ do
 done
 
 # Be sure to have absolute paths.
-for ac_var in bindir sbindir libexecdir datadir sysconfdir sharedstatedir \
+for ac_var in bindir sbindir libexecdir datadir docdir sysconfdir sharedstatedir \
               localstatedir libdir includedir oldincludedir infodir mandir
 do
   eval ac_val=$`echo $ac_var`
@@ -978,6 +984,7 @@ Fine tuning of the installation directories:
   --libexecdir=DIR       program executables [EPREFIX/libexec]
   --datadir=DIR          read-only architecture-independent data [PREFIX/share]
   --sysconfdir=DIR       read-only single-machine data [PREFIX/etc]
+  --docdir=DIR           read-only documents [PREFIX/share/doc/freewnn]
   --sharedstatedir=DIR   modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR    modifiable single-machine data [PREFIX/var]
   --libdir=DIR           object code libraries [EPREFIX/lib]
@@ -20812,6 +20819,7 @@ if test "x${Wnn}" = "xWnn"; then
 	Wnn/jlib/Makefile Wnn/jlib.V3/Makefile Wnn/jserver/Makefile \
 	Wnn/jutil/Makefile Wnn/ld/Makefile Wnn/ld/rk/Makefile \
 	Wnn/romkan/Makefile Wnn/uum/Makefile \
+	Wnn/manual/Makefile \
 	Wnn/man/Makefile Wnn/man/2.env/Makefile Wnn/man/3.libwnn/Makefile \
 	Wnn/man/4.cmd/Makefile Wnn/man/6.jutil/Makefile \
 	Wnn/man/2.env/dic/Makefile Wnn/man/2.env/wnn/Makefile \
@@ -21390,6 +21398,7 @@ s,@bindir@,$bindir,;t t
 s,@sbindir@,$sbindir,;t t
 s,@libexecdir@,$libexecdir,;t t
 s,@datadir@,$datadir,;t t
+s,@docdir@,$docdir,;t t
 s,@sysconfdir@,$sysconfdir,;t t
 s,@sharedstatedir@,$sharedstatedir,;t t
 s,@localstatedir@,$localstatedir,;t t

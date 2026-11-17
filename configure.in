@@ -903,6 +903,7 @@ if test "x${Wnn}" = "xWnn"; then
 	Wnn/jlib/Makefile Wnn/jlib.V3/Makefile Wnn/jserver/Makefile \
 	Wnn/jutil/Makefile Wnn/ld/Makefile Wnn/ld/rk/Makefile \
 	Wnn/romkan/Makefile Wnn/uum/Makefile \
+	Wnn/manual/Makefile \
 	Wnn/man/Makefile Wnn/man/2.env/Makefile Wnn/man/3.libwnn/Makefile \
 	Wnn/man/4.cmd/Makefile Wnn/man/6.jutil/Makefile \
 	Wnn/man/2.env/dic/Makefile Wnn/man/2.env/wnn/Makefile \
