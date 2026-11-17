@@ -36,51 +36,16 @@ INSTALL         = @INSTALL@ $(INSTALLFLAGS)
 
 MANDIR = $(LIBMANDIR)
 MANSUFFIX = $(LIBMANSUFFIX)
+MANUAL = romkan_clear.man romkan_dispmode.man romkan_getc.man romkan_init.man romkan_next.man romkan_ungetc.man
 
-install.man:: rk_clear.man
+install.man:: $(MANUAL)
 	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
 	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_clear.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_clear.man \
- $(DESTDIR)$(MANDIR)/romkan_clear.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_clear.$(MANSUFFIX)
+	for m in $(MANUAL); do \
+	$(RM) $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX)*; \
+	$(MANFILTER) < $$m > /tmp/$$m; \
+	$(INSTALL) $(INSTMANFLAGS) /tmp/$$m $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX); \
+	$(RM) /tmp/$$m; \
+	$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX); \
+	done
 
-install.man:: rk_dspmd.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_dispmode.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_dspmd.man \
- $(DESTDIR)$(MANDIR)/romkan_dispmode.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_dispmode.$(MANSUFFIX)
-
-install.man:: rk_getc.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_getc.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_getc.man \
- $(DESTDIR)$(MANDIR)/romkan_getc.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_getc.$(MANSUFFIX)
-
-install.man:: rk_init.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_init.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_init.man \
- $(DESTDIR)$(MANDIR)/romkan_init.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_init.$(MANSUFFIX)
-
-install.man:: rk_next.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_next.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_next.man \
- $(DESTDIR)$(MANDIR)/romkan_next.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_next.$(MANSUFFIX)
-
-install.man:: rk_ungetc.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/romkan_ungetc.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) rk_ungetc.man \
- $(DESTDIR)$(MANDIR)/romkan_ungetc.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/romkan_ungetc.$(MANSUFFIX)

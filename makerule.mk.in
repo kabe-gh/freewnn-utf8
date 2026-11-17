@@ -53,6 +53,7 @@ all::
      LIBMANSUFFIX = 3
 
    COMPRESSMANCMD = :
+        MANFILTER = cat
 
 
                AR = ar cq

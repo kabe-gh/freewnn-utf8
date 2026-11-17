@@ -44,14 +44,17 @@ install.man:: pubdic.man
 	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
 	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
 	$(RM) $(DESTDIR)$(MANDIR)/pubdic.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) pubdic.man \
+	$(MANFILTER) < pubdic.man > /tmp/pubdic.man
+	$(INSTALL) $(INSTMANFLAGS) /tmp/pubdic.man \
  $(DESTDIR)$(MANDIR)/pubdic.$(MANSUFFIX)
+	rm /tmp/pubdic.man
 	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/pubdic.$(MANSUFFIX)
 
 install.man:: usr_dic.man
 	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
 	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
 	$(RM) $(DESTDIR)$(MANDIR)/usr_dic.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) usr_dic.man \
+	$(MANFILTER) < usr_dic.man > /tmp/usr_dic.man
+	$(INSTALL) $(INSTMANFLAGS) /tmp/usr_dic.man \
  $(DESTDIR)$(MANDIR)/usr_dic.$(MANSUFFIX)
 	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/usr_dic.$(MANSUFFIX)

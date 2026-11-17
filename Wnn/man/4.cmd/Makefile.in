@@ -49,8 +49,10 @@ install.man::
 	for m in $(MANUALS); do \
 	  manname=`basename $$m .man | sed '$(transform)'`; \
 	  $(RM) $(DESTDIR)$(MANDIR)/$$manname.$(MANSUFFIX)*; \
-	  $(INSTALL) $(INSTMANFLAGS) $(srcdir)/$$m \
+	  $(MANFILTER) < $(srcdir)/$$m > /tmp/$$m; \
+	  $(INSTALL) $(INSTMANFLAGS) /tmp/$$m \
  $(DESTDIR)$(MANDIR)/$$manname.$(MANSUFFIX); \
+	  $(RM) /tmp/$$m; \
 	done
 	-for m in $(MANUALS); do \
 	  manname=`basename $$m .man | sed '$(transform)'`; \

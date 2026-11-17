@@ -36,27 +36,16 @@ INSTALL         = @INSTALL@ $(INSTALLFLAGS)
 
 MANDIR = $(LIBMANDIR)
 MANSUFFIX = $(LIBMANSUFFIX)
+MANUAL = msg_open.man msg_get.man msg_close.man
 
-install.man:: msg_open.man
+install.man:: $(MANUAL)
 	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
 	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/msg_open.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) msg_open.man \
- $(DESTDIR)$(MANDIR)/msg_open.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/msg_open.$(MANSUFFIX)
+	for m in $(MANUAL); do \
+	$(RM) $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX)*; \
+	$(MANFILTER) < $$m > /tmp/$$m; \
+	$(INSTALL) $(INSTMANFLAGS) /tmp/$$m $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX); \
+	$(RM) /tmp/$$m; \
+	$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/$${m%.man}.$(MANSUFFIX); \
+	done
 
-install.man:: msg_get.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/msg_get.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) msg_get.man \
- $(DESTDIR)$(MANDIR)/msg_get.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/msg_get.$(MANSUFFIX)
-
-install.man:: msg_cl.man
-	@if [ -d $(DESTDIR)$(MANDIR) ]; then set +x; \
-	else (set -x; $(MKDIRHIER) $(DESTDIR)$(MANDIR)); fi
-	$(RM) $(DESTDIR)$(MANDIR)/msg_close.$(MANSUFFIX)*
-	$(INSTALL) $(INSTMANFLAGS) msg_cl.man \
- $(DESTDIR)$(MANDIR)/msg_close.$(MANSUFFIX)
-	-$(COMPRESSMANCMD) $(DESTDIR)$(MANDIR)/msg_close.$(MANSUFFIX)
