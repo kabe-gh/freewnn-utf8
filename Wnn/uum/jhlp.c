@@ -1135,7 +1135,7 @@ chld_handler (int sig)
       else
         {
           signal (SIGCHLD, SIG_IGN);
-          printf (MSG_GET (3));
+          puteustring (MSG_GET (3), stdout);
           /*
              printf("\r\nｕｕｍを終わります。\r\n");
            */
@@ -1151,7 +1151,7 @@ chld_handler (int sig)
   if (wait (0) == child_id)
     {
       signal (SIGCHLD, SIG_IGN);
-      printf (MSG_GET (3));
+      puteustring (MSG_GET (3), stdout);
       /*
          printf("\r\nｕｕｍを終わります。\r\n");
        */
@@ -1212,8 +1212,8 @@ do_main (void)
 
   if ((buf = (unsigned char *) malloc (maxchg * 4)) == NULL)
     {
-      printf (MSG_GET (2));
-      printf (MSG_GET (3));
+      puteustring (MSG_GET (2), stdout);
+      puteustring (MSG_GET (3), stdout);
       /*
          printf("malloc に失敗しました。ｕｕｍを終わります。\r\n");
        */
