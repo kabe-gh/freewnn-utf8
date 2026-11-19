@@ -144,7 +144,7 @@ allocate_areas ()
       /*
          fprintf(stderr,"初期化でmalloc不能。\n");
        */
-      fprintf (stderr, MSG_GET (2));
+      puteustring (MSG_GET (2), stderr);
       return (-1);
     }
 
@@ -228,7 +228,10 @@ static int
 puts1 (s)
      const char *s;
 {
-  int ans = printf ("%s\n", s);
+  char buf[1024];
+  int ans;
+  snprintf (buf, sizeof(buf), "%s\n", s);
+  ans = puteustring (buf, stdout);
   flush ();
   return ans;
 }
@@ -237,10 +240,12 @@ static int
 puts2 (s)
      const char *s;
 {
+  char buf[1024];
   int ans;
   throw_c (0);
   clr_line ();
-  ans = printf ("%s", s);
+  snprintf (buf, sizeof(buf), "%s", s);
+  ans = puteustring (buf, stdout);
   flush ();
   return ans;
 }

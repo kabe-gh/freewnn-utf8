@@ -70,20 +70,23 @@ fprintf (file, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13)
 }
 */
 
-void
+int
 puteustring (buf2, file)
      char *buf2;
      FILE *file;
 {
-  char buf[512];
+  char buf[1024];
   register int len;
   register char *c;
+  int rlen;
 
+  rlen =
   len = (*code_trans[(file_code << 2) | tty_c_flag]) (buf, buf2, strlen (buf2) + 1);
   for (c = buf, len--; len > 0; len--, c++)
     {
       putc (*c, file);
     }
+  return rlen;
 }
 
 /*

@@ -319,7 +319,7 @@ extern void push_cursor ();
 extern void push_hrus ();
 extern void putchar1 (int);
 extern void putchar_norm (int);
-extern void puteustring (char *, FILE *);
+extern int puteustring (char *, FILE *);
 extern int reconnect_jserver_body ();
 extern int redraw_line ();
 extern int redraw_nisemono ();

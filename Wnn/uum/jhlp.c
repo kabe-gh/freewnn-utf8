@@ -434,11 +434,11 @@ main (int argc, char **argv)
     {
       if (!servername || *servername == 0)
         {
-          printf ("%s\r\n", wnn_perror ());
+          puteustring ("%s\r\n", wnn_perror ());
         }
       else
         {
-          printf ("jserver(at %s):%s\r\n", servername, wnn_perror ());
+          puteustring ("jserver(at %s):%s\r\n", servername, wnn_perror ());
         }
       flush ();
     }
