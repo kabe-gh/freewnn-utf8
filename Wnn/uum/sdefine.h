@@ -191,8 +191,8 @@ struct kansuu
 
 
 #define flush() fflush(stdout)
-#define print_msg(X) {push_cursor();throw_c(0); clr_line();printf(X);flush();pop_cursor();}
-#define print_msg_getc(X) {push_cursor();throw_c(0); clr_line();printf(X);flush();keyin();pop_cursor();}
+#define print_msg(X) {push_cursor();throw_c(0); clr_line();puteustring(X,stdout);flush();pop_cursor();}
+#define print_msg_getc(X) {push_cursor();throw_c(0); clr_line();puteustring(X,stdout);flush();keyin();pop_cursor();}
 
 
 #define UNDER_LINE_MODE (0x02 | 0x08 | 0x20)

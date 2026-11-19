@@ -196,6 +196,7 @@ repeat:
       /*
          sprintf(message , "現在 %d文節解析法を用いています。何文節解析法を用いますか ?" , paraary[0]);
        */
+      char buf[256];
       sprintf (message, MSG_GET (45), paraary[0]);
     }
   else
@@ -376,12 +377,10 @@ print_msg1 (X)
      char *X;
 {
   int ans;
-  char buf[1024];
   push_cursor ();
   throw_c (0);
   clr_line ();
-  snprintf (buf, sizeof(buf), "%s", X);
-  ans = puteustring (buf, stdout);
+  ans = puteustring (X, stdout);
   flush ();
   pop_cursor ();
   return ans;
@@ -491,7 +490,7 @@ jishoadd ()
   /*
      printf("只今、辞書を読み込んでいます。");
    */
-  printf (MSG_GET (60));
+  puteustring (MSG_GET (60), stdout);
   flush ();
 
   if ((id = jl_dic_add (bun_data_, fname, hfname, 0, prio, rdonly, hrdonly, NULL, NULL, yes_or_no_or_newline, print_msg1)) == -1 && wnn_errorno != -1)
@@ -553,7 +552,7 @@ yes_or_no (string)
   int x;
   throw_c (0);
   clr_line ();
-  printf ("%s", string);
+  puteustring (string, stdout);
   flush ();
   for (;;)
     {
@@ -573,7 +572,7 @@ yes_or_no_or_newline (string)
   int x;
   throw_c (0);
   clr_line ();
-  printf (string);
+  puteustring (string, stdout);
   flush ();
   for (;;)
     {

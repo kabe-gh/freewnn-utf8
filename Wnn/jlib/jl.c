@@ -2857,7 +2857,6 @@ jl_set_env_wnnrc1 (env, wnnrc_n, error_handler, message_handler, level)
             }
           else if (confirm_state == CREATE_WITHOUT_CONFIRM)
             {
-
               error_handler1 = WNN_CREATE;
             }
           else if (confirm_state == NO_CREATE)

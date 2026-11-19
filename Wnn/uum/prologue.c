@@ -240,12 +240,10 @@ static int
 puts2 (s)
      const char *s;
 {
-  char buf[1024];
   int ans;
   throw_c (0);
   clr_line ();
-  snprintf (buf, sizeof(buf), "%s", s);
-  ans = puteustring (buf, stdout);
+  ans = puteustring (s, stdout);
   flush ();
   return ans;
 }
@@ -257,7 +255,7 @@ yes_or_no_init (s)
   for (;;)
     {
       char x[256];
-      printf ("%s", s);
+      puteustring(s, stdout);
       flush ();
       if (fgets (x, 256, stdin) == NULL)
         {

@@ -72,7 +72,7 @@ fprintf (file, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13)
 
 int
 puteustring (buf2, file)
-     char *buf2;
+     const char *buf2;
      FILE *file;
 {
   char buf[1024];
