@@ -432,13 +432,16 @@ main (int argc, char **argv)
 #ifndef CANNA
   if (!jl_isconnect (bun_data_))
     {
+      char buf[1024];
       if (!servername || *servername == 0)
         {
-          puteustring ("%s\r\n", wnn_perror ());
+          snprintf (buf, sizeof(buf), "%s\r\n", wnn_perror ());
+          puteustring (buf, stdout);
         }
       else
         {
-          puteustring ("jserver(at %s):%s\r\n", servername, wnn_perror ());
+          snprintf (buf, sizeof(buf), "jserver(at %s):%s\r\n", servername, wnn_perror ());
+          puteustring (buf, stdout);
         }
       flush ();
     }

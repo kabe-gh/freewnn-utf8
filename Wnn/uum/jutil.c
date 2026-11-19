@@ -376,10 +376,12 @@ print_msg1 (X)
      char *X;
 {
   int ans;
+  char buf[1024];
   push_cursor ();
   throw_c (0);
   clr_line ();
-  ans = printf ("%s", X);
+  snprintf (buf, sizeof(buf), "%s", X);
+  ans = puteustring (buf, stdout);
   flush ();
   pop_cursor ();
   return ans;
