@@ -276,7 +276,9 @@ init_key_table ()
     {
 /*      fprintf(stderr, "Can't open default key bind file.%s\n" , CPFILE); */
 /*   fprintf(stderr,"デフォルトのキーバインドが異常です。 %s\n",CPFILE); */
-      fprintf (stderr, MSG_GET (29), CPFILE);
+      char buf[512];
+      snprintf (buf, sizeof(buf), MSG_GET (29), CPFILE);
+      puteustring (buf, stderr);
       return (-1);
     }
 
@@ -353,8 +355,10 @@ key_binding (file_name)
 /* henkan_on is treated as like others. so REMOVE below if possible. 
     if (strcmp(func_name, "henkan_on")== 0){
       if ((com_num = expand_argument(com_name[0])) < 0) {
-        fprintf(stderr,"uumkey: %s に対する %s は不適切なコードです。\r\n",
+        char buf[512];
+        snprintf(buf, sizeof(buf), "%s に対する %s は不適切なコードです。\r\n",
         func_name, com_name[0]);
+        puteustring (buf, stderr);
         fflush(stderr);
       } else kk_on = com_num;
     } else 
@@ -366,7 +370,9 @@ key_binding (file_name)
               /*
                  fprintf(stderr,"uumkey: %s を展開できません。\r\n", com_name[0]);
                */
-              fprintf (stderr, MSG_GET (29), com_name[0]);
+              char buf[512];
+              snprintf (buf, sizeof(buf), MSG_GET (29), com_name[0]);
+              puteustring (buf, stderr);
             }
           key_binding (com_name[0]);
         }
@@ -421,7 +427,9 @@ key_binding (file_name)
                                   /*
                                      fprintf(stderr, "uumkey: %s(0x%x)のキーが二重定義です。at line %d (%s)(table No. %d).\r\n",
                                    */
-                                  fprintf (stderr, MSG_GET (30), com_name[kk], com_num, lc, kansuu_hyo[k].kansuumei, tbl);
+                                  char buf[512];
+                                  snprintf (buf, sizeof(buf), MSG_GET (30), com_name[kk], com_num, lc, kansuu_hyo[k].kansuumei, tbl);
+                                  puteustring (buf, stderr);
 /*                fprintf(stderr, "lc = %d,kansuu_hyo %d(%s) ,%d , \
                      %s(0x%x)のキーが二重定義です。\n",lc,k,kansuu_hyo[k].kansuumei,tbl ,com_name[kk],
                           com_num);

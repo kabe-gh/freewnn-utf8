@@ -112,7 +112,7 @@ word_list1 (flag, tbl)
       u_s_on ();
       w_printf (kana_buf, maxlength - strlen (MSG_GET (27)) - 2);
       u_s_off ();
-      printf (MSG_GET (27));
+      puteustring (MSG_GET (27), stdout);
       flush ();
       keyin ();
       return (NULL);

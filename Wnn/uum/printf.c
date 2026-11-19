@@ -191,8 +191,8 @@ errorkeyin ()
   push_cursor ();
   throw_c (0);
   clr_line ();
-  printf ("%s", wnn_perror ());
-  printf ("%s", MSG_GET (8));
+  puteustring (wnn_perror (), stdout);
+  puteustring (MSG_GET (8), stdout);
   /*
      printf(" (Ç¡²¿)");
    */

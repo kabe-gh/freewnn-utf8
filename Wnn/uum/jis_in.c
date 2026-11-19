@@ -64,7 +64,7 @@ in_jis ()                       /*  returns code for a moji  */
 
 completely_start:
   throw_c (0);                  /* モード表示の後に出す */
-  printf (MSG_GET (6));
+  puteustring (MSG_GET (6), stdout);
   /*
      printf("JISコード: ");
    */

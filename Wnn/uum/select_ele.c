@@ -54,10 +54,10 @@
   if(state == 0){\
     printf("%c.",((mm - dd[cc]) > 9)? mm - dd[cc] - 10 + 'A':\
                                       mm - dd[cc] + '0');\
-    printf("%s", data[mm]);\
+    puteustring(data[mm], stdout);\
   }else{\
     printf("%c.",((mm > 9)? mm - 10  + 'A':mm + '0'));\
-    printf("%s", data[mm]);}
+    puteustring(data[mm], stdout);}
 
 
 #define kouho_len(x) (strlen(x) + 4)
@@ -224,7 +224,7 @@ display_all (mm, cc)
 
   throw_c (0);
   clr_line ();
-  printf (msg);
+  puteustring (msg, stdout);
   for (k = dd[cc]; k < dd[cc + 1]; k++)
     {
       cp = findcp (k, cc);
@@ -553,7 +553,7 @@ display (lc, sc)
     {
       printf ("%c", ' ');
     }
-  printf ("%s", buf);
+  puteustring (buf, stdout);
   if (eof != 0)
     {
       printf ("%c", '$');

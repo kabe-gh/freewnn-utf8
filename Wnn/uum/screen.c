@@ -547,7 +547,7 @@ print_buf_msg (msg)
 {
   push_cursor ();
   throw_c (0);
-  printf (msg);
+  puteustring (msg, stdout);
   pop_cursor ();
   flush ();
 }
@@ -595,7 +595,7 @@ disp_mode ()
 {
   push_cursor ();
   throw_col (0);
-  printf ("%s", get_rk_modes ());
+  puteustring (get_rk_modes (), stdout);
   pop_cursor ();
   flush ();
   return (0);
@@ -609,7 +609,7 @@ display_henkan_off_mode ()
 
   strcpy (rk_modes, (NULL == (p = romkan_offmode ())? "[---]" : p));
   throw_col (0);
-  printf ("%s", rk_modes);
+  puteustring (rk_modes, stdout);
   kk_restore_cursor ();
   flush ();
 }
