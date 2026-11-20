@@ -986,24 +986,38 @@ socket_init_un (void)
 {
   struct sockaddr_un saddr_un;
   int sock_d_un;
+  char xbuf[256];
   if (serverNO == 0)
     {
       saddr_un.sun_family = AF_UNIX;
-      unlink (sockname);
+      struct stat tmp_stat;
+      if (stat (sockname, &tmp_stat) == 0)
+        if (unlink (sockname))
+	  {
+	    snprintf (xbuf, sizeof(xbuf), "could not unlink unix domain socket %s", sockname);
+	    xerror (xbuf);
+	    return;
+	  }
       strcpy (saddr_un.sun_path, sockname);
       if ((sock_d_un = socket (AF_UNIX, SOCK_STREAM, 0)) == ERROR)
         {
-          xerror ("could not create unix domain socket");
+          snprintf (xbuf, sizeof(xbuf), "could not create unix domain socket %s", sockname);
+          xerror (xbuf);
+          return;
         }
       if (bind (sock_d_un, (struct sockaddr *) &saddr_un, strlen (saddr_un.sun_path) + 2) == ERROR)
         {
           shutdown (sock_d_un, 2);
-          xerror ("could not bind unix domain socket");
+          snprintf (xbuf, sizeof(xbuf), "could not bind unix domain socket %s", sockname);
+          xerror (xbuf);
+          return;
         }
       if (listen (sock_d_un, 5) == ERROR)
         {
           shutdown (sock_d_un, 2);
-          xerror ("could not listen unix domain socket");
+          snprintf (xbuf, sizeof(xbuf), "could not listen unix domain socket %s", sockname);
+          xerror (xbuf);
+          return;
         }
       chmod (sockname, 0777);
       signal (SIGPIPE, SIG_IGN);

@@ -9,6 +9,8 @@ Fri, Nov 20 2026 14:40:14   T.Kabe <kabe@>
 
 	* config.h.in, configure.in: Rebuilt by Autoconf 2.71 autoheader, autoconf
 
+	* jserver: Emit error with diag path when failed to create AF_UNIX socket
+
 Fri, Nov 20 2026 11:41:36   T.Kabe <kabe@>
 
 	* uum: Make error messages and modeline honor terminal code settings.
