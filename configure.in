@@ -34,7 +34,7 @@ dnl
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
-AC_INIT(FreeWnn, [1.1.1-a023], [freewnn-users-owner@lists.osdn.me], FreeWnn)
+AC_INIT(FreeWnn, [1.2.0], [freewnn-users-owner@lists.osdn.me], FreeWnn)
 AC_CONFIG_SRCDIR(Wnn/conv/cvt_head.h)
 dnl old-style AC_INIT ...
 dnl AC_INIT(Wnn/conv/cvt_head.h)
