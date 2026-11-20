@@ -842,13 +842,6 @@ CPP
 INSTPGMFLAGS
 CDEBUGFLAGS
 CCOPTIONS
-OBJEXT
-EXEEXT
-ac_ct_CC
-CPPFLAGS
-LDFLAGS
-CFLAGS
-CC
 if_disable_sub_bindir
 if_enable_sub_bindir
 WNNSBINDIR
@@ -882,6 +875,13 @@ build_os
 build_vendor
 build_cpu
 build
+OBJEXT
+EXEEXT
+ac_ct_CC
+CPPFLAGS
+LDFLAGS
+CFLAGS
+CC
 target_alias
 host_alias
 build_alias
@@ -1775,6 +1775,39 @@ fi
 
 } # ac_fn_c_try_compile
 
+# ac_fn_c_check_header_compile LINENO HEADER VAR INCLUDES
+# -------------------------------------------------------
+# Tests whether HEADER exists and can be compiled using the include files in
+# INCLUDES, setting the cache variable VAR accordingly.
+ac_fn_c_check_header_compile ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
+printf %s "checking for $2... " >&6; }
+if eval test \${$3+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$4
+#include <$2>
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  eval "$3=yes"
+else $as_nop
+  eval "$3=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+eval ac_res=\$$3
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+
+} # ac_fn_c_check_header_compile
+
 # ac_fn_c_try_cpp LINENO
 # ----------------------
 # Try to preprocess conftest.$ac_ext, and return whether this succeeded.
@@ -1859,39 +1892,6 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_link
-
-# ac_fn_c_check_header_compile LINENO HEADER VAR INCLUDES
-# -------------------------------------------------------
-# Tests whether HEADER exists and can be compiled using the include files in
-# INCLUDES, setting the cache variable VAR accordingly.
-ac_fn_c_check_header_compile ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
-printf %s "checking for $2... " >&6; }
-if eval test \${$3+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$4
-#include <$2>
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  eval "$3=yes"
-else $as_nop
-  eval "$3=no"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-eval ac_res=\$$3
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-printf "%s\n" "$ac_res" >&6; }
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-
-} # ac_fn_c_check_header_compile
 
 # ac_fn_c_check_func LINENO FUNC VAR
 # ----------------------------------
@@ -3321,650 +3321,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-ac_config_headers="$ac_config_headers config.h"
-
-
-
-# Quick and Dirty workaround for Autoconf-2.53 and Libtools-1.5.* pair ...
-# not to use additional tagged configuration. (default: CXX F77)
-# NOTICE: Please remove next line if situation changes. (aono)
-tagnames=
-
-
-
-
-  # Make sure we can run config.sub.
-$SHELL "${ac_aux_dir}config.sub" sun4 >/dev/null 2>&1 ||
-  as_fn_error $? "cannot run $SHELL ${ac_aux_dir}config.sub" "$LINENO" 5
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking build system type" >&5
-printf %s "checking build system type... " >&6; }
-if test ${ac_cv_build+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_build_alias=$build_alias
-test "x$ac_build_alias" = x &&
-  ac_build_alias=`$SHELL "${ac_aux_dir}config.guess"`
-test "x$ac_build_alias" = x &&
-  as_fn_error $? "cannot guess build type; you must specify one" "$LINENO" 5
-ac_cv_build=`$SHELL "${ac_aux_dir}config.sub" $ac_build_alias` ||
-  as_fn_error $? "$SHELL ${ac_aux_dir}config.sub $ac_build_alias failed" "$LINENO" 5
-
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_build" >&5
-printf "%s\n" "$ac_cv_build" >&6; }
-case $ac_cv_build in
-*-*-*) ;;
-*) as_fn_error $? "invalid value of canonical build" "$LINENO" 5;;
-esac
-build=$ac_cv_build
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_build
-shift
-build_cpu=$1
-build_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-build_os=$*
-IFS=$ac_save_IFS
-case $build_os in *\ *) build_os=`echo "$build_os" | sed 's/ /-/g'`;; esac
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking host system type" >&5
-printf %s "checking host system type... " >&6; }
-if test ${ac_cv_host+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  if test "x$host_alias" = x; then
-  ac_cv_host=$ac_cv_build
-else
-  ac_cv_host=`$SHELL "${ac_aux_dir}config.sub" $host_alias` ||
-    as_fn_error $? "$SHELL ${ac_aux_dir}config.sub $host_alias failed" "$LINENO" 5
-fi
-
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_host" >&5
-printf "%s\n" "$ac_cv_host" >&6; }
-case $ac_cv_host in
-*-*-*) ;;
-*) as_fn_error $? "invalid value of canonical host" "$LINENO" 5;;
-esac
-host=$ac_cv_host
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_host
-shift
-host_cpu=$1
-host_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-host_os=$*
-IFS=$ac_save_IFS
-case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
-
-
-
-test "$program_prefix" != NONE &&
-  program_transform_name="s&^&$program_prefix&;$program_transform_name"
-# Use a double $ so make ignores it.
-test "$program_suffix" != NONE &&
-  program_transform_name="s&\$&$program_suffix&;$program_transform_name"
-# Double any \ or $.
-# By default was `s,x,x', remove it if useless.
-ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
-program_transform_name=`printf "%s\n" "$program_transform_name" | sed "$ac_script"`
-
-
-
-# Check whether --enable-debug was given.
-if test ${enable_debug+y}
-then :
-  enableval=$enable_debug; case "${enableval}" in
-   yes) debug=true ;;
-   no)  debug=false ;;
-   *)   as_fn_error $? "bad value for --enable-debug" "$LINENO" 5
-esac
-else $as_nop
-  debug=false
-fi
-
-
-# Check whether --enable-libraries was given.
-if test ${enable_libraries+y}
-then :
-  enableval=$enable_libraries; case "${enableval}" in
-   yes) libraries=true ;;
-   no)  libraries=false ;;
-   *)   as_fn_error $? "bad value for --enable-libraries" "$LINENO" 5 ;;
-esac
-else $as_nop
-  libraries=true
-fi
-
-
-# Check whether --enable-server was given.
-if test ${enable_server+y}
-then :
-  enableval=$enable_server; case "${enableval}" in
-   yes) server=true ;;
-   no)  server=false ;;
-   *)   as_fn_error $? "bad value for --enable-server" "$LINENO" 5 ;;
-esac
-else $as_nop
-  server=true
-fi
-
-
-# Check whether --enable-client was given.
-if test ${enable_client+y}
-then :
-  enableval=$enable_client; case "${enableval}" in
-   yes) client=true ;;
-   no)  client=false ;;
-   *)   as_fn_error $? "bad value for --enable-client" "$LINENO" 5 ;;
-esac
-else $as_nop
-  client=false
-fi
-
-
-# Check whether --enable-client-utmp was given.
-if test ${enable_client_utmp+y}
-then :
-  enableval=$enable_client_utmp; case "${enableval}" in
-   yes) client_utmp=true ;;
-   no)  client_utmp=false ;;
-   *)   as_fn_error $? "bad value for --enable-client-utmp" "$LINENO" 5 ;;
-esac
-else $as_nop
-  client_utmp=auto
-
-fi
-
-
-# Check whether --enable-client-setuid was given.
-if test ${enable_client_setuid+y}
-then :
-  enableval=$enable_client_setuid; case "${enableval}" in
-    yes) client_setuid=true; UUMOWNER=${UUMOWNER:-root} ;;
-    no)  client_setuid=false ;;
-    *)   client_setuid=true; UUMOWNER=${enableval} ;;
-esac
-else $as_nop
-  client_setuid=auto	# guess later ...
- UUMOWNER=root
-
-fi
-
-
-# Check whether --enable-client-setgid was given.
-if test ${enable_client_setgid+y}
-then :
-  enableval=$enable_client_setgid; case "${enableval}" in
-    yes)
-	if test "x$UUMGROUP" = "x"; then
-	    as_fn_error $? "You must set group name with --enable-client-setgid." "$LINENO" 5
-	else
-	    client_setgid=true;	# we already defined UUMGROUP ...
-	fi
-	;;
-    no)  client_setgid=false ;;
-    *)   client_setgid=true; UUMGROUP=${enableval} ;;
-esac
-else $as_nop
-  client_setgid=auto	# guess later ...
-UUMGROUP=
-
-fi
-
-
-if test $libraries = true; then
-	SUBDIRS="\$(LIB_SUBDIRS)"
-	WNNMANDIR="\$(LIB_WNNMANDIR)"
-fi
-if test $server = true; then
-	SUBDIRS="$SUBDIRS \$(SERVER_SUBDIRS)"
-	WNNMANDIR="$WNNMANDIR \$(SERVER_WNNMANDIR)"
-fi
-if test $client = true; then
-	SUBDIRS="$SUBDIRS \$(CLIENT_SUBDIRS)"
-fi
-
-
-
-
-
-# Check whether --enable-Wnn was given.
-if test ${enable_Wnn+y}
-then :
-  enableval=$enable_Wnn; case "${enableval}" in
-   yes) Wnn="Wnn";;
-   no)  Wnn="" ;;
-   *)   as_fn_error $? "bad value for --enable-Wnn" "$LINENO" 5 ;;
-esac
-else $as_nop
-  Wnn="Wnn"
-fi
-
-
-
-if test "$server" = true -a "$Wnn" = Wnn; then
-#	JSERVER_SUBDIRS1="\$(JSERVER_SUBDIRS1)"
-	JSERVER_SUBDIRS2="\$(JSERVER_SUBDIRS2)"
-else
-#	JSERVER_SUBDIRS1=""
-	JSERVER_SUBDIRS2=""
-fi
-
-
-# Check whether --enable-cWnn was given.
-if test ${enable_cWnn+y}
-then :
-  enableval=$enable_cWnn; case "${enableval}" in
-   yes) cWnn="cWnn" ;;
-   no)  cWnn="" ;;
-   *)   as_fn_error $? "bad value for --enable-cWnn" "$LINENO" 5 ;;
-esac
-else $as_nop
-  cWnn="cWnn"
-fi
-
-
-
-# Check whether --enable-kWnn was given.
-if test ${enable_kWnn+y}
-then :
-  enableval=$enable_kWnn; case "${enableval}" in
-   yes) kWnn="kWnn" ;;
-   no)  kWnn="" ;;
-   *)   as_fn_error $? "bad value for --enable-kWnn" "$LINENO" 5 ;;
-esac
-else $as_nop
-  kWnn="kWnn"
-fi
-
-
-
-
-
-# Check whether --with-libwnn was given.
-if test ${with_libwnn+y}
-then :
-  withval=$with_libwnn;   with_libwnn="${withval}"
-else $as_nop
-  with_libwnn=no
-fi
-
-
-# Check whether --with-wnn-includes was given.
-if test ${with_wnn_includes+y}
-then :
-  withval=$with_wnn_includes; wnnincludedir="-I${withval}"
-else $as_nop
-  wnnincludedir=''
-fi
-
-
-# Check whether --with-wnn-libraries was given.
-if test ${with_wnn_libraries+y}
-then :
-  withval=$with_wnn_libraries; wnnlibdir="${withval}"
-else $as_nop
-  wnnlibdir='/usr/local/lib'
-fi
-
-
-if test X${with_libwnn} != Xno; then
-	case X${with_libwnn} in
-	Xyes | X-lwnn)
-		WNNJLIB="-L${wnnlibdir} -lwnn" ;;
-	X/*)
-		WNNJLIB="${wnnlibdir}/libwnn.a" ;;
-	*)
-		# Honor specified value --with-libwnn
-		# (maybe wrong in most cases)
-		WNNJLIB="${with_libwnn}" ;;
-	esac
-	DEPWNNJLIB=""
-		HINSI_DATA="\$(JWNNWNNDIR)/hinsi.data"
-	EXTWNNJINC=${wnnincludedir}
-else
-	WNNJLIB="\$(top_builddir)/Wnn/jlib/libwnn.la"
-	DEPWNNJLIB="\$(WNNJLIB)"
-	HINSI_DATA="\$(top_builddir)/Wnn/jd/hinsi.data"
-	EXTWNNJINC=""
-fi
-
-
-
-
-
-
-# Check whether --with-libcwnn was given.
-if test ${with_libcwnn+y}
-then :
-  withval=$with_libcwnn;   with_libcwnn="${withval}"
-else $as_nop
-  with_libcwnn=no
-fi
-
-
-# Check whether --with-cwnn-includes was given.
-if test ${with_cwnn_includes+y}
-then :
-  withval=$with_cwnn_includes; cwnnincludedir="-I${withval}"
-else $as_nop
-  cwnnincludedir=''
-fi
-
-
-# Check whether --with-cwnn-libraries was given.
-if test ${with_cwnn_libraries+y}
-then :
-  withval=$with_cwnn_libraries; cwnnlibdir="${withval}"
-else $as_nop
-  cwnnlibdir='/usr/local/lib'
-fi
-
-
-if test X${with_libcwnn} != Xno; then
-   	case X${with_libcwnn} in
-	Xyes | X-lcwnn)
-		CWNNJLIB="-L${cwnnlibdir} -lcwnn" ;;
-	X/*)
-		CWNNJLIB="${cwnnlibdir}/libcwnn.a" ;;
-	*)
-		# Honor specified value --with-libcwnn
-		# (maybe wrong in most cases)
-		CWNNJLIB="${with_libcwnn}" ;;
-	esac
-	DEPCWNNJLIB=""
-		CHINSI_DATA="\$(CWNNWNNDIR)/cixing.data"
-	THINSI_DATA="\$(TWNNWNNDIR)/cixing.data"
-	EXTCWNNJINC=${cwnnincludedir}
-else
-	CWNNJLIB="\$(top_builddir)/cWnn/jlib/libcwnn.la"
-	DEPCWNNJLIB="\$(CWNNJLIB)"
-	CHINSI_DATA="\$(CWNNCDSRC)/cixing.data"
-	THINSI_DATA="\$(TWNNTDSRC)/cixing.data"
-	EXTCWNNJINC=""
-fi
-
-
-
-
-
-
-
-# Check whether --with-libkwnn was given.
-if test ${with_libkwnn+y}
-then :
-  withval=$with_libkwnn;   with_libkwnn="${withval}"
-else $as_nop
-  with_libkwnn=no
-fi
-
-
-# Check whether --with-kwnn-includes was given.
-if test ${with_kwnn_includes+y}
-then :
-  withval=$with_kwnn_includes; kwnnincludedir="-I${withval}"
-else $as_nop
-  kwnnincludedir=''
-fi
-
-
-# Check whether --with-kwnn-libraries was given.
-if test ${with_kwnn_libraries+y}
-then :
-  withval=$with_kwnn_libraries; kwnnlibdir="${withval}"
-else $as_nop
-  kwnnlibdir='/usr/local/lib'
-fi
-
-
-if test X${with_libkwnn} != Xno; then
-   	case X${with_libkwnn} in
-	Xyes | X-lkwnn)
-		KWNNJLIB="-L${kwnnlibdir} -lkwnn" ;;
-	X/*)
-		KWNNJLIB="${kwnnlibdir}/libkwnn.a" ;;
-	*)
-		# Honor specified value --with-libkwnn
-		# (maybe wrong in most cases)
-		KWNNJLIB="${with_libkwnn}" ;;
-	esac
-	DEPKWNNJLIB=""
-		KHINSI_DATA="\$(KWNNWNNDIR)/hinsi.data"
-	EXTKWNNJINC=${kwnnincludedir}
-else
-	KWNNJLIB="\$(top_builddir)/kWnn/jlib/libkwnn.la"
-	DEPKWNNJLIB="\$(KWNNJLIB)"
-	KHINSI_DATA="\$(KWNNKDSRC)/hinsi.data"
-	EXTKWNNJINC=""
-fi
-
-
-
-
-
-
-# Check whether --with-utf8support was given.
-if test ${with_utf8support+y}
-then :
-  withval=$with_utf8support;   with_utf8support=yes
-else $as_nop
-   with_utf8support=no
-fi
-
-
-MANFILTER=""
-if test x$with_utf8support = xyes ; then
-  if test -z "$MANFILTER" ; then
-    # Extract the first word of "iconv iconv -f euc-jp -t utf-8", so it can be a program name with args.
-set dummy iconv iconv -f euc-jp -t utf-8; ac_word=$2
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-printf %s "checking for $ac_word... " >&6; }
-if test ${ac_cv_prog_MANFILTER+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  if test -n "$MANFILTER"; then
-  ac_cv_prog_MANFILTER="$MANFILTER" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
-    ac_cv_prog_MANFILTER=""
-    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-MANFILTER=$ac_cv_prog_MANFILTER
-if test -n "$MANFILTER"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $MANFILTER" >&5
-printf "%s\n" "$MANFILTER" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-fi
-
-
-  fi
-  if test -z "$MANFILTER" ; then
-    # Extract the first word of "nkf  ", so it can be a program name with args.
-set dummy nkf  ; ac_word=$2
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-printf %s "checking for $ac_word... " >&6; }
-if test ${ac_cv_prog_MANFILTER+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  if test -n "$MANFILTER"; then
-  ac_cv_prog_MANFILTER="$MANFILTER" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
-    ac_cv_prog_MANFILTER="nkf -E -w"
-    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-MANFILTER=$ac_cv_prog_MANFILTER
-if test -n "$MANFILTER"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $MANFILTER" >&5
-printf "%s\n" "$MANFILTER" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-fi
-
-
-  fi
-fi
-if test -z "$MANFILTER"; then
-  MANFILTER="cat"
-fi
-
-
-
-# Check whether --enable-ipv6 was given.
-if test ${enable_ipv6+y}
-then :
-  enableval=$enable_ipv6; case "${enableval}" in
-   yes) ipv6="-DINET6";;
-   no)  ipv6="" ;;
-   *)   as_fn_error $? "bad value for --enable-ipv6" "$LINENO" 5 ;;
-esac
-else $as_nop
-  ipv6=""
-fi
-
-
-
-# Check whether --enable-unsafe-path was given.
-if test ${enable_unsafe_path+y}
-then :
-  enableval=$enable_unsafe_path; case "${enableval}" in
-   yes) unsafe_path=true;;
-   no)  unsafe_path=false;;
-   *)   as_fn_error $? "bad value for --enable-unsafe-path" "$LINENO" 5 ;;
-esac
-else $as_nop
-  unsafe_path=false
-fi
-
-
-
-if test ${unsafe_path} = true; then
-
-printf "%s\n" "#define WNN_ALLOW_UNSAFE_PATH 1" >>confdefs.h
-
-fi
-
-# Check whether --enable-traditional-layout was given.
-if test ${enable_traditional_layout+y}
-then :
-  enableval=$enable_traditional_layout; case "${enableval}" in
-   yes) trad_layout=true ;;
-   no)  trad_layout=false ;;
-   *)   as_fn_error $? "bad value for --enable-traditional-layout" "$LINENO" 5 ;;
-esac
-else $as_nop
-  trad_layout=true
-fi
-
-
-if test $trad_layout = "true"; then
-  WNNSBINDIR="\$(bindir)"
-  # More path settings will come later ...
-else
-  WNNSBINDIR="\$(sbindir)"
-  # Same as above.
-fi
-
-
-# Check whether --enable-sub-bindir was given.
-if test ${enable_sub_bindir+y}
-then :
-  enableval=$enable_sub_bindir; case "${enableval}" in
-   yes) sub_bindir=true ;;
-   no)  sub_bindir=false ;;
-   *)   as_fn_error $? "bad value for --enable-sub-bindir" "$LINENO" 5 ;;
-esac
-else $as_nop
-  sub_bindir=guess
-fi
-
-
-if test $sub_bindir = "guess"; then
-  if test $trad_layout = "true"; then
-    sub_bindir=true
-  else
-    sub_bindir=false
-  fi
-fi
-if test $sub_bindir = "true"; then
-  if_enable_sub_bindir=' '
-  if_disable_sub_bindir='#'
-else
-  if_enable_sub_bindir='#'
-  if_disable_sub_bindir=' '
-fi
-
-
-
-# for debug
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we use traditional layout" >&5
-printf %s "checking if we use traditional layout... " >&6; }
-if test $trad_layout = "true"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-fi
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we install binaries on \$(bindir)/Wnn4 (etc.)" >&5
-printf %s "checking if we install binaries on \$(bindir)/Wnn4 (etc.)... " >&6; }
-if test $sub_bindir = "true"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-fi
-
 
 
 
@@ -4691,6 +4047,1416 @@ fi
 printf "%s\n" "$ac_cv_objext" >&6; }
 OBJEXT=$ac_cv_objext
 ac_objext=$OBJEXT
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether the compiler supports GNU C" >&5
+printf %s "checking whether the compiler supports GNU C... " >&6; }
+if test ${ac_cv_c_compiler_gnu+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+#ifndef __GNUC__
+       choke me
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_compiler_gnu=yes
+else $as_nop
+  ac_compiler_gnu=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+ac_cv_c_compiler_gnu=$ac_compiler_gnu
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_c_compiler_gnu" >&5
+printf "%s\n" "$ac_cv_c_compiler_gnu" >&6; }
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+if test $ac_compiler_gnu = yes; then
+  GCC=yes
+else
+  GCC=
+fi
+ac_test_CFLAGS=${CFLAGS+y}
+ac_save_CFLAGS=$CFLAGS
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether $CC accepts -g" >&5
+printf %s "checking whether $CC accepts -g... " >&6; }
+if test ${ac_cv_prog_cc_g+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_save_c_werror_flag=$ac_c_werror_flag
+   ac_c_werror_flag=yes
+   ac_cv_prog_cc_g=no
+   CFLAGS="-g"
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_cv_prog_cc_g=yes
+else $as_nop
+  CFLAGS=""
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+
+else $as_nop
+  ac_c_werror_flag=$ac_save_c_werror_flag
+	 CFLAGS="-g"
+	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_cv_prog_cc_g=yes
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+   ac_c_werror_flag=$ac_save_c_werror_flag
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_cc_g" >&5
+printf "%s\n" "$ac_cv_prog_cc_g" >&6; }
+if test $ac_test_CFLAGS; then
+  CFLAGS=$ac_save_CFLAGS
+elif test $ac_cv_prog_cc_g = yes; then
+  if test "$GCC" = yes; then
+    CFLAGS="-g -O2"
+  else
+    CFLAGS="-g"
+  fi
+else
+  if test "$GCC" = yes; then
+    CFLAGS="-O2"
+  else
+    CFLAGS=
+  fi
+fi
+ac_prog_cc_stdc=no
+if test x$ac_prog_cc_stdc = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CC option to enable C11 features" >&5
+printf %s "checking for $CC option to enable C11 features... " >&6; }
+if test ${ac_cv_prog_cc_c11+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_cv_prog_cc_c11=no
+ac_save_CC=$CC
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$ac_c_conftest_c11_program
+_ACEOF
+for ac_arg in '' -std=gnu11
+do
+  CC="$ac_save_CC $ac_arg"
+  if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_cv_prog_cc_c11=$ac_arg
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam
+  test "x$ac_cv_prog_cc_c11" != "xno" && break
+done
+rm -f conftest.$ac_ext
+CC=$ac_save_CC
+fi
+
+if test "x$ac_cv_prog_cc_c11" = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: unsupported" >&5
+printf "%s\n" "unsupported" >&6; }
+else $as_nop
+  if test "x$ac_cv_prog_cc_c11" = x
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: none needed" >&5
+printf "%s\n" "none needed" >&6; }
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_cc_c11" >&5
+printf "%s\n" "$ac_cv_prog_cc_c11" >&6; }
+     CC="$CC $ac_cv_prog_cc_c11"
+fi
+  ac_cv_prog_cc_stdc=$ac_cv_prog_cc_c11
+  ac_prog_cc_stdc=c11
+fi
+fi
+if test x$ac_prog_cc_stdc = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CC option to enable C99 features" >&5
+printf %s "checking for $CC option to enable C99 features... " >&6; }
+if test ${ac_cv_prog_cc_c99+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_cv_prog_cc_c99=no
+ac_save_CC=$CC
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$ac_c_conftest_c99_program
+_ACEOF
+for ac_arg in '' -std=gnu99 -std=c99 -c99 -qlanglvl=extc1x -qlanglvl=extc99 -AC99 -D_STDC_C99=
+do
+  CC="$ac_save_CC $ac_arg"
+  if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_cv_prog_cc_c99=$ac_arg
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam
+  test "x$ac_cv_prog_cc_c99" != "xno" && break
+done
+rm -f conftest.$ac_ext
+CC=$ac_save_CC
+fi
+
+if test "x$ac_cv_prog_cc_c99" = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: unsupported" >&5
+printf "%s\n" "unsupported" >&6; }
+else $as_nop
+  if test "x$ac_cv_prog_cc_c99" = x
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: none needed" >&5
+printf "%s\n" "none needed" >&6; }
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_cc_c99" >&5
+printf "%s\n" "$ac_cv_prog_cc_c99" >&6; }
+     CC="$CC $ac_cv_prog_cc_c99"
+fi
+  ac_cv_prog_cc_stdc=$ac_cv_prog_cc_c99
+  ac_prog_cc_stdc=c99
+fi
+fi
+if test x$ac_prog_cc_stdc = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CC option to enable C89 features" >&5
+printf %s "checking for $CC option to enable C89 features... " >&6; }
+if test ${ac_cv_prog_cc_c89+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_cv_prog_cc_c89=no
+ac_save_CC=$CC
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$ac_c_conftest_c89_program
+_ACEOF
+for ac_arg in '' -qlanglvl=extc89 -qlanglvl=ansi -std -Ae "-Aa -D_HPUX_SOURCE" "-Xc -D__EXTENSIONS__"
+do
+  CC="$ac_save_CC $ac_arg"
+  if ac_fn_c_try_compile "$LINENO"
+then :
+  ac_cv_prog_cc_c89=$ac_arg
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam
+  test "x$ac_cv_prog_cc_c89" != "xno" && break
+done
+rm -f conftest.$ac_ext
+CC=$ac_save_CC
+fi
+
+if test "x$ac_cv_prog_cc_c89" = xno
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: unsupported" >&5
+printf "%s\n" "unsupported" >&6; }
+else $as_nop
+  if test "x$ac_cv_prog_cc_c89" = x
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: none needed" >&5
+printf "%s\n" "none needed" >&6; }
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_cc_c89" >&5
+printf "%s\n" "$ac_cv_prog_cc_c89" >&6; }
+     CC="$CC $ac_cv_prog_cc_c89"
+fi
+  ac_cv_prog_cc_stdc=$ac_cv_prog_cc_c89
+  ac_prog_cc_stdc=c89
+fi
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+ac_header= ac_cache=
+for ac_item in $ac_header_c_list
+do
+  if test $ac_cache; then
+    ac_fn_c_check_header_compile "$LINENO" $ac_header ac_cv_header_$ac_cache "$ac_includes_default"
+    if eval test \"x\$ac_cv_header_$ac_cache\" = xyes; then
+      printf "%s\n" "#define $ac_item 1" >> confdefs.h
+    fi
+    ac_header= ac_cache=
+  elif test $ac_header; then
+    ac_cache=$ac_item
+  else
+    ac_header=$ac_item
+  fi
+done
+
+
+
+
+
+
+
+
+if test $ac_cv_header_stdlib_h = yes && test $ac_cv_header_string_h = yes
+then :
+
+printf "%s\n" "#define STDC_HEADERS 1" >>confdefs.h
+
+fi
+ac_fn_c_check_header_compile "$LINENO" "config.h" "ac_cv_header_config_h" "$ac_includes_default"
+if test "x$ac_cv_header_config_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_CONFIG_H 1" >>confdefs.h
+
+fi
+
+
+
+# Quick and Dirty workaround for Autoconf-2.53 and Libtools-1.5.* pair ...
+# not to use additional tagged configuration. (default: CXX F77)
+# NOTICE: Please remove next line if situation changes. (aono)
+tagnames=
+
+
+
+
+  # Make sure we can run config.sub.
+$SHELL "${ac_aux_dir}config.sub" sun4 >/dev/null 2>&1 ||
+  as_fn_error $? "cannot run $SHELL ${ac_aux_dir}config.sub" "$LINENO" 5
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking build system type" >&5
+printf %s "checking build system type... " >&6; }
+if test ${ac_cv_build+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_build_alias=$build_alias
+test "x$ac_build_alias" = x &&
+  ac_build_alias=`$SHELL "${ac_aux_dir}config.guess"`
+test "x$ac_build_alias" = x &&
+  as_fn_error $? "cannot guess build type; you must specify one" "$LINENO" 5
+ac_cv_build=`$SHELL "${ac_aux_dir}config.sub" $ac_build_alias` ||
+  as_fn_error $? "$SHELL ${ac_aux_dir}config.sub $ac_build_alias failed" "$LINENO" 5
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_build" >&5
+printf "%s\n" "$ac_cv_build" >&6; }
+case $ac_cv_build in
+*-*-*) ;;
+*) as_fn_error $? "invalid value of canonical build" "$LINENO" 5;;
+esac
+build=$ac_cv_build
+ac_save_IFS=$IFS; IFS='-'
+set x $ac_cv_build
+shift
+build_cpu=$1
+build_vendor=$2
+shift; shift
+# Remember, the first character of IFS is used to create $*,
+# except with old shells:
+build_os=$*
+IFS=$ac_save_IFS
+case $build_os in *\ *) build_os=`echo "$build_os" | sed 's/ /-/g'`;; esac
+
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking host system type" >&5
+printf %s "checking host system type... " >&6; }
+if test ${ac_cv_host+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test "x$host_alias" = x; then
+  ac_cv_host=$ac_cv_build
+else
+  ac_cv_host=`$SHELL "${ac_aux_dir}config.sub" $host_alias` ||
+    as_fn_error $? "$SHELL ${ac_aux_dir}config.sub $host_alias failed" "$LINENO" 5
+fi
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_host" >&5
+printf "%s\n" "$ac_cv_host" >&6; }
+case $ac_cv_host in
+*-*-*) ;;
+*) as_fn_error $? "invalid value of canonical host" "$LINENO" 5;;
+esac
+host=$ac_cv_host
+ac_save_IFS=$IFS; IFS='-'
+set x $ac_cv_host
+shift
+host_cpu=$1
+host_vendor=$2
+shift; shift
+# Remember, the first character of IFS is used to create $*,
+# except with old shells:
+host_os=$*
+IFS=$ac_save_IFS
+case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
+
+
+
+test "$program_prefix" != NONE &&
+  program_transform_name="s&^&$program_prefix&;$program_transform_name"
+# Use a double $ so make ignores it.
+test "$program_suffix" != NONE &&
+  program_transform_name="s&\$&$program_suffix&;$program_transform_name"
+# Double any \ or $.
+# By default was `s,x,x', remove it if useless.
+ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
+program_transform_name=`printf "%s\n" "$program_transform_name" | sed "$ac_script"`
+
+
+
+# Check whether --enable-debug was given.
+if test ${enable_debug+y}
+then :
+  enableval=$enable_debug; case "${enableval}" in
+   yes) debug=true ;;
+   no)  debug=false ;;
+   *)   as_fn_error $? "bad value for --enable-debug" "$LINENO" 5
+esac
+else $as_nop
+  debug=false
+fi
+
+
+# Check whether --enable-libraries was given.
+if test ${enable_libraries+y}
+then :
+  enableval=$enable_libraries; case "${enableval}" in
+   yes) libraries=true ;;
+   no)  libraries=false ;;
+   *)   as_fn_error $? "bad value for --enable-libraries" "$LINENO" 5 ;;
+esac
+else $as_nop
+  libraries=true
+fi
+
+
+# Check whether --enable-server was given.
+if test ${enable_server+y}
+then :
+  enableval=$enable_server; case "${enableval}" in
+   yes) server=true ;;
+   no)  server=false ;;
+   *)   as_fn_error $? "bad value for --enable-server" "$LINENO" 5 ;;
+esac
+else $as_nop
+  server=true
+fi
+
+
+# Check whether --enable-client was given.
+if test ${enable_client+y}
+then :
+  enableval=$enable_client; case "${enableval}" in
+   yes) client=true ;;
+   no)  client=false ;;
+   *)   as_fn_error $? "bad value for --enable-client" "$LINENO" 5 ;;
+esac
+else $as_nop
+  client=false
+fi
+
+
+# Check whether --enable-client-utmp was given.
+if test ${enable_client_utmp+y}
+then :
+  enableval=$enable_client_utmp; case "${enableval}" in
+   yes) client_utmp=true ;;
+   no)  client_utmp=false ;;
+   *)   as_fn_error $? "bad value for --enable-client-utmp" "$LINENO" 5 ;;
+esac
+else $as_nop
+  client_utmp=auto
+
+fi
+
+
+# Check whether --enable-client-setuid was given.
+if test ${enable_client_setuid+y}
+then :
+  enableval=$enable_client_setuid; case "${enableval}" in
+    yes) client_setuid=true; UUMOWNER=${UUMOWNER:-root} ;;
+    no)  client_setuid=false ;;
+    *)   client_setuid=true; UUMOWNER=${enableval} ;;
+esac
+else $as_nop
+  client_setuid=auto	# guess later ...
+ UUMOWNER=root
+
+fi
+
+
+# Check whether --enable-client-setgid was given.
+if test ${enable_client_setgid+y}
+then :
+  enableval=$enable_client_setgid; case "${enableval}" in
+    yes)
+	if test "x$UUMGROUP" = "x"; then
+	    as_fn_error $? "You must set group name with --enable-client-setgid." "$LINENO" 5
+	else
+	    client_setgid=true;	# we already defined UUMGROUP ...
+	fi
+	;;
+    no)  client_setgid=false ;;
+    *)   client_setgid=true; UUMGROUP=${enableval} ;;
+esac
+else $as_nop
+  client_setgid=auto	# guess later ...
+UUMGROUP=
+
+fi
+
+
+if test $libraries = true; then
+	SUBDIRS="\$(LIB_SUBDIRS)"
+	WNNMANDIR="\$(LIB_WNNMANDIR)"
+fi
+if test $server = true; then
+	SUBDIRS="$SUBDIRS \$(SERVER_SUBDIRS)"
+	WNNMANDIR="$WNNMANDIR \$(SERVER_WNNMANDIR)"
+fi
+if test $client = true; then
+	SUBDIRS="$SUBDIRS \$(CLIENT_SUBDIRS)"
+fi
+
+
+
+
+
+# Check whether --enable-Wnn was given.
+if test ${enable_Wnn+y}
+then :
+  enableval=$enable_Wnn; case "${enableval}" in
+   yes) Wnn="Wnn";;
+   no)  Wnn="" ;;
+   *)   as_fn_error $? "bad value for --enable-Wnn" "$LINENO" 5 ;;
+esac
+else $as_nop
+  Wnn="Wnn"
+fi
+
+
+
+if test "$server" = true -a "$Wnn" = Wnn; then
+#	JSERVER_SUBDIRS1="\$(JSERVER_SUBDIRS1)"
+	JSERVER_SUBDIRS2="\$(JSERVER_SUBDIRS2)"
+else
+#	JSERVER_SUBDIRS1=""
+	JSERVER_SUBDIRS2=""
+fi
+
+
+# Check whether --enable-cWnn was given.
+if test ${enable_cWnn+y}
+then :
+  enableval=$enable_cWnn; case "${enableval}" in
+   yes) cWnn="cWnn" ;;
+   no)  cWnn="" ;;
+   *)   as_fn_error $? "bad value for --enable-cWnn" "$LINENO" 5 ;;
+esac
+else $as_nop
+  cWnn="cWnn"
+fi
+
+
+
+# Check whether --enable-kWnn was given.
+if test ${enable_kWnn+y}
+then :
+  enableval=$enable_kWnn; case "${enableval}" in
+   yes) kWnn="kWnn" ;;
+   no)  kWnn="" ;;
+   *)   as_fn_error $? "bad value for --enable-kWnn" "$LINENO" 5 ;;
+esac
+else $as_nop
+  kWnn="kWnn"
+fi
+
+
+
+
+
+# Check whether --with-libwnn was given.
+if test ${with_libwnn+y}
+then :
+  withval=$with_libwnn;   with_libwnn="${withval}"
+else $as_nop
+  with_libwnn=no
+fi
+
+
+# Check whether --with-wnn-includes was given.
+if test ${with_wnn_includes+y}
+then :
+  withval=$with_wnn_includes; wnnincludedir="-I${withval}"
+else $as_nop
+  wnnincludedir=''
+fi
+
+
+# Check whether --with-wnn-libraries was given.
+if test ${with_wnn_libraries+y}
+then :
+  withval=$with_wnn_libraries; wnnlibdir="${withval}"
+else $as_nop
+  wnnlibdir='/usr/local/lib'
+fi
+
+
+if test X${with_libwnn} != Xno; then
+	case X${with_libwnn} in
+	Xyes | X-lwnn)
+		WNNJLIB="-L${wnnlibdir} -lwnn" ;;
+	X/*)
+		WNNJLIB="${wnnlibdir}/libwnn.a" ;;
+	*)
+		# Honor specified value --with-libwnn
+		# (maybe wrong in most cases)
+		WNNJLIB="${with_libwnn}" ;;
+	esac
+	DEPWNNJLIB=""
+		HINSI_DATA="\$(JWNNWNNDIR)/hinsi.data"
+	EXTWNNJINC=${wnnincludedir}
+else
+	WNNJLIB="\$(top_builddir)/Wnn/jlib/libwnn.la"
+	DEPWNNJLIB="\$(WNNJLIB)"
+	HINSI_DATA="\$(top_builddir)/Wnn/jd/hinsi.data"
+	EXTWNNJINC=""
+fi
+
+
+
+
+
+
+# Check whether --with-libcwnn was given.
+if test ${with_libcwnn+y}
+then :
+  withval=$with_libcwnn;   with_libcwnn="${withval}"
+else $as_nop
+  with_libcwnn=no
+fi
+
+
+# Check whether --with-cwnn-includes was given.
+if test ${with_cwnn_includes+y}
+then :
+  withval=$with_cwnn_includes; cwnnincludedir="-I${withval}"
+else $as_nop
+  cwnnincludedir=''
+fi
+
+
+# Check whether --with-cwnn-libraries was given.
+if test ${with_cwnn_libraries+y}
+then :
+  withval=$with_cwnn_libraries; cwnnlibdir="${withval}"
+else $as_nop
+  cwnnlibdir='/usr/local/lib'
+fi
+
+
+if test X${with_libcwnn} != Xno; then
+   	case X${with_libcwnn} in
+	Xyes | X-lcwnn)
+		CWNNJLIB="-L${cwnnlibdir} -lcwnn" ;;
+	X/*)
+		CWNNJLIB="${cwnnlibdir}/libcwnn.a" ;;
+	*)
+		# Honor specified value --with-libcwnn
+		# (maybe wrong in most cases)
+		CWNNJLIB="${with_libcwnn}" ;;
+	esac
+	DEPCWNNJLIB=""
+		CHINSI_DATA="\$(CWNNWNNDIR)/cixing.data"
+	THINSI_DATA="\$(TWNNWNNDIR)/cixing.data"
+	EXTCWNNJINC=${cwnnincludedir}
+else
+	CWNNJLIB="\$(top_builddir)/cWnn/jlib/libcwnn.la"
+	DEPCWNNJLIB="\$(CWNNJLIB)"
+	CHINSI_DATA="\$(CWNNCDSRC)/cixing.data"
+	THINSI_DATA="\$(TWNNTDSRC)/cixing.data"
+	EXTCWNNJINC=""
+fi
+
+
+
+
+
+
+
+# Check whether --with-libkwnn was given.
+if test ${with_libkwnn+y}
+then :
+  withval=$with_libkwnn;   with_libkwnn="${withval}"
+else $as_nop
+  with_libkwnn=no
+fi
+
+
+# Check whether --with-kwnn-includes was given.
+if test ${with_kwnn_includes+y}
+then :
+  withval=$with_kwnn_includes; kwnnincludedir="-I${withval}"
+else $as_nop
+  kwnnincludedir=''
+fi
+
+
+# Check whether --with-kwnn-libraries was given.
+if test ${with_kwnn_libraries+y}
+then :
+  withval=$with_kwnn_libraries; kwnnlibdir="${withval}"
+else $as_nop
+  kwnnlibdir='/usr/local/lib'
+fi
+
+
+if test X${with_libkwnn} != Xno; then
+   	case X${with_libkwnn} in
+	Xyes | X-lkwnn)
+		KWNNJLIB="-L${kwnnlibdir} -lkwnn" ;;
+	X/*)
+		KWNNJLIB="${kwnnlibdir}/libkwnn.a" ;;
+	*)
+		# Honor specified value --with-libkwnn
+		# (maybe wrong in most cases)
+		KWNNJLIB="${with_libkwnn}" ;;
+	esac
+	DEPKWNNJLIB=""
+		KHINSI_DATA="\$(KWNNWNNDIR)/hinsi.data"
+	EXTKWNNJINC=${kwnnincludedir}
+else
+	KWNNJLIB="\$(top_builddir)/kWnn/jlib/libkwnn.la"
+	DEPKWNNJLIB="\$(KWNNJLIB)"
+	KHINSI_DATA="\$(KWNNKDSRC)/hinsi.data"
+	EXTKWNNJINC=""
+fi
+
+
+
+
+
+
+# Check whether --with-utf8support was given.
+if test ${with_utf8support+y}
+then :
+  withval=$with_utf8support;   with_utf8support=yes
+else $as_nop
+   with_utf8support=no
+fi
+
+
+MANFILTER=""
+if test x$with_utf8support = xyes ; then
+  if test -z "$MANFILTER" ; then
+    # Extract the first word of "iconv iconv -f euc-jp -t utf-8", so it can be a program name with args.
+set dummy iconv iconv -f euc-jp -t utf-8; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_MANFILTER+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$MANFILTER"; then
+  ac_cv_prog_MANFILTER="$MANFILTER" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_MANFILTER=""
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+MANFILTER=$ac_cv_prog_MANFILTER
+if test -n "$MANFILTER"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $MANFILTER" >&5
+printf "%s\n" "$MANFILTER" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+  fi
+  if test -z "$MANFILTER" ; then
+    # Extract the first word of "nkf  ", so it can be a program name with args.
+set dummy nkf  ; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_MANFILTER+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$MANFILTER"; then
+  ac_cv_prog_MANFILTER="$MANFILTER" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_MANFILTER="nkf -E -w"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+MANFILTER=$ac_cv_prog_MANFILTER
+if test -n "$MANFILTER"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $MANFILTER" >&5
+printf "%s\n" "$MANFILTER" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+  fi
+fi
+if test -z "$MANFILTER"; then
+  MANFILTER="cat"
+fi
+
+
+
+# Check whether --enable-ipv6 was given.
+if test ${enable_ipv6+y}
+then :
+  enableval=$enable_ipv6; case "${enableval}" in
+   yes) ipv6="-DINET6";;
+   no)  ipv6="" ;;
+   *)   as_fn_error $? "bad value for --enable-ipv6" "$LINENO" 5 ;;
+esac
+else $as_nop
+  ipv6=""
+fi
+
+
+
+# Check whether --enable-unsafe-path was given.
+if test ${enable_unsafe_path+y}
+then :
+  enableval=$enable_unsafe_path; case "${enableval}" in
+   yes) unsafe_path=true;;
+   no)  unsafe_path=false;;
+   *)   as_fn_error $? "bad value for --enable-unsafe-path" "$LINENO" 5 ;;
+esac
+else $as_nop
+  unsafe_path=false
+fi
+
+
+
+if test ${unsafe_path} = true; then
+
+printf "%s\n" "#define WNN_ALLOW_UNSAFE_PATH 1" >>confdefs.h
+
+fi
+
+# Check whether --enable-traditional-layout was given.
+if test ${enable_traditional_layout+y}
+then :
+  enableval=$enable_traditional_layout; case "${enableval}" in
+   yes) trad_layout=true ;;
+   no)  trad_layout=false ;;
+   *)   as_fn_error $? "bad value for --enable-traditional-layout" "$LINENO" 5 ;;
+esac
+else $as_nop
+  trad_layout=true
+fi
+
+
+if test $trad_layout = "true"; then
+  WNNSBINDIR="\$(bindir)"
+  # More path settings will come later ...
+else
+  WNNSBINDIR="\$(sbindir)"
+  # Same as above.
+fi
+
+
+# Check whether --enable-sub-bindir was given.
+if test ${enable_sub_bindir+y}
+then :
+  enableval=$enable_sub_bindir; case "${enableval}" in
+   yes) sub_bindir=true ;;
+   no)  sub_bindir=false ;;
+   *)   as_fn_error $? "bad value for --enable-sub-bindir" "$LINENO" 5 ;;
+esac
+else $as_nop
+  sub_bindir=guess
+fi
+
+
+if test $sub_bindir = "guess"; then
+  if test $trad_layout = "true"; then
+    sub_bindir=true
+  else
+    sub_bindir=false
+  fi
+fi
+if test $sub_bindir = "true"; then
+  if_enable_sub_bindir=' '
+  if_disable_sub_bindir='#'
+else
+  if_enable_sub_bindir='#'
+  if_disable_sub_bindir=' '
+fi
+
+
+
+# for debug
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we use traditional layout" >&5
+printf %s "checking if we use traditional layout... " >&6; }
+if test $trad_layout = "true"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we install binaries on \$(bindir)/Wnn4 (etc.)" >&5
+printf %s "checking if we install binaries on \$(bindir)/Wnn4 (etc.)... " >&6; }
+if test $sub_bindir = "true"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}gcc", so it can be a program name with args.
+set dummy ${ac_tool_prefix}gcc; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CC="${ac_tool_prefix}gcc"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+printf "%s\n" "$CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_CC"; then
+  ac_ct_CC=$CC
+  # Extract the first word of "gcc", so it can be a program name with args.
+set dummy gcc; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_ac_ct_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$ac_ct_CC"; then
+  ac_cv_prog_ac_ct_CC="$ac_ct_CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_CC="gcc"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_CC=$ac_cv_prog_ac_ct_CC
+if test -n "$ac_ct_CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_ct_CC" >&5
+printf "%s\n" "$ac_ct_CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+  if test "x$ac_ct_CC" = x; then
+    CC=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+printf "%s\n" "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    CC=$ac_ct_CC
+  fi
+else
+  CC="$ac_cv_prog_CC"
+fi
+
+if test -z "$CC"; then
+          if test -n "$ac_tool_prefix"; then
+    # Extract the first word of "${ac_tool_prefix}cc", so it can be a program name with args.
+set dummy ${ac_tool_prefix}cc; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CC="${ac_tool_prefix}cc"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+printf "%s\n" "$CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+  fi
+fi
+if test -z "$CC"; then
+  # Extract the first word of "cc", so it can be a program name with args.
+set dummy cc; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+  ac_prog_rejected=no
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    if test "$as_dir$ac_word$ac_exec_ext" = "/usr/ucb/cc"; then
+       ac_prog_rejected=yes
+       continue
+     fi
+    ac_cv_prog_CC="cc"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+if test $ac_prog_rejected = yes; then
+  # We found a bogon in the path, so make sure we never use it.
+  set dummy $ac_cv_prog_CC
+  shift
+  if test $# != 0; then
+    # We chose a different compiler from the bogus one.
+    # However, it has the same basename, so the bogon will be chosen
+    # first if we set CC to just the basename; use the full file name.
+    shift
+    ac_cv_prog_CC="$as_dir$ac_word${1+' '}$@"
+  fi
+fi
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+printf "%s\n" "$CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
+if test -z "$CC"; then
+  if test -n "$ac_tool_prefix"; then
+  for ac_prog in cl.exe
+  do
+    # Extract the first word of "$ac_tool_prefix$ac_prog", so it can be a program name with args.
+set dummy $ac_tool_prefix$ac_prog; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CC="$ac_tool_prefix$ac_prog"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+printf "%s\n" "$CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+    test -n "$CC" && break
+  done
+fi
+if test -z "$CC"; then
+  ac_ct_CC=$CC
+  for ac_prog in cl.exe
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_ac_ct_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$ac_ct_CC"; then
+  ac_cv_prog_ac_ct_CC="$ac_ct_CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_CC="$ac_prog"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_CC=$ac_cv_prog_ac_ct_CC
+if test -n "$ac_ct_CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_ct_CC" >&5
+printf "%s\n" "$ac_ct_CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+  test -n "$ac_ct_CC" && break
+done
+
+  if test "x$ac_ct_CC" = x; then
+    CC=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+printf "%s\n" "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    CC=$ac_ct_CC
+  fi
+fi
+
+fi
+if test -z "$CC"; then
+  if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}clang", so it can be a program name with args.
+set dummy ${ac_tool_prefix}clang; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CC="${ac_tool_prefix}clang"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+printf "%s\n" "$CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_CC"; then
+  ac_ct_CC=$CC
+  # Extract the first word of "clang", so it can be a program name with args.
+set dummy clang; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_ac_ct_CC+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$ac_ct_CC"; then
+  ac_cv_prog_ac_ct_CC="$ac_ct_CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_CC="clang"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_CC=$ac_cv_prog_ac_ct_CC
+if test -n "$ac_ct_CC"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_ct_CC" >&5
+printf "%s\n" "$ac_ct_CC" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+  if test "x$ac_ct_CC" = x; then
+    CC=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+printf "%s\n" "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    CC=$ac_ct_CC
+  fi
+else
+  CC="$ac_cv_prog_CC"
+fi
+
+fi
+
+
+test -z "$CC" && { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "no acceptable C compiler found in \$PATH
+See \`config.log' for more details" "$LINENO" 5; }
+
+# Provide some information about the compiler.
+printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for C compiler version" >&5
+set X $ac_compile
+ac_compiler=$2
+for ac_option in --version -v -V -qversion -version; do
+  { { ac_try="$ac_compiler $ac_option >&5"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+printf "%s\n" "$ac_try_echo"; } >&5
+  (eval "$ac_compiler $ac_option >&5") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    sed '10a\
+... rest of stderr output deleted ...
+         10q' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+  fi
+  rm -f conftest.er1 conftest.err
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }
+done
+
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether the compiler supports GNU C" >&5
 printf %s "checking whether the compiler supports GNU C... " >&6; }
 if test ${ac_cv_c_compiler_gnu+y}
@@ -5980,7 +6746,6 @@ LTCFLAGS=${LTCFLAGS-"$CFLAGS"}
 # Allow CC to be a program name with arguments.
 compiler=$CC
 
-
 # Check whether --enable-libtool-lock was given.
 if test ${enable_libtool_lock+y}
 then :
@@ -6013,7 +6778,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6016 "configure"' > conftest.$ac_ext
+  echo '#line 6781 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -6180,35 +6945,6 @@ esac
 need_locks="$enable_libtool_lock"
 
 
-ac_header= ac_cache=
-for ac_item in $ac_header_c_list
-do
-  if test $ac_cache; then
-    ac_fn_c_check_header_compile "$LINENO" $ac_header ac_cv_header_$ac_cache "$ac_includes_default"
-    if eval test \"x\$ac_cv_header_$ac_cache\" = xyes; then
-      printf "%s\n" "#define $ac_item 1" >> confdefs.h
-    fi
-    ac_header= ac_cache=
-  elif test $ac_header; then
-    ac_cache=$ac_item
-  else
-    ac_header=$ac_item
-  fi
-done
-
-
-
-
-
-
-
-
-if test $ac_cv_header_stdlib_h = yes && test $ac_cv_header_string_h = yes
-then :
-
-printf "%s\n" "#define STDC_HEADERS 1" >>confdefs.h
-
-fi
 ac_fn_c_check_header_compile "$LINENO" "dlfcn.h" "ac_cv_header_dlfcn_h" "$ac_includes_default"
 if test "x$ac_cv_header_dlfcn_h" = xyes
 then :
@@ -8252,11 +8988,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8255: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8991: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8259: \$? = $ac_status" >&5
+   echo "$as_me:8995: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8543,11 +9279,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8546: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9282: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8550: \$? = $ac_status" >&5
+   echo "$as_me:9286: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8649,11 +9385,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8652: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9388: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8656: \$? = $ac_status" >&5
+   echo "$as_me:9392: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10681,7 +11417,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10684 "configure"
+#line 11420 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10782,7 +11518,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10785 "configure"
+#line 11521 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13130,11 +13866,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13133: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13869: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13137: \$? = $ac_status" >&5
+   echo "$as_me:13873: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13236,11 +13972,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13239: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13975: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13243: \$? = $ac_status" >&5
+   echo "$as_me:13979: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14822,11 +15558,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14825: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15561: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14829: \$? = $ac_status" >&5
+   echo "$as_me:15565: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14928,11 +15664,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14931: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15667: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14935: \$? = $ac_status" >&5
+   echo "$as_me:15671: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17094,11 +17830,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17097: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17833: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17101: \$? = $ac_status" >&5
+   echo "$as_me:17837: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17385,11 +18121,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17388: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:18124: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17392: \$? = $ac_status" >&5
+   echo "$as_me:18128: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17491,11 +18227,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17494: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:18230: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:17498: \$? = $ac_status" >&5
+   echo "$as_me:18234: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -21793,7 +22529,43 @@ test "x$prefix" = xNONE && prefix=$ac_default_prefix
 # Let make expand exec_prefix.
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
 
-DEFS=-DHAVE_CONFIG_H
+# Transform confdefs.h into DEFS.
+# Protect against shell expansion while executing Makefile rules.
+# Protect against Makefile macro expansion.
+#
+# If the first sed substitution is executed (which looks for macros that
+# take arguments), then branch to the quote section.  Otherwise,
+# look for a macro that doesn't take arguments.
+ac_script='
+:mline
+/\\$/{
+ N
+ s,\\\n,,
+ b mline
+}
+t clear
+:clear
+s/^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 (][^	 (]*([^)]*)\)[	 ]*\(.*\)/-D\1=\2/g
+t quote
+s/^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 ][^	 ]*\)[	 ]*\(.*\)/-D\1=\2/g
+t quote
+b any
+:quote
+s/[	 `~#$^&*(){}\\|;'\''"<>?]/\\&/g
+s/\[/\\&/g
+s/\]/\\&/g
+s/\$/$$/g
+H
+:any
+${
+	g
+	s/^\n//
+	s/\n/ /g
+	p
+}
+'
+DEFS=`sed -n "$ac_script" confdefs.h`
+
 
 ac_libobjs=
 ac_ltlibobjs=
@@ -22220,15 +22992,11 @@ case $ac_config_files in *"
 "*) set x $ac_config_files; shift; ac_config_files=$*;;
 esac
 
-case $ac_config_headers in *"
-"*) set x $ac_config_headers; shift; ac_config_headers=$*;;
-esac
 
 
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 # Files that config.status was made for.
 config_files="$ac_config_files"
-config_headers="$ac_config_headers"
 
 _ACEOF
 
@@ -22249,14 +23017,9 @@ Usage: $0 [OPTION]... [TAG]...
       --recheck    update $as_me by reconfiguring in the same conditions
       --file=FILE[:TEMPLATE]
                    instantiate the configuration file FILE
-      --header=FILE[:TEMPLATE]
-                   instantiate the configuration header FILE
 
 Configuration files:
 $config_files
-
-Configuration headers:
-$config_headers
 
 Report bugs to <freewnn-users-owner@lists.osdn.me>."
 
@@ -22321,18 +23084,7 @@ do
     esac
     as_fn_append CONFIG_FILES " '$ac_optarg'"
     ac_need_defaults=false;;
-  --header | --heade | --head | --hea )
-    $ac_shift
-    case $ac_optarg in
-    *\'*) ac_optarg=`printf "%s\n" "$ac_optarg" | sed "s/'/'\\\\\\\\''/g"` ;;
-    esac
-    as_fn_append CONFIG_HEADERS " '$ac_optarg'"
-    ac_need_defaults=false;;
-  --he | --h)
-    # Conflict between --help and --header
-    as_fn_error $? "ambiguous option: \`$1'
-Try \`$0 --help' for more information.";;
-  --help | --hel | -h )
+  --he | --h |  --help | --hel | -h )
     printf "%s\n" "$ac_cs_usage"; exit ;;
   -q | -quiet | --quiet | --quie | --qui | --qu | --q \
   | -silent | --silent | --silen | --sile | --sil | --si | --s)
@@ -22388,7 +23140,6 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
-    "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "${makefiles_generic}") CONFIG_FILES="$CONFIG_FILES ${makefiles_generic}" ;;
     "${makefiles_wnn}") CONFIG_FILES="$CONFIG_FILES ${makefiles_wnn}" ;;
     "${makefiles_wnn_dic}") CONFIG_FILES="$CONFIG_FILES ${makefiles_wnn_dic}" ;;
@@ -22408,7 +23159,6 @@ done
 # bizarre bug on SunOS 4.1.3.
 if $ac_need_defaults; then
   test ${CONFIG_FILES+y} || CONFIG_FILES=$config_files
-  test ${CONFIG_HEADERS+y} || CONFIG_HEADERS=$config_headers
 fi
 
 # Have a temporary directory for convenience.  Make it in the build tree
@@ -22596,116 +23346,8 @@ fi
 cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 fi # test -n "$CONFIG_FILES"
 
-# Set up the scripts for CONFIG_HEADERS section.
-# No need to generate them if there are no CONFIG_HEADERS.
-# This happens for instance with `./config.status Makefile'.
-if test -n "$CONFIG_HEADERS"; then
-cat >"$ac_tmp/defines.awk" <<\_ACAWK ||
-BEGIN {
-_ACEOF
 
-# Transform confdefs.h into an awk script `defines.awk', embedded as
-# here-document in config.status, that substitutes the proper values into
-# config.h.in to produce config.h.
-
-# Create a delimiter string that does not exist in confdefs.h, to ease
-# handling of long lines.
-ac_delim='%!_!# '
-for ac_last_try in false false :; do
-  ac_tt=`sed -n "/$ac_delim/p" confdefs.h`
-  if test -z "$ac_tt"; then
-    break
-  elif $ac_last_try; then
-    as_fn_error $? "could not make $CONFIG_HEADERS" "$LINENO" 5
-  else
-    ac_delim="$ac_delim!$ac_delim _$ac_delim!! "
-  fi
-done
-
-# For the awk script, D is an array of macro values keyed by name,
-# likewise P contains macro parameters if any.  Preserve backslash
-# newline sequences.
-
-ac_word_re=[_$as_cr_Letters][_$as_cr_alnum]*
-sed -n '
-s/.\{148\}/&'"$ac_delim"'/g
-t rset
-:rset
-s/^[	 ]*#[	 ]*define[	 ][	 ]*/ /
-t def
-d
-:def
-s/\\$//
-t bsnl
-s/["\\]/\\&/g
-s/^ \('"$ac_word_re"'\)\(([^()]*)\)[	 ]*\(.*\)/P["\1"]="\2"\
-D["\1"]=" \3"/p
-s/^ \('"$ac_word_re"'\)[	 ]*\(.*\)/D["\1"]=" \2"/p
-d
-:bsnl
-s/["\\]/\\&/g
-s/^ \('"$ac_word_re"'\)\(([^()]*)\)[	 ]*\(.*\)/P["\1"]="\2"\
-D["\1"]=" \3\\\\\\n"\\/p
-t cont
-s/^ \('"$ac_word_re"'\)[	 ]*\(.*\)/D["\1"]=" \2\\\\\\n"\\/p
-t cont
-d
-:cont
-n
-s/.\{148\}/&'"$ac_delim"'/g
-t clear
-:clear
-s/\\$//
-t bsnlc
-s/["\\]/\\&/g; s/^/"/; s/$/"/p
-d
-:bsnlc
-s/["\\]/\\&/g; s/^/"/; s/$/\\\\\\n"\\/p
-b cont
-' <confdefs.h | sed '
-s/'"$ac_delim"'/"\\\
-"/g' >>$CONFIG_STATUS || ac_write_fail=1
-
-cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
-  for (key in D) D_is_set[key] = 1
-  FS = ""
-}
-/^[\t ]*#[\t ]*(define|undef)[\t ]+$ac_word_re([\t (]|\$)/ {
-  line = \$ 0
-  split(line, arg, " ")
-  if (arg[1] == "#") {
-    defundef = arg[2]
-    mac1 = arg[3]
-  } else {
-    defundef = substr(arg[1], 2)
-    mac1 = arg[2]
-  }
-  split(mac1, mac2, "(") #)
-  macro = mac2[1]
-  prefix = substr(line, 1, index(line, defundef) - 1)
-  if (D_is_set[macro]) {
-    # Preserve the white space surrounding the "#".
-    print prefix "define", macro P[macro] D[macro]
-    next
-  } else {
-    # Replace #undef with comments.  This is necessary, for example,
-    # in the case of _POSIX_SOURCE, which is predefined and required
-    # on some systems where configure will not decide to define it.
-    if (defundef == "undef") {
-      print "/*", prefix defundef, macro, "*/"
-      next
-    }
-  }
-}
-{ print }
-_ACAWK
-_ACEOF
-cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
-  as_fn_error $? "could not setup config headers machinery" "$LINENO" 5
-fi # test -n "$CONFIG_HEADERS"
-
-
-eval set X "  :F $CONFIG_FILES  :H $CONFIG_HEADERS    "
+eval set X "  :F $CONFIG_FILES      "
 shift
 for ac_tag
 do
@@ -22918,30 +23560,7 @@ which seems to be undefined.  Please make sure it is defined" >&2;}
   esac \
   || as_fn_error $? "could not create $ac_file" "$LINENO" 5
  ;;
-  :H)
-  #
-  # CONFIG_HEADER
-  #
-  if test x"$ac_file" != x-; then
-    {
-      printf "%s\n" "/* $configure_input  */" >&1 \
-      && eval '$AWK -f "$ac_tmp/defines.awk"' "$ac_file_inputs"
-    } >"$ac_tmp/config.h" \
-      || as_fn_error $? "could not create $ac_file" "$LINENO" 5
-    if diff "$ac_file" "$ac_tmp/config.h" >/dev/null 2>&1; then
-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: $ac_file is unchanged" >&5
-printf "%s\n" "$as_me: $ac_file is unchanged" >&6;}
-    else
-      rm -f "$ac_file"
-      mv "$ac_tmp/config.h" "$ac_file" \
-	|| as_fn_error $? "could not create $ac_file" "$LINENO" 5
-    fi
-  else
-    printf "%s\n" "/* $configure_input  */" >&1 \
-      && eval '$AWK -f "$ac_tmp/defines.awk"' "$ac_file_inputs" \
-      || as_fn_error $? "could not create -" "$LINENO" 5
-  fi
- ;;
+
 
 
   esac
