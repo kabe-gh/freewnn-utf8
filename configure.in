@@ -302,9 +302,13 @@ AC_ARG_WITH(utf8support,
 [  with_utf8support=yes ], [ with_utf8support=no ])
 
 MANFILTER=cat
-if [ xwith_utf8support = xyes ]; then
-  AC_CHECK_PROG(MANFILTER, iconv, [iconv -f euc-jp -t utf-8], [cat])
-  AC_CHECK_PROG(MANFILTER, nkf  , [nkf -E -w], [cat])
+if test xwith_utf8support = xyes ; then
+  if [ x$MANFILTER = xcat ]; then
+    AC_CHECK_PROG(MANFILTER, iconv, [iconv -f euc-jp -t utf-8])
+  fi
+  if test x$MANFILTER = xcat ; then
+    AC_CHECK_PROG(MANFILTER, nkf  , [nkf -E -w])
+  fi
 fi
 AC_SUBST(MANFILTER)
 
