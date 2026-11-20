@@ -139,7 +139,7 @@ LDOPTIONS = $(LDFLAGS) @CDEBUGFLAGS@ $(CCOPTIONS)
         sbindir = @sbindir@
          docdir = @docdir@
 
-      WNNWNNDIR = $(exec_prefix)/lib/wnn
+      WNNWNNDIR = $(exec_prefix)/lib/freewnn
       WNNBINDIR = $(bindir)
      WNNSBINDIR = @WNNSBINDIR@
       WNNINCDIR = @includedir@
