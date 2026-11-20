@@ -52,16 +52,10 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #endif /* STDC_HEADERS */
 #include <sys/ioctl.h>
 #include <sys/stat.h>
-#if TIME_WITH_SYS_TIME
+#if HAVE_SYS_TIME_H
 #  include <sys/time.h>
-#  include <time.h>
-#else
-#  if HAVE_SYS_TIME_H
-#    include <sys/time.h>
-#  else
-#    include <time.h>
-#  endif /* HAVE_SYS_TIME_H */
-#endif /* TIME_WITH_SYS_TIME */
+#endif
+#include <time.h>
 #if HAVE_UNISTD_H
 #  include <sys/types.h>
 #  include <unistd.h>

@@ -60,16 +60,10 @@ static char *rcs_id = "$Id: jhlp.c,v 1.26 2013/09/02 11:01:40 itisango Exp $";
 #ifdef HAVE_SYS_PARAM_H
 #  include <sys/param.h>
 #endif
-#if TIME_WITH_SYS_TIME
+#if HAVE_SYS_TIME_H
 #  include <sys/time.h>
-#  include <time.h>
-#else
-#  if HAVE_SYS_TIME_H
-#    include <sys/time.h>
-#  else
-#    include <time.h>
-#  endif /* HAVE_SYS_TIME_H */
-#endif /* TIME_WITH_SYS_TIME */
+#endif
+#include <time.h>
 #if HAVE_FCNTL_H
 #  include <fcntl.h>
 #endif

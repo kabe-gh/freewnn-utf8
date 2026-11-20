@@ -48,16 +48,10 @@
 #if HAVE_FCNTL_H
 #  include <fcntl.h>
 #endif
-#if TIME_WITH_SYS_TIME
+#if HAVE_SYS_TIME_H
 #  include <sys/time.h>
-#  include <time.h>
-#else
-#  if HAVE_SYS_TIME_H
-#    include <sys/time.h>
-#  else
-#    include <time.h>
-#  endif /* HAVE_SYS_TIME_H */
-#endif /* TIME_WITH_SYS_TIME */
+#endif
+#include <time.h>
 #if HAVE_UNISTD_H
 #  include <unistd.h>
 #endif

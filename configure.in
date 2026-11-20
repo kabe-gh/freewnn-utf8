@@ -38,7 +38,7 @@ AC_INIT(FreeWnn, [1.2.0], [freewnn-users-owner@lists.osdn.me], FreeWnn)
 AC_CONFIG_SRCDIR(Wnn/conv/cvt_head.h)
 dnl old-style AC_INIT ...
 dnl AC_INIT(Wnn/conv/cvt_head.h)
-AC_CHECK_HEADERS(config.h)
+AC_CONFIG_HEADERS(config.h)
 
 dnl ====================================================================
 dnl Check optional features
@@ -524,7 +524,6 @@ dnl
 dnl disabled for now ...: dnl AC_PATH_X
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_HEADER_TIME
 AC_CHECK_HEADERS(fcntl.h syslog.h unistd.h utmp.h utmpx.h \
 	sys/file.h sys/ioctl.h sys/time.h sys/types.h sys/param.h \
 	malloc.h strings.h memory.h \
@@ -610,7 +609,6 @@ dnl
 dnl Checks for typedefs, structures, and compiler characteristics.
 dnl
 AC_TYPE_MODE_T
-AC_HEADER_TIME
 
 dnl AC_CHECK_TYPES(time_t,,
 dnl	AC_DEFINE(time_t, long, [Define missing time_t.]),
