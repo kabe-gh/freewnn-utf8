@@ -957,7 +957,8 @@ if test "x$kWnn" = "xkWnn"; then
   makefiles_kwnn_dic="kWnn/kdic/Makefile"
 fi
 
-AC_OUTPUT(${makefiles_generic} \
+AC_CONFIG_FILES(${makefiles_generic} \
 	${makefiles_wnn} ${makefiles_wnn_dic} \
 	${makefiles_cwnn} ${makefiles_cwnn_dic} \
 	${makefiles_kwnn} ${makefiles_kwnn_dic})
+AC_OUTPUT
