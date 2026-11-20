@@ -21592,6 +21592,7 @@ if test "$WRAP_TRY" = yes -o "$WRAP_TRY" = auto; then
     LIBS="$WRAPLIB $OLDLIBS"
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking libwrap is working" >&5
 printf %s "checking libwrap is working... " >&6; }
+
     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
  int allow_severity; int deny_severity;
@@ -21602,6 +21603,7 @@ main (void)
   ;
   return 0;
 }
+
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :

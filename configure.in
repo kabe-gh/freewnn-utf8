@@ -876,8 +876,11 @@ if test "$WRAP_TRY" = yes -o "$WRAP_TRY" = auto; then
     WRAPLIB=${WRAPLIB:-"-lwrap"}
     LIBS="$WRAPLIB $OLDLIBS"
     AC_MSG_CHECKING([libwrap is working])
-    AC_TRY_LINK([ int allow_severity; int deny_severity; ],
-		[ hosts_access(); ],
+
+    AC_LINK_IFELSE(
+	[AC_LANG_PROGRAM([ int allow_severity; int deny_severity; ],
+		[ hosts_access(); ])
+	],
 		[ AC_MSG_RESULT(yes)
 		  AC_DEFINE(HAVE_LIBWRAP, 1,
 		           [Define if you have libwrap (TCP wrapper) support.])
