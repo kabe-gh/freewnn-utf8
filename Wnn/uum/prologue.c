@@ -386,8 +386,7 @@ initial_message_out ()
     {
       while (fgets (data, 1024, fp) != NULL)
         {
-          char buf[3072] = "\r";
-          strcat (buf, data);
+          putchar('\r');
           puteustring (data, stderr);
         }
       fclose (fp);
