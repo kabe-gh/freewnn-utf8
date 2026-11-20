@@ -298,17 +298,20 @@ AC_SUBST(EXTKWNNJINC)
 AC_SUBST(KHINSI_DATA)
 
 AC_ARG_WITH(utf8support,
-[  --with-utf8support            UTF-8 support [[default=no]]],
+[  --with-utf8support        UTF-8 support [[default=no]]],
 [  with_utf8support=yes ], [ with_utf8support=no ])
 
-MANFILTER=cat
-if test xwith_utf8support = xyes ; then
-  if [ x$MANFILTER = xcat ]; then
-    AC_CHECK_PROG(MANFILTER, iconv, [iconv -f euc-jp -t utf-8])
+MANFILTER=""
+if test x$with_utf8support = xyes ; then
+  if test -z "$MANFILTER" ; then
+    AC_CHECK_PROG(MANFILTER, iconv [iconv -f euc-jp -t utf-8])
   fi
-  if test x$MANFILTER = xcat ; then
+  if test -z "$MANFILTER" ; then
     AC_CHECK_PROG(MANFILTER, nkf  , [nkf -E -w])
   fi
+fi
+if test -z "$MANFILTER"; then
+  MANFILTER="cat"
 fi
 AC_SUBST(MANFILTER)
 
@@ -564,7 +567,8 @@ else
 #ifdef HAVE_TERMCAP_H
 # include <termcap.h>
 #endif
-main() {char *s; s=(char *)tgoto("%p1%d", 0, 1); exit(0); }],
+#include <stdlib.h> /* exit() */
+int main() {char *s; s=(char *)tgoto("%p1%d", 0, 1); exit(0); }],
 	res="OK", res="FAIL", res="FAIL")
       if test "$res" = "OK"; then
 	TERMLIB="${TERMLIB} -l${libname}"
@@ -586,7 +590,8 @@ if test "x$TERMLIB" != "x"; then
 #ifdef HAVE_TERMCAP_H
 # include <termcap.h>
 #endif
-main()
+#include <stdlib.h> /* exit() */
+int main()
 {char *s; s=(char *)tgoto("%p1%d", 0, 1); exit(!strcmp(s==0 ? "" : s, "1")); }],
 	[ AC_MSG_RESULT([no -- we are in termcap land])
 	  CNVFILE_SUBDIR=bsd ],

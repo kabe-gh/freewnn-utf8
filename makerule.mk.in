@@ -39,6 +39,8 @@ all::
 
               TOP = $(top_builddir)
       CURRENT_DIR = `pwd`
+# autoconf variable
+  PACKAGE_TARNAME = @PACKAGE_TARNAME@
 
            DEPEND = gccmakedep
         MKDIRHIER = mkdir -p
