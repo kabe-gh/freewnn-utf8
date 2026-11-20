@@ -1604,16 +1604,26 @@ Optional Features:
   --enable-libraries      build and install libraries [default=yes]
   --enable-server         build and install server [default=yes]
   --enable-client         build and install clients [default=no]
-  --enable-client-utmp    write utmp with client [default=yes if not modern BSD]
-  --enable-client-setuid[=user] Install client with setuid and specified user [default=guess if your system need this]
-  --enable-client-setgid=group Install client with setgid and specified group [default=guess if your system need this]
+  --enable-client-utmp    write utmp with client [default=yes if not modern
+                          BSD]
+  --enable-client-setuid[=user]
+                          Install client with setuid and specified user
+                          [default=guess if your system need this]
+  --enable-client-setgid=group
+                          Install client with setgid and specified group
+                          [default=guess if your system need this]
   --enable-Wnn            build and install Wnn [default=yes]
   --enable-cWnn           build and install cWnn [default=yes]
   --enable-kWnn           build and install kWnn [default=yes]
   --enable-ipv6           build and install IPv6 [default=no]
-  --enable-unsafe-path    allow creating files in an arbitrary path [default=no]
-  --enable-traditional-layout Install files in traditional directories [default=yes]
-  --enable-sub-bindir         Install executables to (ex.) $(bindir)/Wnn4 [default=yes if --enable-traditional-layout, no otherwise]
+  --enable-unsafe-path    allow creating files in an arbitrary path
+                          [default=no]
+  --enable-traditional-layout
+                          Install files in traditional directories
+                          [default=yes]
+  --enable-sub-bindir     Install executables to (ex.) $(bindir)/Wnn4
+                          [default=yes if --enable-traditional-layout, no
+                          otherwise]
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
@@ -1623,22 +1633,31 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-libwnn             use installed Wnn library [default=no]
-  --with-wnn-includes=DIR   Installed Wnn include files are in DIR
-  --with-wnn-libraries=DIR  Search for Wnn libraries in DIR [default=/usr/local/lib]
-  --with-libcwnn            use installed cWnn library [default=no]
-  --with-cwnn-includes=DIR  Installed cWnn include files are in DIR
-  --with-cwnn-libraries=DIR Search for cWnn libraries in DIR [default=/usr/local/lib]
-  --with-libkwnn            use installed kWnn library [default=no]
-  --with-kwnn-includes=DIR  Installed kWnn include files are in DIR
-  --with-kwnn-libraries=DIR Search for kWnn libraries in DIR [default=/usr/local/lib]
-  --with-utf8support        UTF-8 support [default=no]
+  --with-libwnn           use installed Wnn library [default=no]
+  --with-wnn-includes=DIR Installed Wnn include files are in DIR
+  --with-wnn-libraries=DIR
+                          Search for Wnn libraries in DIR
+                          [default=/usr/local/lib]
+  --with-libcwnn          use installed cWnn library [default=no]
+  --with-cwnn-includes=DIR
+                          Installed cWnn include files are in DIR
+  --with-cwnn-libraries=DIR
+                          Search for cWnn libraries in DIR
+                          [default=/usr/local/lib]
+  --with-libkwnn          use installed kWnn library [default=no]
+  --with-kwnn-includes=DIR
+                          Installed kWnn include files are in DIR
+  --with-kwnn-libraries=DIR
+                          Search for kWnn libraries in DIR
+                          [default=/usr/local/lib]
+  --with-utf8support      UTF-8 support [default=no]
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-pic              try to use only PIC/non-PIC objects [default=use
                           both]
   --with-tags[=TAGS]      include additional configurations [automatic]
   --with-term-libs=-lLIB  terminal library to be used
-  --with-libwrap[=DIR]    Compile in libwrap (tcp_wrappers) support [default=try to find libwrap]
+  --with-libwrap[=DIR]    Compile in libwrap (tcp_wrappers) support
+                          [default=try to find libwrap]
 
 Some influential environment variables:
   CC          C compiler command
@@ -6012,7 +6031,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6015 "configure"' > conftest.$ac_ext
+  echo '#line 6034 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8251,11 +8270,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8254: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8273: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8258: \$? = $ac_status" >&5
+   echo "$as_me:8277: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8542,11 +8561,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8545: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8564: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8549: \$? = $ac_status" >&5
+   echo "$as_me:8568: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8648,11 +8667,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8651: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8670: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8655: \$? = $ac_status" >&5
+   echo "$as_me:8674: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10680,7 +10699,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10683 "configure"
+#line 10702 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10781,7 +10800,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10784 "configure"
+#line 10803 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13129,11 +13148,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13132: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13151: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13136: \$? = $ac_status" >&5
+   echo "$as_me:13155: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13235,11 +13254,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13238: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13257: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13242: \$? = $ac_status" >&5
+   echo "$as_me:13261: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14821,11 +14840,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14824: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14843: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14828: \$? = $ac_status" >&5
+   echo "$as_me:14847: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14927,11 +14946,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14930: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14949: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14934: \$? = $ac_status" >&5
+   echo "$as_me:14953: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17093,11 +17112,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17096: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17115: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17100: \$? = $ac_status" >&5
+   echo "$as_me:17119: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17384,11 +17403,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17387: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17406: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17391: \$? = $ac_status" >&5
+   echo "$as_me:17410: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17490,11 +17509,11 @@ else $as_nop
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17493: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17512: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:17497: \$? = $ac_status" >&5
+   echo "$as_me:17516: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized

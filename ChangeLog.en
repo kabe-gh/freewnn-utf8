@@ -4,6 +4,7 @@ Fri, Nov 20 2026 14:40:14   T.Kabe <kabe@>
 	- Delete obsolete AC_HEADER_TIME, and
           #include <time.h> unconditionally for the includers.
 	- Remove obsoleted AC_TYPE_SIGNAL . Disable RETSIGTYPE hack.
+	- Use AS_HELP_STRING inside AC_ARG_WITH to squelch autoconf warnings.
 
 	* config.h.in, configure.in: Rebuilt by Autoconf 2.71 autoheader, autoconf
 
