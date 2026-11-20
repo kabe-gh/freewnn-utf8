@@ -43,6 +43,10 @@ static char *rcs_id = "$Id: jhlp.c,v 1.26 2013/09/02 11:01:40 itisango Exp $";
 #include <sys/types.h>
 #include <setjmp.h>
 #include <signal.h>
+#ifndef RETSIGTYPE
+# define RETSIGTYPE void
+# define RETSIGTYPE_VOID 1
+#endif
 #if STDC_HEADERS
 #  include <stdlib.h>
 #  include <string.h>

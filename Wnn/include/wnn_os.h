@@ -39,6 +39,9 @@
 
 /* system headers needed for system dependent configuration */
 #include <signal.h>
+#ifndef RETSIGTYPE
+# define RETSIGTYPE void
+#endif
 #if STDC_HEADERS
 #  include <stdlib.h>
 #  include <limits.h>
@@ -75,7 +78,7 @@
 #  define SIGCHLD SIGCLD
 #endif
 
-typedef RETSIGTYPE (*intfnptr) ();
+typedef RETSIGTYPE (*intfnptr) (int);
 
 /* Temporally place the number of filedescripters hack here. */
 #if HAVE_GETDTABLESIZE

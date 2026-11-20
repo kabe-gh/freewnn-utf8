@@ -37,6 +37,10 @@
 #include <ctype.h>
 #include <errno.h>
 #include <signal.h>
+#ifndef RETSIGTYPE
+# define RETSIGTYPE void
+# define RETSIGTYPE_VOID 1
+#endif
 #if STDC_HEADERS
 #  include <stdlib.h>
 #  include <stdarg.h>
@@ -238,7 +242,7 @@ signal_hand (x)
 }
 
 RETSIGTYPE
-terminate_hand ()
+terminate_hand (int sig)
 {
   daemon_fin ();
   exit (0);

@@ -1334,7 +1334,7 @@ js_kill (void)
     {
       put4_cur (0);
       putc_purge ();
-      terminate_hand ();
+      terminate_hand (SIGTERM);
     }
   else
     {

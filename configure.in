@@ -638,12 +638,6 @@ dnl Checks for library functions.
 dnl
 AC_PROG_GCC_TRADITIONAL
 
-dnl idea borrowed from EB Library http://www.sra.co.jp/people/m-kasahr/eb/
-AC_TYPE_SIGNAL
-if test "$ac_cv_type_signal" = void; then
-  AC_DEFINE(RETSIGTYPE_VOID, 1, [Define if the signal function returns void.])
-fi
-
 AC_FUNC_MEMCMP
 AC_CHECK_FUNCS(getpgid getpgrp setpgrp wait3)
 AC_FUNC_GETPGRP
