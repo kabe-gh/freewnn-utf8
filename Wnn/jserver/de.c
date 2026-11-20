@@ -283,7 +283,6 @@ main (int argc, char *argv[])
 #endif /* HAVE_LIBWRAP */
 
   signal (SIGHUP, signal_hand);
-  signal (SIGINT, signal_hand);
   signal (SIGQUIT, signal_hand);
   signal (SIGTERM, terminate_hand);
   if (option_flag & OPT_FORK)
@@ -291,6 +290,10 @@ main (int argc, char *argv[])
 #ifdef  SIGTSTP
       signal (SIGTSTP, SIG_IGN);
 #endif /* SIGTSTP */
+    }
+  else
+    {
+      signal (SIGINT, terminate_hand);
     }
   read_default ();
   daemon_init ();

@@ -1,8 +1,18 @@
+Fri, Nov 20 2026 11:41:36   T.Kabe <kabe@>
+
+	* uum: Make error messages and modeline honor terminal code settings.
+          Previously, it was always output in euc-jp.
+
+	* jserver: make it interruptible by SIGINT (^C) when -D (no daemon)
+	  is set.
+
 Mon, Nov 16 2026 20:55:10   T.Kabe <kabe@>
+
 	* jserver: Only bind to IPv6 if IPV6_V6ONLY is defined in /usr/include,
 	  otherwise jserver will fail to start, since
 	  binding to IPv6 also tries to bind to IPv4 which is
 	  already bound.
+
 	* jserver: Add -d (--debug) option, and do not set noisy=1 for -s.
 
 Sat, Nov 14 2026 09:47:13  T.Kabe <kabe@>
