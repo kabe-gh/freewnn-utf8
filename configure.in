@@ -522,7 +522,7 @@ dnl
 dnl Checks for header files.
 dnl
 dnl disabled for now ...: dnl AC_PATH_X
-AC_HEADER_STDC
+dnl AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS(fcntl.h syslog.h unistd.h utmp.h utmpx.h \
 	sys/file.h sys/ioctl.h sys/time.h sys/types.h sys/param.h \
