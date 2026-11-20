@@ -651,6 +651,7 @@ daemon_fin_un (int sock_d_un)
         }
       shutdown (sock_d_un, 2);
       close (sock_d_un);
+      unlink (sockname);
     }
 }
 #endif /* AF_UNIX */
