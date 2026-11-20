@@ -306,6 +306,7 @@ read_default_files (void)
   fclose (fp);
 
   printf ("Finished Reading Files\n");
+  fflush(stdout);
 
   return (0);
 }
