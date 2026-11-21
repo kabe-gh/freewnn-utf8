@@ -1,3 +1,7 @@
+Sat, Nov 21 2026 10:18:28   T.Kabe <kabe@>
+
+	* jserver: Output log header in ISO date format.
+
 Fri, Nov 20 2026 14:40:14   T.Kabe <kabe@>
 
 	* configure.in:

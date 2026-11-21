@@ -122,9 +122,8 @@ write_log(const char *format, ...)
    しれない。
 
    出力例:
-   "Dec/25/2001:17:30:55 (client=hoge|server): <formatted message> ,errno=X"
-   (従来の形式を踏襲しつつ(ほぼ)一行にまとめ、ログ解析をしやすくなるよう
-   考慮したが、如何?)
+   "2001-12-25T17:30:55+0900 (client=hoge|server): <formatted message> ,errno=X"
+   (ISO形式に準拠するようにした)
  */
 static void
 vwrite_log(const char *format, va_list ap)
@@ -138,15 +137,18 @@ vwrite_log(const char *format, va_list ap)
   char *chopped = NULL;
   char client_uname[WNN_ENVNAME_LEN];
   unsigned int formlen;
-  const char *month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+  long abs_timezone_offset;
 
   obakenoQ = time(NULL);
   Q = localtime(&obakenoQ);
+  abs_timezone_offset = (Q->tm_gmtoff < 0)?-(Q->tm_gmtoff):(Q->tm_gmtoff);
 
-  fprintf(fplog, "%s/%02d/%4d:%02d:%02d:%02d ",
-	  month[Q->tm_mon], Q->tm_mday, Q->tm_year + 1900,
-	  Q->tm_hour, Q->tm_min, Q->tm_sec);
+  fprintf(fplog, "%04d-%02d-%2dT%02d:%02d:%02d%c%02d%02d ",
+	  Q->tm_year + 1900, Q->tm_mon + 1, Q->tm_mday,
+	  Q->tm_hour, Q->tm_min, Q->tm_sec,
+	  (Q->tm_gmtoff < 0)?'-':'+',
+	  (int)(abs_timezone_offset / 60 / 60), (int)((abs_timezone_offset / 60) % 60)
+	  );
   if(c_c) {
     if (isgraph (c_c->user_name[0])) {
       strncpy (client_uname, c_c->user_name, WNN_ENVNAME_LEN);
@@ -176,10 +178,10 @@ vwrite_log(const char *format, va_list ap)
   }
       
   if(chopped != NULL) {
-    vfprintf(fplog, chopped, ap);
+    vfprintf(fplog, chopped, ap);	/*TODO transcode here*/
     free(chopped);
   } else {
-    vfprintf(fplog, format, ap);
+    vfprintf(fplog, format, ap);	/*TODO transcode here*/
   }
 
 #ifdef PRINT_ERRNO	/* I don't know it's useful ... (aono) */
