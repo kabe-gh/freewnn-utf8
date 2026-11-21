@@ -314,6 +314,9 @@ if test -z "$MANFILTER"; then
   MANFILTER="cat"
 fi
 AC_SUBST(MANFILTER)
+if test x$with_utf8support = xyes ; then
+AC_DEFINE(UTF8SUPPORT, 1, [utf-8 support])
+fi
 
 dnl
 dnl Build Options

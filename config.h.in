@@ -261,12 +261,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define as the return type of signal handlers (`int' or `void'). */
-#undef RETSIGTYPE
-
-/* Define if the signal function returns void. */
-#undef RETSIGTYPE_VOID
-
 /* Define to 1 if the `setpgrp' function requires zero arguments. */
 #undef SETPGRP_VOID
 
@@ -277,6 +271,9 @@
 
 /* Define to 1 if uum writes utmp entry */
 #undef USE_UTMP
+
+/* utf-8 support */
+#undef UTF8SUPPORT
 
 /* Define to allow writing to other than JSERVERDIR. */
 #undef WNN_ALLOW_UNSAFE_PATH
