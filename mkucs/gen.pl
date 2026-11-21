@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Usage: perl ./gen.pl > xutab.h
+# Usage: perl ./gen.pl > xucstab.h
 
 sub print_license_wnn () {
 print <<'EOF'
@@ -159,10 +159,19 @@ print_license_wnn; print "\n";
 print_license_unicode; print "\n";
 print "\n";
 
-print "typedef unsigned short ucs_t;\n";
-print "typedef unsigned short w_char;\n";
-print "struct ucs_to_ieuc {\n  ucs_t ucs;\n  w_char ieuc;\n};\n";
-print "\n";
+print <<'EOF';
+/* Tables to convert EUC-JP to UCS and back. */
+
+typedef unsigned short ucs_t;
+#ifndef w_char
+typedef unsigned short w_char;
+#endif
+struct ucs_to_ieuc {
+  ucs_t ucs;
+  w_char ieuc;
+};
+
+EOF
 
 print "const ucs_t x0208_to_ucs [96][96] = {\n";
 for ($ku = 0; $ku < 96; $ku++) {
@@ -209,5 +218,98 @@ for ($ucs = 128; $ucs < 65536; $ucs++) {
 	}
 }
 print "}; /* ucs_to_iujis[] */\n\n";
+
+print <<'EOF';
+/* conversion functions */
+
+static inline int
+ucs_to_utf8_1(char **utf8o, register const ucs_t ucs_1)
+{
+	register char *u8o = *utf8o;
+	int len;
+	if (ucs_1 <= 0b0000000001111111U) {
+		*u8o++ = (ucs_1 & 0b0000000001111111);
+	} else if (ucs_1 <= 0b0000011111111111U) {
+		*u8o++ = 0b11000000U | (ucs_1 >> 6);
+		*u8o++ = 0b10000000U | (ucs_1 & 0b0000000000111111U);
+	} else if (ucs_1 <= 0xffffU) {
+		*u8o++ = 0b11100000U | ( ucs_1 >> 12);
+		*u8o++ = 0b10000000U | ((ucs_1 >> 6) & 0b00111111U);
+		*u8o++ = 0b10000000U | ( ucs_1 & 0b00111111U);
+	} else {
+		*u8o++ = 0b11110000U | ( ucs_1 >> 18);
+		*u8o++ = 0b10000000U | ((ucs_1 >> 12) & 0b00111111U);
+		*u8o++ = 0b10000000U | ((ucs_1 >> 6 ) & 0b00111111U);
+		*u8o++ = 0b10000000U | ( ucs_1 & 0b00111111U);
+	}
+	len = (u8o - *utf8o);
+	*utf8o = u8o;
+	return len;
+}
+
+#ifndef CS_MASK
+# define CS_MASK         0x8080
+#endif
+#ifndef CS0_MASK
+# define CS0_MASK        0x0000
+#endif
+#ifndef CS1_MASK
+# define CS1_MASK        0x8080
+#endif
+#ifndef CS2_MASK
+# define CS2_MASK        0x0080
+#endif
+#ifndef CS3_MASK
+#define CS3_MASK        0x8000
+#endif
+
+static int /* return length of output */
+iujis_to_utf8 (char *utf8o, const w_char *ie, int ielen)
+{
+        char *u8o = utf8o;
+
+        for ( ; ielen; ielen--) {
+                w_char iujis = *ie++;
+		int _l = iujis & 0x7f;
+		int _h = (iujis >> 8) & 0x7f;
+
+		switch (iujis & CS_MASK) {
+		ucs_t	ucs_1;
+		case CS0_MASK: /* ASCII */
+			*u8o++ = _l;
+			break;
+		case CS1_MASK: /* JISX0208 EUC */
+			ucs_1 = x0208_to_ucs[_h-32][_l-32];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, 0xFFFDU);
+			}
+			break;
+		case CS2_MASK: /* JISX0201 */
+			ucs_1 = x0201_to_ucs[_l];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, 0xFFFDU);
+			}
+			break;
+		case CS3_MASK: /* JISX0212 */
+			ucs_1 = x0212_to_ucs[_h-32][_l-32];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, 0xFFFDU);
+			}
+			break;
+		}
+        }/*for ielen*/
+	return (u8o - utf8o);
+}
+
+EOF
 
 0;
