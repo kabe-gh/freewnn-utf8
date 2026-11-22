@@ -229,9 +229,9 @@ print <<'EOF';
 
 /* converts 1 UCS codepoint into *utf8o, and advances *utf8o */
 static inline int
-ucs_to_utf8_1(char **utf8o, register const ucs_t ucs_1)
+ucs_to_utf8_1(unsigned char **utf8o, register const ucs_t ucs_1)
 {
-	register char *u8o = *utf8o;
+	register unsigned char *u8o = *utf8o;
 	int len;
 	if (ucs_1 <= 0b0000000001111111U) {
 		*u8o++ = (ucs_1 & 0b0000000001111111);
@@ -269,16 +269,20 @@ ucs_to_utf8_1(char **utf8o, register const ucs_t ucs_1)
 #define CS3_MASK        0x8000
 #endif
 
-static int /* return length of output */
+int /* return length of output in bytes */
 iujis_to_utf8 (
-	char *utf8o /* output buffer */,
+	unsigned char *utf8o /* output buffer */,
 	const w_char *ie /* input buffer */,
 	int ielen /* input length IN BYTES */
 )
 {
-        char *u8o = utf8o;
+        unsigned char *u8o = utf8o;
+	int no_limit = 0;
 
-        for ( ; ielen; ielen-=sizeof(w_char)) {
+	if (ielen < 0)
+		no_limit = 1;
+
+        for ( ; (no_limit)?(*ie):ielen; ielen-=sizeof(w_char)) {
                 w_char iujis = *ie++;
 		int _l = iujis & 0x7f;
 		int _h = (iujis >> 8) & 0x7f;
@@ -318,6 +322,49 @@ iujis_to_utf8 (
 		}
         }/*for ielen*/
 	return (u8o - utf8o);
+}
+
+int /* return length of output in bytes */
+eujis_to_utf8 (
+	unsigned char *utf8o /* output buffer */,
+	unsigned char *euj /* input buffer */,
+	const int eulen /* input length in bytes */
+)
+{
+	w_char *iebuf;
+	w_char static_iebuf[1024];
+	int no_limit = 0;
+	int ielen, utf8len;
+
+	if (eulen < 0)
+		no_limit = 0;
+
+	/* convert as eujis -> iujis -> utf8 */
+
+	/* allocate iujis temp buffer */
+	if (no_limit) {
+		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
+	} else {
+		if (eulen < 1024)
+			iebuf = static_iebuf;
+		else
+			iebuf = calloc(eulen/*approx*/, sizeof(w_char));
+	}
+	if (!iebuf) {
+		fprintf(stderr, "malloc() failed\n");
+		return 0;
+	}
+
+	/* convert eujis -> iujis */
+	ielen = eujis_to_iujis(iebuf, euj, eulen);
+
+	/* convert iujis -> utf8 */
+	utf8len = iujis_to_utf8(utf8o, iebuf, ielen);
+	utf8o[utf8len] = '\0'; /* terminate just in case */
+
+	if (iebuf != static_iebuf)
+		free(iebuf);
+	return utf8len;
 }
 
 EOF
