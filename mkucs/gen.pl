@@ -236,7 +236,7 @@ print <<'EOF';
 /* conversion functions */
 
 /* converts 1 UCS codepoint into *utf8o, and advances *utf8o */
-static inline int
+static inline int /* advanced bytes */
 ucs_to_utf8_1(unsigned char **utf8o, register const ucs_t ucs_1)
 {
 	register unsigned char *u8o = *utf8o;
@@ -259,120 +259,6 @@ ucs_to_utf8_1(unsigned char **utf8o, register const ucs_t ucs_1)
 	len = (u8o - *utf8o);
 	*utf8o = u8o;
 	return len;
-}
-
-#ifndef CS_MASK
-# define CS_MASK         0x8080
-#endif
-#ifndef CS0_MASK
-# define CS0_MASK        0x0000
-#endif
-#ifndef CS1_MASK
-# define CS1_MASK        0x8080
-#endif
-#ifndef CS2_MASK
-# define CS2_MASK        0x0080
-#endif
-#ifndef CS3_MASK
-#define CS3_MASK        0x8000
-#endif
-
-int /* return length of output in bytes */
-iujis_to_utf8 (
-	unsigned char *utf8o /* output buffer */,
-	const w_char *ie /* input buffer */,
-	int ielen /* input length IN BYTES */
-)
-{
-        unsigned char *u8o = utf8o;
-	int no_limit = 0;
-
-	if (ielen < 0)
-		no_limit = 1;
-
-        for ( ; (no_limit)?(*ie):ielen; ielen-=sizeof(w_char)) {
-                w_char iujis = *ie++;
-		int _l = iujis & 0x7f;
-		int _h = (iujis >> 8) & 0x7f;
-
-		switch (iujis & CS_MASK) {
-		ucs_t	ucs_1;
-		case CS0_MASK: /* ASCII */
-			*u8o++ = _l;
-			break;
-		case CS1_MASK: /* JISX0208 EUC */
-			ucs_1 = x0208_to_ucs[_h-32][_l-32];
-			if (ucs_1 != 0x0000) {
-				ucs_to_utf8_1(&u8o, ucs_1);
-			} else {
-				/* insert unknown */
-				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
-			}
-			break;
-		case CS2_MASK: /* JISX0201 */
-			ucs_1 = x0201_to_ucs[iujis & 0xff];
-			if (ucs_1 != 0x0000) {
-				ucs_to_utf8_1(&u8o, ucs_1);
-			} else {
-				/* insert unknown */
-				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
-			}
-			break;
-		case CS3_MASK: /* JISX0212 */
-			ucs_1 = x0212_to_ucs[_h-32][_l-32];
-			if (ucs_1 != 0x0000) {
-				ucs_to_utf8_1(&u8o, ucs_1);
-			} else {
-				/* insert unknown */
-				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
-			}
-			break;
-		}
-        }/*for ielen*/
-	return (u8o - utf8o);
-}
-
-int /* return length of output in bytes */
-eujis_to_utf8 (
-	unsigned char *utf8o /* output buffer */,
-	unsigned char *euj /* input buffer */,
-	const int eulen /* input length in bytes */
-)
-{
-	w_char *iebuf;
-	w_char static_iebuf[1024];
-	int no_limit = 0;
-	int ielen, utf8len;
-
-	if (eulen < 0)
-		no_limit = 0;
-
-	/* convert as eujis -> iujis -> utf8 */
-
-	/* allocate iujis temp buffer */
-	if (no_limit) {
-		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
-	} else {
-		if (eulen < 1024)
-			iebuf = static_iebuf;
-		else
-			iebuf = calloc(eulen/*approx*/, sizeof(w_char));
-	}
-	if (!iebuf) {
-		fprintf(stderr, "calloc() failed\n");
-		return 0;
-	}
-
-	/* convert eujis -> iujis */
-	ielen = eujis_to_iujis(iebuf, euj, eulen);
-
-	/* convert iujis -> utf8 */
-	utf8len = iujis_to_utf8(utf8o, iebuf, ielen);
-	utf8o[utf8len] = '\0'; /* terminate just in case */
-
-	if (iebuf != static_iebuf)
-		free(iebuf);
-	return utf8len;
 }
 
 /* converts 1 utf-8 *utf8i character, advances *utf8i, returns UCS codepoint */
@@ -511,6 +397,120 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 	/* TODO: 4-byte sequence for U+10000..U+10FFFF */
 	(*utf8in)++; /* prevent potential infinite loop */
 	return out;
+}
+
+#ifndef CS_MASK
+# define CS_MASK         0x8080
+#endif
+#ifndef CS0_MASK
+# define CS0_MASK        0x0000
+#endif
+#ifndef CS1_MASK
+# define CS1_MASK        0x8080
+#endif
+#ifndef CS2_MASK
+# define CS2_MASK        0x0080
+#endif
+#ifndef CS3_MASK
+#define CS3_MASK        0x8000
+#endif
+
+int /* return length of output in bytes */
+iujis_to_utf8 (
+	unsigned char *utf8o /* output buffer */,
+	const w_char *ie /* input buffer */,
+	int ielen /* input length IN BYTES */
+)
+{
+        unsigned char *u8o = utf8o;
+	int no_limit = 0;
+
+	if (ielen < 0)
+		no_limit = 1;
+
+        for ( ; (no_limit)?(*ie):ielen; ielen-=sizeof(w_char)) {
+                w_char iujis = *ie++;
+		int _l = iujis & 0x7f;
+		int _h = (iujis >> 8) & 0x7f;
+
+		switch (iujis & CS_MASK) {
+		ucs_t	ucs_1;
+		case CS0_MASK: /* ASCII */
+			*u8o++ = _l;
+			break;
+		case CS1_MASK: /* JISX0208 EUC */
+			ucs_1 = x0208_to_ucs[_h-32][_l-32];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
+			}
+			break;
+		case CS2_MASK: /* JISX0201 */
+			ucs_1 = x0201_to_ucs[iujis & 0xff];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
+			}
+			break;
+		case CS3_MASK: /* JISX0212 */
+			ucs_1 = x0212_to_ucs[_h-32][_l-32];
+			if (ucs_1 != 0x0000) {
+				ucs_to_utf8_1(&u8o, ucs_1);
+			} else {
+				/* insert unknown */
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
+			}
+			break;
+		}
+        }/*for ielen*/
+	return (u8o - utf8o);
+}
+
+int /* return length of output in bytes */
+eujis_to_utf8 (
+	unsigned char *utf8o /* output buffer */,
+	unsigned char *euj /* input buffer */,
+	const int eulen /* input length in bytes */
+)
+{
+	w_char *iebuf;
+	w_char static_iebuf[1024];
+	int no_limit = 0;
+	int ielen, utf8len;
+
+	if (eulen < 0)
+		no_limit = 0;
+
+	/* convert as eujis -> iujis -> utf8 */
+
+	/* allocate iujis temp buffer */
+	if (no_limit) {
+		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
+	} else {
+		if (eulen < 1024)
+			iebuf = static_iebuf;
+		else
+			iebuf = calloc(eulen/*approx*/, sizeof(w_char));
+	}
+	if (!iebuf) {
+		fprintf(stderr, "calloc() failed\n");
+		return 0;
+	}
+
+	/* convert eujis -> iujis */
+	ielen = eujis_to_iujis(iebuf, euj, eulen);
+
+	/* convert iujis -> utf8 */
+	utf8len = iujis_to_utf8(utf8o, iebuf, ielen);
+	utf8o[utf8len] = '\0'; /* terminate just in case */
+
+	if (iebuf != static_iebuf)
+		free(iebuf);
+	return utf8len;
 }
 
 static int
