@@ -400,7 +400,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 			return out;
 		}
 		if ((*utf8in)[1] <= 0xBF) {
-			out = ((*utf8in)[0] & 0b00111111) << 6 | (*utf8in)[1] & 0b00111111;
+			out = (((*utf8in)[0] & 0b00111111) << 6) | ((*utf8in)[1] & 0b00111111);
 			(*utf8in)+=2;
 			return out;
 		}
@@ -421,7 +421,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 				return out;
 			}
 			if ((*utf8in)[2] <= 0xBF) {
-				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				out = ((*utf8in)[0] & 0b00001111) << 12 | (((*utf8in)[1] & 0b00111111) << 6) | ((*utf8in)[2] & 0b00111111);
 				(*utf8in)+=3;
 				return out;
 			}
@@ -446,7 +446,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 				return out;
 			}
 			if ((*utf8in)[2] <= 0xBF) {
-				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				out = ((*utf8in)[0] & 0b00001111) << 12 | (((*utf8in)[1] & 0b00111111) << 6) | ((*utf8in)[2] & 0b00111111);
 				(*utf8in)+=3;
 				return out;
 			}
@@ -471,7 +471,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 				return out;
 			}
 			if ((*utf8in)[2] <= 0xBF) {
-				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				out = ((*utf8in)[0] & 0b00001111) << 12 | (((*utf8in)[1] & 0b00111111) << 6) | ((*utf8in)[2] & 0b00111111);
 				(*utf8in)+=3;
 				return out;
 			}
@@ -496,7 +496,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 				return out;
 			}
 			if ((*utf8in)[2] <= 0xBF) {
-				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				out = ((*utf8in)[0] & 0b00001111) << 12 | (((*utf8in)[1] & 0b00111111) << 6) | ((*utf8in)[2] & 0b00111111);
 				(*utf8in)+=3;
 				return out;
 			}
@@ -566,7 +566,6 @@ utf8_to_eujis (
 )
 {
 	int no_limit = 0;
-	const unsigned char *u8i;
 	w_char *iebuf, static_iebuf[1024];
 	int iulen, eulen;
 
@@ -599,6 +598,48 @@ utf8_to_eujis (
 	if (iebuf != static_iebuf)
 		free(iebuf);
 	return eulen;
+}
+
+int /* return length of output in bytes */
+utf8_to_jis8 (
+	unsigned char *j8o /* output buffer */,
+	const unsigned char *utf8i /* input buffer */,
+	int u8len /* input length in bytes */
+)
+{
+	int no_limit = 0;
+	w_char *iebuf, static_iebuf[1024];
+	int iulen, jis8len;
+
+	if (u8len < 0)
+		no_limit = 1;
+
+	/* convert as utf8 -> iujis -> jis */
+
+	/* allocate iujis temp buffer */
+	if (no_limit) {
+		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
+	} else {
+		if (u8len < 1024)
+			iebuf = static_iebuf;
+		else
+			iebuf = calloc(u8len/*approx*/, sizeof(w_char));
+	}
+	if (!iebuf) {
+		fprintf(stderr, "calloc() failed\n");
+		return 0;
+	}
+
+	/* convert utf8 -> iujis */
+	iulen = utf8_to_iujis(iebuf, utf8i, u8len);
+
+	/* convert iujis -> jis */
+	jis8len = iujis_to_jis8(j8o, iebuf, iulen);
+	j8o[jis8len] = '\0'; /* terminate just in case */
+
+	if (iebuf != static_iebuf)
+		free(iebuf);
+	return jis8len;
 }
 
 EOF
