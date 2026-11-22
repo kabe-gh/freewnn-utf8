@@ -508,6 +508,7 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 		return out;
 	} /* EE-EF */
 	/* TODO: 4-byte sequence for U+10000..U+10FFFF */
+	(*utf8in)++; /* prevent potential infinite loop */
 	return out;
 }
 

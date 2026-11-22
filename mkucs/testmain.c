@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 	olen = eujis_to_utf8(utf8buf, ujis, strlen(ujis));
 	printf("utf8 len=%d\n", olen);
 	utf8buf[olen] = '\0';
-	puts(utf8buf);
+	printf("utf-8: "); puts(utf8buf);
 	{
 	int i;
 	printf("utf8 dump (including terminator): ");
