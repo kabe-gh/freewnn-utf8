@@ -351,7 +351,7 @@ eujis_to_utf8 (
 			iebuf = calloc(eulen/*approx*/, sizeof(w_char));
 	}
 	if (!iebuf) {
-		fprintf(stderr, "malloc() failed\n");
+		fprintf(stderr, "calloc() failed\n");
 		return 0;
 	}
 

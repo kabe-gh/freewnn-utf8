@@ -23,7 +23,7 @@ extern char *getenv (const char *);
 int
 main(int argc, char *argv[])
 {
-	unsigned char	*ujis = (unsigned char *)"AA私の名前は中野です。ｱｲｳ©ZZ";
+	unsigned char	*ujis = (unsigned char *)"AA私の名前は中野です。ｱｲｳﾌﾟ©ZZ";
 	unsigned char	utf8buf[2048];
 	int	olen;
 
