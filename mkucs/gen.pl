@@ -167,14 +167,17 @@ print "\n";
 print <<'EOF';
 /* Tables to convert EUC-JP to UCS and back. */
 
-typedef unsigned short ucs_t;
 #ifndef w_char
 typedef unsigned short w_char;
 #endif
+#ifndef UCS_T_DEFINED
+typedef unsigned short ucs_t;
 struct ucs_to_ieuc {
   ucs_t ucs;
   w_char ieuc;
 };
+#define UCS_T_DEFINED 1
+#endif
 
 EOF
 

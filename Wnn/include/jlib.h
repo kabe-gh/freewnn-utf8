@@ -54,6 +54,12 @@
 #define wchar   w_char
 #define WCHAR_T
 #endif /* WCHAR_T */
+typedef unsigned short ucs_t;
+struct ucs_to_ieuc {
+  ucs_t ucs;
+  w_char ieuc;
+};
+#define UCS_T_DEFINED 1
 
 #define JLIB
 
