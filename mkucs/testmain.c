@@ -27,7 +27,7 @@ main(int argc, char *argv[])
 	unsigned char	utf8buf[2048];
 	w_char	iubuf[1024];
 	unsigned char	obuf[2048];
-	int	olen, u8resultlen;
+	int	olen, u8resultlen, jislen;
 
 	/* dump EUC */
 	printf("strlen(ujis)=%zd\n", strlen(ujis));
@@ -77,13 +77,22 @@ main(int argc, char *argv[])
 	}
 
 	/* convert back utf8 to jis */
-	olen = utf8_to_jis8 (obuf, utf8buf, u8resultlen);
-	printf("jis len bytes=%d\n", olen);
+	jislen = utf8_to_jis8 (obuf, utf8buf, u8resultlen);
+	printf("jis len bytes=%d\n", jislen);
 	{
 	int i;
 	printf("jis: ");
-	for (i=0; i<olen; i++)
+	for (i=0; i<jislen; i++)
 		printf("%02X[%c] ", obuf[i], (obuf[i]<0x20||obuf[i]>=0x7f)?'.':obuf[i]);
+	printf("\n");
+	}
+
+	olen = jis_to_utf8(utf8buf, obuf, jislen);
+	printf("utf8 len=%d\n", olen);
+	{
+	int i;
+	printf("utf8 dump (including terminator): ");
+	for (i=0; i<=olen; i++) { printf("%02X ", (unsigned char)utf8buf[i]); }
 	printf("\n");
 	}
 

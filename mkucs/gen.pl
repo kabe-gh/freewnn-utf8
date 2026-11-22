@@ -642,6 +642,49 @@ utf8_to_jis8 (
 	return jis8len;
 }
 
+int /* return length of output in bytes */
+jis_to_utf8 (
+	unsigned char *utf8o /* output buffer */,
+	const unsigned char *jisi /* input buffer */,
+	const int jislen /* input length in bytes */
+)
+{
+	w_char *iebuf;
+	w_char static_iebuf[1024];
+	int no_limit = 0;
+	int ielen, utf8len;
+
+	if (jislen < 0)
+		no_limit = 0;
+
+	/* convert as jis -> iujis -> utf8 */
+
+	/* allocate iujis temp buffer */
+	if (no_limit) {
+		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
+	} else {
+		if (jislen < 1024)
+			iebuf = static_iebuf;
+		else
+			iebuf = calloc(jislen/*approx*/, sizeof(w_char));
+	}
+	if (!iebuf) {
+		fprintf(stderr, "calloc() failed\n");
+		return 0;
+	}
+
+	/* convert jis -> iujis */
+	ielen = jis_to_iujis(iebuf, jisi, jislen);
+
+	/* convert iujis -> utf8 */
+	utf8len = iujis_to_utf8(utf8o, iebuf, ielen);
+	utf8o[utf8len] = '\0'; /* terminate just in case */
+
+	if (iebuf != static_iebuf)
+		free(iebuf);
+	return utf8len;
+}
+
 EOF
 
 0;

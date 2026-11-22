@@ -267,11 +267,11 @@ flush_designate (buf)
 int
 extc_to_intc (intc, extc, esiz)
      w_char *intc;
-     unsigned char *extc;
+     const unsigned char *extc;
      int esiz;
 {
-  unsigned char *eend = extc + esiz;
-  register unsigned char *ec = extc;
+  const unsigned char *eend = extc + esiz;
+  register const unsigned char *ec = extc;
   register w_char *ic = intc;
   register int LorR = 0, i;
   w_char tmp;
@@ -1222,12 +1222,12 @@ iujis_to_sjis (sjis, iujis, iusiz)
 int
 sjis_to_iujis (iujis, sjis, ssiz)
      w_char *iujis;             /* iujisコードになったものをおくbuf */
-     unsigned char *sjis;       /* sjisコードのものをおいてくるbuf */
+     const unsigned char *sjis;       /* sjisコードのものをおいてくるbuf */
      int ssiz;                  /* sjis の大き */
 {
   register int x;
   int save = 0;
-  sj = sjis;
+  const unsigned char *sj = sjis; /* mask global sj */
   iu = iujis;
   if (save && ssiz > 0)
     {
@@ -1325,7 +1325,7 @@ sjis_to_jis8 (jis, sjis, siz)
 int
 jis_to_iujis (iujis, jis, jsiz)
      w_char *iujis;
-     unsigned char *jis;
+     const unsigned char *jis;
      int jsiz;
 {
   designate = JIS_designate;

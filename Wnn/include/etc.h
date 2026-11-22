@@ -51,7 +51,7 @@ extern int wnn_find_hinsi_by_name FRWNN_PARAMS((register char *c));
 /* xutoj.c  */
 extern int through FRWNN_PARAMS((char *, char *, int));
 extern int flush_designate FRWNN_PARAMS((w_char *));
-extern int extc_to_intc FRWNN_PARAMS((w_char *, unsigned char *, int));
+extern int extc_to_intc FRWNN_PARAMS((w_char *, const unsigned char *, int));
 extern int ibit8_to_ebit8 FRWNN_PARAMS((unsigned char *, w_char *, int));
 extern unsigned int create_cswidth FRWNN_PARAMS((char *s));
 extern void set_cswidth FRWNN_PARAMS((register unsigned int));
@@ -80,10 +80,10 @@ extern int iujis_to_jis8 FRWNN_PARAMS((unsigned char *, w_char *, int));
 extern int jis_to_eujis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int eujis_to_sjis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int iujis_to_sjis FRWNN_PARAMS((unsigned char *, w_char *, int));
-extern int sjis_to_iujis FRWNN_PARAMS((w_char *, unsigned char *, int));
+extern int sjis_to_iujis FRWNN_PARAMS((w_char *, const unsigned char *, int));
 extern int sjis_to_eujis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int sjis_to_jis8 FRWNN_PARAMS((unsigned char *, unsigned char *, int));
-extern int jis_to_iujis FRWNN_PARAMS((w_char *, unsigned char *, int));
+extern int jis_to_iujis FRWNN_PARAMS((w_char *, const unsigned char *, int));
 extern int jis_to_sjis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int eujis_to_iujis FRWNN_PARAMS((w_char *, unsigned char *, int));
 #endif	/* JAPANESE */
