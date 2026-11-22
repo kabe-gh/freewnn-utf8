@@ -416,11 +416,10 @@ utf8_to_ucs_1 (const unsigned char ** const utf8in)
 #endif
 
 int /* return length of output in bytes */
-iujis_to_utf8 (
-	unsigned char *utf8o /* output buffer */,
-	const w_char *ie /* input buffer */,
-	int ielen /* input length IN BYTES */
-)
+iujis_to_utf8 (utf8o, ie, ielen)
+	unsigned char *utf8o; /* output buffer */
+	const w_char *ie; /* input buffer */
+	int ielen; /* input length IN BYTES */
 {
         unsigned char *u8o = utf8o;
 	int no_limit = 0;
@@ -471,11 +470,10 @@ iujis_to_utf8 (
 }
 
 int /* return length of output in bytes */
-eujis_to_utf8 (
-	unsigned char *utf8o /* output buffer */,
-	unsigned char *euj /* input buffer */,
-	const int eulen /* input length in bytes */
-)
+eujis_to_utf8 (utf8o, euj, eulen)
+	unsigned char *utf8o; /* output buffer */
+	unsigned char *euj; /* input buffer */
+	const int eulen; /* input length in bytes */
 {
 	w_char *iebuf;
 	w_char static_iebuf[1024];
@@ -523,11 +521,10 @@ bsearch_compare_ucs_to_ieuc (const void *s1, const void *s2)
 }
 
 int /* return length of output in bytes */
-utf8_to_iujis (
-	w_char *ieo /* output buffer */,
-	const unsigned char *utf8i /* input buffer */,
-	int u8len /* input length in bytes */
-)
+utf8_to_iujis (ieo, utf8i, u8len)
+	w_char *ieo; /* output buffer */
+	const unsigned char *utf8i; /* input buffer */
+	int u8len; /* input length in bytes */
 {
 	int no_limit = 0;
 	const unsigned char *u8i;
@@ -559,11 +556,10 @@ utf8_to_iujis (
 }
 
 int /* return length of output in bytes */
-utf8_to_eujis (
-	unsigned char *eoo /* output buffer */,
-	const unsigned char *utf8i /* input buffer */,
-	int u8len /* input length in bytes */
-)
+utf8_to_eujis (eoo, utf8i, u8len)
+	unsigned char *eoo; /* output buffer */
+	const unsigned char *utf8i; /* input buffer */
+	int u8len; /* input length in bytes */
 {
 	int no_limit = 0;
 	w_char *iebuf, static_iebuf[1024];
@@ -601,11 +597,10 @@ utf8_to_eujis (
 }
 
 int /* return length of output in bytes */
-utf8_to_jis8 (
-	unsigned char *j8o /* output buffer */,
-	const unsigned char *utf8i /* input buffer */,
-	int u8len /* input length in bytes */
-)
+utf8_to_jis8 (j8o, utf8i, u8len)
+	unsigned char *j8o; /* output buffer */
+	const unsigned char *utf8i; /* input buffer */
+	int u8len; /* input length in bytes */
 {
 	int no_limit = 0;
 	w_char *iebuf, static_iebuf[1024];
@@ -643,11 +638,10 @@ utf8_to_jis8 (
 }
 
 int /* return length of output in bytes */
-jis_to_utf8 (
-	unsigned char *utf8o /* output buffer */,
-	const unsigned char *jisi /* input buffer */,
-	const int jislen /* input length in bytes */
-)
+jis_to_utf8 (utf8o, jisi, jislen)
+	unsigned char *utf8o; /* output buffer */
+	const unsigned char *jisi; /* input buffer */
+	const int jislen; /* input length in bytes */
 {
 	w_char *iebuf;
 	w_char static_iebuf[1024];
