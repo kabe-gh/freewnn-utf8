@@ -2,7 +2,7 @@ all: testmain
 
 CPPFLAGS += -DHAVE_CONFIG_H -DSTDC_HEADERS -DJAPANESE
 CPPFLAGS += -I.. -I../Wnn/etc -I../Wnn/include
-#CFLAGS += -Wall
+CFLAGS += -g -O
 
 testmain: testmain.c xucstab.h xutoj.o
 	$(CC) -g $(CPPFLAGS) $(CFLAGS) -o $@ testmain.c xutoj.o

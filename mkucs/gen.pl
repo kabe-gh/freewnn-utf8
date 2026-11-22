@@ -547,7 +547,7 @@ utf8_to_iujis (
 			key.ucs = ucs1;
 			res = bsearch(&key, ucs_to_iujis, ARRAY_SIZE(ucs_to_iujis), sizeof(ucs_to_iujis[0]), bsearch_compare_ucs_to_ieuc);
 			if (res == NULL) {
-				*ie++ = 0xA2AE; /* GETA MARK */
+				*ie++ = 0xA2AEU; /* GETA MARK */
 			} else {
 				*ie++ = res->ieuc;
 			}
