@@ -1,3 +1,12 @@
+Sun, Nov 22 2026 14:57:50   T.Kabe <kabe@>
+
+	* Wnn/etc/xutoj.c:
+	- Fix input byte counting in eeuc_to_ieuc().
+	  It was decrementing too fast, causing output truncation.
+	  It was largely unnoticed, since eujis_to_iujis() was
+	  only called with unlimited input length (eesiz = -1), or
+	  for single-char conversion (eesiz = 1 or 2).
+
 Sat, Nov 21 2026 10:18:28   T.Kabe <kabe@>
 
 	* jserver: Output log header in ISO date format.
