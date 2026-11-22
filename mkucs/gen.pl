@@ -222,6 +222,7 @@ print "}; /* ucs_to_iujis[] */\n\n";
 print <<'EOF';
 /* conversion functions */
 
+/* converts 1 UCS codepoint into *utf8o, and advances *utf8o */
 static inline int
 ucs_to_utf8_1(char **utf8o, register const ucs_t ucs_1)
 {
@@ -264,11 +265,15 @@ ucs_to_utf8_1(char **utf8o, register const ucs_t ucs_1)
 #endif
 
 static int /* return length of output */
-iujis_to_utf8 (char *utf8o, const w_char *ie, int ielen)
+iujis_to_utf8 (
+	char *utf8o /* output buffer */,
+	const w_char *ie /* input buffer */,
+	int ielen /* input length IN BYTES */
+)
 {
         char *u8o = utf8o;
 
-        for ( ; ielen; ielen--) {
+        for ( ; ielen; ielen-=sizeof(w_char)) {
                 w_char iujis = *ie++;
 		int _l = iujis & 0x7f;
 		int _h = (iujis >> 8) & 0x7f;
@@ -288,7 +293,7 @@ iujis_to_utf8 (char *utf8o, const w_char *ie, int ielen)
 			}
 			break;
 		case CS2_MASK: /* JISX0201 */
-			ucs_1 = x0201_to_ucs[_l];
+			ucs_1 = x0201_to_ucs[iujis & 0xff];
 			if (ucs_1 != 0x0000) {
 				ucs_to_utf8_1(&u8o, ucs_1);
 			} else {
