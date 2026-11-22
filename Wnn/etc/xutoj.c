@@ -640,7 +640,7 @@ eeuc_to_ieuc (ieuc, eeuc, eesiz)
   register unsigned char x;
   register w_char *ie;
   register unsigned char *ee;
-  register int cs_id, non_limit = 0;
+  register int cs_id = 0, non_limit = 0;
   ie = ieuc;
   ee = eeuc;
 
@@ -649,17 +649,22 @@ eeuc_to_ieuc (ieuc, eeuc, eesiz)
   for (; (non_limit ? (*ee) : (eesiz > 0));)
     {
       x = *ee++;
+      eesiz--;
       if (x > 0x9f || x == SS2 || x == SS3)
         {
           cs_id = ((x == SS2) ? CS2 : ((x == SS3) ? CS3 : CS1));
           if (cs_id == CS2 || cs_id == CS3)
-            x = *ee++;
+            {
+              x = *ee++;
+              eesiz--;
+            }
           if (_etc_cs[cs_id] <= 0)
             continue;
           if (_etc_cs[cs_id] > 1)
             {
               *ie = (w_char) (x & 0x7f) << 8;
               x = *ee++;
+              eesiz--;
             }
           else
             {
@@ -667,12 +672,12 @@ eeuc_to_ieuc (ieuc, eeuc, eesiz)
             }
           *ie |= (x & 0x7f);
           *ie++ |= cs_mask[cs_id];
-          eesiz -= _etc_cs[cs_id] + 1;
+          /*eesiz -= _etc_cs[cs_id] + 1;*/ /*Wrong! _etc_cs[] is 1 or 2*/
         }
       else
         {
+          cs_id = 0; /*CS0*/
           *ie++ = x;
-          eesiz--;
         }
     }
   return ((char *) ie - (char *) ieuc);
