@@ -75,6 +75,7 @@ extern int eujis_to_jis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int sjis_to_jis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 #endif	/* JIS7  */
 extern int eujis_to_jis8 FRWNN_PARAMS((unsigned char *, unsigned char *, int));
+extern int iujis_to_eujis FRWNN_PARAMS((unsigned char *, w_char *, int));
 extern int iujis_to_jis8 FRWNN_PARAMS((unsigned char *, w_char *, int));
 extern int jis_to_eujis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int eujis_to_sjis FRWNN_PARAMS((unsigned char *, unsigned char *, int));

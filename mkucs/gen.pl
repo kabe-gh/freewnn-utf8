@@ -375,6 +375,7 @@ eujis_to_utf8 (
 	return utf8len;
 }
 
+/* converts 1 utf-8 *utf8i character, advances *utf8i, returns UCS codepoint */
 static ucs_t
 utf8_to_ucs_1 (const unsigned char ** const utf8in)
 {
@@ -556,6 +557,50 @@ utf8_to_iujis (
 	}
 	return (ie - ieo) * sizeof(w_char);
 }
+
+int /* return length of output in bytes */
+utf8_to_eujis (
+	unsigned char *eoo /* output buffer */,
+	const unsigned char *utf8i /* input buffer */,
+	int u8len /* input length in bytes */
+)
+{
+	int no_limit = 0;
+	const unsigned char *u8i;
+	w_char *iebuf, static_iebuf[1024];
+	int iulen, eulen;
+
+	if (u8len < 0)
+		no_limit = 1;
+
+	/* convert as utf8 -> iujis -> eujis */
+
+	/* allocate iujis temp buffer */
+	if (no_limit) {
+		iebuf = calloc(4096/*arbitrary*/, sizeof(w_char));
+	} else {
+		if (u8len < 1024)
+			iebuf = static_iebuf;
+		else
+			iebuf = calloc(u8len/*approx*/, sizeof(w_char));
+	}
+	if (!iebuf) {
+		fprintf(stderr, "calloc() failed\n");
+		return 0;
+	}
+
+	/* convert utf8 -> iujis */
+	iulen = utf8_to_iujis(iebuf, utf8i, u8len);
+
+	/* convert iujis -> eujis */
+	eulen = iujis_to_eujis(eoo, iebuf, iulen);
+	eoo[eulen] = '\0'; /* terminate just in case */
+
+	if (iebuf != static_iebuf)
+		free(iebuf);
+	return eulen;
+}
+
 EOF
 
 0;
