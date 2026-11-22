@@ -25,8 +25,10 @@ main(int argc, char *argv[])
 {
 	unsigned char	*ujis = (unsigned char *)"AA私の名前は中野です。ｱｲｳﾌﾟ©ZZ";
 	unsigned char	utf8buf[2048];
+	w_char	iubuf[1024];
 	int	olen;
 
+	/* dump EUC */
 	printf("strlen(ujis)=%zd\n", strlen(ujis));
 	{
 	int i;
@@ -37,6 +39,7 @@ main(int argc, char *argv[])
 	printf("\n");
 	}
 
+	/* convert EUC-JP to utf8 */
 	olen = eujis_to_utf8(utf8buf, ujis, strlen(ujis));
 	printf("utf8 len=%d\n", olen);
 	utf8buf[olen] = '\0';
@@ -47,4 +50,17 @@ main(int argc, char *argv[])
 	for (i=0; i<=olen; i++) { printf("%02X ", (unsigned char)utf8buf[i]); }
 	printf("\n");
 	}
+
+	/* convert back utf8 to iujis */
+	olen = utf8_to_iujis (iubuf, utf8buf, olen);
+	printf("iujis len bytes=%d\n", olen);
+	iubuf[olen] = 0;
+	/* dump iujis */
+	{
+	int i;
+	printf("iujis: ");
+	for (i=0; i<(olen/sizeof(w_char)); i++)
+		printf("%04X ", iubuf[i]);
+	}
+	printf("\n");
 }

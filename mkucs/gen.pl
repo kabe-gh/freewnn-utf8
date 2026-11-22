@@ -176,7 +176,12 @@ struct ucs_to_ieuc {
   ucs_t ucs;
   w_char ieuc;
 };
+#define UCS_REPLACEMENT_CHARACTER 0xFFFDU
 #define UCS_T_DEFINED 1
+#endif
+
+#ifndef ARRAY_SIZE
+# define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
 #endif
 
 EOF
@@ -301,7 +306,7 @@ iujis_to_utf8 (
 				ucs_to_utf8_1(&u8o, ucs_1);
 			} else {
 				/* insert unknown */
-				ucs_to_utf8_1(&u8o, 0xFFFDU);
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
 			}
 			break;
 		case CS2_MASK: /* JISX0201 */
@@ -310,7 +315,7 @@ iujis_to_utf8 (
 				ucs_to_utf8_1(&u8o, ucs_1);
 			} else {
 				/* insert unknown */
-				ucs_to_utf8_1(&u8o, 0xFFFDU);
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
 			}
 			break;
 		case CS3_MASK: /* JISX0212 */
@@ -319,7 +324,7 @@ iujis_to_utf8 (
 				ucs_to_utf8_1(&u8o, ucs_1);
 			} else {
 				/* insert unknown */
-				ucs_to_utf8_1(&u8o, 0xFFFDU);
+				ucs_to_utf8_1(&u8o, UCS_REPLACEMENT_CHARACTER);
 			}
 			break;
 		}
@@ -370,6 +375,186 @@ eujis_to_utf8 (
 	return utf8len;
 }
 
+static ucs_t
+utf8_to_ucs_1 (const unsigned char ** const utf8in)
+{
+	/* See "Well-Formed UTF-8 Byte Sequences"
+	 * https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-3/#G27506
+	 */
+	ucs_t	out = UCS_REPLACEMENT_CHARACTER;
+	if ((*utf8in)[0] <= 0x7F) {
+		out = (*utf8in)[0];
+		(*utf8in)++;
+		return out;
+	} /* 00-7F */
+	if ((*utf8in)[0] < 0xC2) {
+		/* ill-formed, beware security */
+		(*utf8in)++; /* skip over */
+		return out;
+	} /* 80-C1 */
+	if ((*utf8in)[0] <= 0xDF) {
+		if ((*utf8in)[1] < 0x80) {
+			/* ill-formed */
+			(*utf8in)++;
+			return out;
+		}
+		if ((*utf8in)[1] <= 0xBF) {
+			out = ((*utf8in)[0] & 0b00111111) << 6 | (*utf8in)[1] & 0b00111111;
+			(*utf8in)+=2;
+			return out;
+		}
+		/* ill-formed */
+		(*utf8in)+=2;
+		return out;
+	} /* C2-DF */
+	if ((*utf8in)[0] == 0xE0) {
+		if ((*utf8in)[1] < 0xA0) {
+			/* ill-formed */
+			(*utf8in)++;
+			return out;
+		}
+		if ((*utf8in)[1] <= 0xBF) {
+			if ((*utf8in)[2] < 0x80) {
+				/* ill-formed */
+				(*utf8in)+=2;
+				return out;
+			}
+			if ((*utf8in)[2] <= 0xBF) {
+				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				(*utf8in)+=3;
+				return out;
+			}
+			/* ill-formed */
+			(*utf8in)+=3;
+			return out;
+		}
+		/* ill-formed */
+		(*utf8in)+=2;
+		return out;
+	} /* E0 */
+	if ((*utf8in)[0] <= 0xEC) {
+		if ((*utf8in)[1] < 0x80) {
+			/* ill-formed */
+			(*utf8in)++;
+			return out;
+		}
+		if ((*utf8in)[1] <= 0xBF) {
+			if ((*utf8in)[2] < 0x80) {
+				/* ill-formed */
+				(*utf8in)+=2;
+				return out;
+			}
+			if ((*utf8in)[2] <= 0xBF) {
+				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				(*utf8in)+=3;
+				return out;
+			}
+			/* ill-formed */
+			(*utf8in)+=3;
+			return out;
+		}
+		/* ill-formed */
+		(*utf8in)+=2;
+		return out;
+	} /* E1-EC */
+	if ((*utf8in)[0] == 0xED) {
+		if ((*utf8in)[1] < 0x80) {
+			/* ill-formed */
+			(*utf8in)++;
+			return out;
+		}
+		if ((*utf8in)[1] <= 0x9F) {
+			if ((*utf8in)[2] < 0x80) {
+				/* ill-formed */
+				(*utf8in)+=2;
+				return out;
+			}
+			if ((*utf8in)[2] <= 0xBF) {
+				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				(*utf8in)+=3;
+				return out;
+			}
+			/* ill-formed */
+			(*utf8in)+=3;
+			return out;
+		}
+		/* ill-formed */
+		(*utf8in)+=2;
+		return out;
+	} /* ED */
+	if ((*utf8in)[0] <= 0xEF) {
+		if ((*utf8in)[1] < 0x80) {
+			/* ill-formed */
+			(*utf8in)++;
+			return out;
+		}
+		if ((*utf8in)[1] <= 0xBF) {
+			if ((*utf8in)[2] < 0x80) {
+				/* ill-formed */
+				(*utf8in)+=2;
+				return out;
+			}
+			if ((*utf8in)[2] <= 0xBF) {
+				out = ((*utf8in)[0] & 0b00001111) << 12 | ((*utf8in)[1] & 0b00111111) << 6 | (*utf8in)[2] & 0b00111111;
+				(*utf8in)+=3;
+				return out;
+			}
+			/* ill-formed */
+			(*utf8in)+=3;
+			return out;
+		}
+		/* ill-formed */
+		(*utf8in)+=2;
+		return out;
+	} /* EE-EF */
+	/* TODO: 4-byte sequence for U+10000..U+10FFFF */
+	return out;
+}
+
+static int
+bsearch_compare_ucs_to_ieuc (const void *s1, const void *s2)
+{
+	const struct ucs_to_ieuc *t1 = s1;
+	const struct ucs_to_ieuc *t2 = s2;
+	/* ucs_t is unsigned, so we cannot simply return (t1.ucs-t2.ucs) */
+	return ((signed long)(t1->ucs) - (signed long)(t2->ucs));
+}
+
+int /* return length of output in bytes */
+utf8_to_iujis (
+	w_char *ieo /* output buffer */,
+	const unsigned char *utf8i /* input buffer */,
+	int u8len /* input length in bytes */
+)
+{
+	int no_limit = 0;
+	const unsigned char *u8i;
+	w_char *ie = ieo;
+
+	if (u8len < 0)
+		no_limit = 1;
+	for (u8i = utf8i; (no_limit)?*u8i:(u8len>0); ) {
+		struct ucs_to_ieuc key, *res;
+		const unsigned char *ub = u8i;
+		/* convert utf8 -> ucs */
+		ucs_t ucs1 = utf8_to_ucs_1(&u8i);
+		u8len -= (u8i - ub);
+		/* convert ucs -> iujis */
+		if (ucs1 < 0x80) {
+			/* ascii */
+			*ie++ = ucs1;
+		} else {
+			key.ucs = ucs1;
+			res = bsearch(&key, ucs_to_iujis, ARRAY_SIZE(ucs_to_iujis), sizeof(ucs_to_iujis[0]), bsearch_compare_ucs_to_ieuc);
+			if (res == NULL) {
+				*ie++ = 0xA2AE; /* GETA MARK */
+			} else {
+				*ie++ = res->ieuc;
+			}
+		}
+	}
+	return (ie - ieo) * sizeof(w_char);
+}
 EOF
 
 0;

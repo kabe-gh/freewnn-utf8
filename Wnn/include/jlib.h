@@ -59,6 +59,7 @@ struct ucs_to_ieuc {
   ucs_t ucs;
   w_char ieuc;
 };
+#define UCS_REPLACEMENT_CHARACTER 0xFFFDU
 #define UCS_T_DEFINED 1
 
 #define JLIB
