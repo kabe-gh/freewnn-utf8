@@ -129,9 +129,14 @@ close X0212;
 $x0212_to_ucs[0x2237] = 0xFF5E; # TILDE -> FULLWIDTH TILDE
 
 
+## initialize JISX0201 table with nop
 for ($euc=1; $euc < 256; $euc++) {
 	$x0201_to_ucs[$euc] = $euc;
 }
+## overrides
+#$x0201_to_ucs[0x7F] = 0x0000;
+$x0201_to_ucs[0x80] = 0x0000;
+
 ## parse JIS0201.TXT
 open(X0201, "<", "./JIS0201.TXT");
 # X0212	Unicode	label
