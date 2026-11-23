@@ -39,7 +39,7 @@ wnnstat	サーバの使用者を得る
 .nf
 .ta 0.1i 3i 
 /usr/local/bin/Wnn4/wnnstat [-w] [-e] [-E] [-f] [-F] [-d] [-D]
-        [-J|U|S] [-L] [hostname]
+        [-J|U|S|T] [-L] [hostname]
 .fi
 .SH 機能
 .HP 0
@@ -74,13 +74,16 @@ Fid、種類、場所、参照数、ファイル名を取り出す。
 頻度ファイル名)] [パスワード、(頻度パスワード)] を取り出す。
 .TP 8
 -U
-UJIS コードで出力する。(デフォルト)
+UJIS コードで出力する。
 .TP 8
 -J
-JIS  コードで出力する。
+JIS  コードで出力する。(デフォルト)
 .TP 8
 -S
 SJIS コードで出力する。
+.TP 8
+-T
+UTF-8 コードで出力する。
 .TP 8
 -L
 LANG名を指定する。zh_CNを指定した場合、cserverが対象となる。
