@@ -184,6 +184,11 @@ AC_ARG_ENABLE(kWnn,
 esac], kWnn="kWnn")
 AC_SUBST(kWnn)
 
+AC_ARG_ENABLE(wnnkill,
+[AS_HELP_STRING([--enable-wnnkill],[allow unpriviledged users to use wnnkill to kill jserver [default=no]])],
+[AC_DEFINE(ENABLE_JS_KILL, 1, [allow unpriviledged users to use wnnkill])]
+)
+
 dnl For a library libwnn
 
 AC_ARG_WITH(libwnn,

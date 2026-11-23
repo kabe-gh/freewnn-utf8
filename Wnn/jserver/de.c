@@ -1345,6 +1345,13 @@ js_who (void)
 void
 js_kill (void)
 {
+#ifndef ENABLE_JS_KILL
+  /* disallow unpriviledged users to use wnnkill the jserver */
+  fprintf(stderr, "JS_KILL ignored\n");
+  put4_cur (-1);
+  putc_purge ();
+  return;
+#endif
   if (clientp == 1)
     {
       put4_cur (0);

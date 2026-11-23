@@ -209,7 +209,7 @@ main (int argc, char** argv)
     }
   else
     {
-      out ("%s Terminated\n", server_env);
+      out ("%s Termination error\n", server_env);
       exit (2);
     }
   exit (0);

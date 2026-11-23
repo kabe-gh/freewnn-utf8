@@ -1,3 +1,10 @@
+Mon, Nov 23 2026 13:35:32   T.Kabe <kabe@>
+
+	* SECURITY: jserver: disallow wnnkill kill the jserver by default.
+	  Previously, anyone could use wnnkill to terminate the jserver,
+	  even jserver was running as priviledged user (wnn).
+	  Previous settings could be restored by ./configure --enable-wnnkill .
+
 Mon, Nov 23 2026 12:35:53   T.Kabe <kabe@>
 
 	* wnnstat: First implementation of UTF-8 message output,
