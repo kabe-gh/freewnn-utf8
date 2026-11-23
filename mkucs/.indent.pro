@@ -1,3 +1,5 @@
 --comment-indentation1
 --declaration-comment-column1
 --dont-tab-align-comments
+--no-tabs
+--align-with-spaces
