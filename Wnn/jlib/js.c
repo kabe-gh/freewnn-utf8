@@ -131,7 +131,7 @@ static int rbc = -1;                    /** 受信バッファーポインター **/
 #endif /* defined(EAGAIN) */
 
 static void connect_timeout ();
-static int _get_server_name FRWNN_PARAMS((const char *, char *));
+static int _get_server_name FRWNN_PARAMS((const char *, char *, int));
 static int writen FRWNN_PARAMS((int));
 static char *get_unixdomain_of_serv_defs FRWNN_PARAMS((const char *lang));
 static char *get_service_of_serv_defs FRWNN_PARAMS((const char *));
@@ -272,11 +272,11 @@ cd_open_in (server, lang, timeout)
   struct servent *sp = NULL;
   int serverNO, port_num;
   int ret;
-  char pserver[64];
+  char pserver[NI_MAXHOST];
   char sserver[64];
   char *serv_name = NULL;
 
-  serverNO = _get_server_name (server, pserver);
+  serverNO = _get_server_name (server, pserver, sizeof (pserver));
 
   /* find service name from table by lang */
   if (lang && *lang)
@@ -454,9 +454,10 @@ connect_timeout ()
 
 /* get server name and return serverNo */
 static int
-_get_server_name (server, pserver)
+_get_server_name (server, pserver, pserver_size)
      const char *server;
      char *pserver;
+     int pserver_size;
 {
   register char *p;
 #ifdef INET6
@@ -465,7 +466,7 @@ _get_server_name (server, pserver)
   if (server[0] == '[') {
     p = strchr(server++, ']');
     if (p) {
-      len = p-server<64-1?p-server:64-1;
+      len = p-server<pserver_size-1?p-server:pserver_size-1;
       strncpy(pserver, server, len);
       pserver[len] = '\0';
     } else
@@ -474,8 +475,8 @@ _get_server_name (server, pserver)
 #endif
   /* Workaround for pserver buffer overrun : Nov 11,1999 by T.Aono */
   /* assumes pserver[64]. variable length string is not supported. */
-  strncpy(pserver, server, 64-1);
-  pserver[64-1] = '\0';
+  strncpy(pserver, server, pserver_size-1);
+  pserver[pserver_size-1] = '\0';
   p = pserver;
 #ifdef INET6
   }
