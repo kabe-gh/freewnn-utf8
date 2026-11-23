@@ -143,14 +143,14 @@ FuncDataBase function_db[] = {
     errorkeyin, call_jl_yomi_len},
    TTY_KCODE, PTY_KCODE, J_IUJIS, J_EUJIS,
    {
-    through, iujis_to_eujis, iujis_to_jis8, iujis_to_sjis,
-    eujis_to_iujis, through, eujis_to_jis8, eujis_to_sjis,
-    jis_to_iujis, jis_to_eujis, through, jis_to_sjis,
-    sjis_to_iujis, sjis_to_eujis, sjis_to_jis8, through},
-   "ujsUJS",
-   "ujsUJS",
+    through, iujis_to_eujis, iujis_to_jis8, iujis_to_utf8,
+    eujis_to_iujis, through, eujis_to_jis8, eujis_to_utf8,
+    jis_to_iujis, jis_to_eujis, through, jis_to_utf8,
+    utf8_to_iujis, utf8_to_eujis, utf8_to_jis8, through},
+   "ujtUJT", /* ->ostr: selector of do_opt[], below */
+   "ujtUJT", /* ->getoptstr: parameter to pass to getopt () */
    {
-    do_u_opt, do_j_opt, do_s_opt, do_U_opt, do_J_opt, do_S_opt}
+    do_u_opt, do_j_opt, do_t_opt, do_U_opt, do_J_opt, do_T_opt}
    },
 #endif /* JAPANESE */
 #ifdef CHINESE

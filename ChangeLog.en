@@ -1,3 +1,10 @@
+Mon, Nov 23 2026 16:35:44   T.Kabe <kabe@>
+
+	* uum: finally, UTF-8 input/output support.
+	  Since uum internally can only accomodate 3 encodings,
+	  Shift-JIS (J_SJIS) support is dropped and replaced with
+	  UTF-8 hooks.
+
 Mon, Nov 23 2026 15:41:47   T.Kabe <kabe@>
 
 	* jserver: Support UTF-8 log output, if

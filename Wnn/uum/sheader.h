@@ -440,6 +440,8 @@ extern int do_s_opt ();
 extern int do_U_opt ();
 extern int do_J_opt ();
 extern int do_S_opt ();
+extern int do_t_opt ();
+extern int do_T_opt ();
 #endif /* JAPANESE */
 
 #ifdef CHINESE

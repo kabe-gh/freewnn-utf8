@@ -527,6 +527,20 @@ do_S_opt (void)
   tty_c_flag = J_SJIS;
   return 0;
 }
+
+int
+do_t_opt (void)
+{
+  pty_c_flag = 3; /* J_SJIS overridden by UTF-8 routines */
+  return 0;
+}
+
+int
+do_T_opt (void)
+{
+  tty_c_flag = 3; /* J_SJIS overridden by UTF-8 routines */
+  return 0;
+}
 #endif /* JAPANESE */
 
 #ifdef  CHINESE
