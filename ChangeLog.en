@@ -1,9 +1,14 @@
 Mon, Nov 23 2026 16:35:44   T.Kabe <kabe@>
 
-	* uum: finally, UTF-8 input/output support.
+	* uum:
+
+	- Finally, UTF-8 input/output support.
 	  Since uum internally can only accomodate 3 encodings,
 	  Shift-JIS (J_SJIS) support is dropped and replaced with
 	  UTF-8 hooks.
+
+	- Set default pty/tty encoding by LANG environ, if it was
+	  ja_JP.eucJP or ja_JP.UTF-8 .
 
 Mon, Nov 23 2026 15:41:47   T.Kabe <kabe@>
 

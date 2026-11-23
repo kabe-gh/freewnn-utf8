@@ -270,6 +270,21 @@ main (int argc, char **argv)
   internal_code = lang_db->internal_code;
   file_code = lang_db->file_code;
 
+  /* switch to J_EUJIS if LANG environ was ja_JP.eucJP */
+  {
+    int ocode = pty_c_flag;
+    set_term_and_lang(&ocode, NULL);
+    if (ocode != pty_c_flag)
+     {
+       if (ocode == J_UTF8)
+         ocode = 3; /* J_SJIS overridden */
+       if (ocode > 3 || ocode < 0) /* invalid */
+         ocode = pty_c_flag; /* clamp to default */
+
+       tty_c_flag = pty_c_flag = ocode;
+     }
+  }
+
   parse_options (argc, argv);
 
   strcpy (nlspath, LIBDIR);
