@@ -3795,8 +3795,8 @@ fi
 MANFILTER=""
 if test x$with_utf8support = xyes ; then
   if test -z "$MANFILTER" ; then
-    # Extract the first word of "iconv iconv -f euc-jp -t utf-8", so it can be a program name with args.
-set dummy iconv iconv -f euc-jp -t utf-8; ac_word=$2
+    # Extract the first word of "iconv", so it can be a program name with args.
+set dummy iconv; ac_word=$2
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 printf %s "checking for $ac_word... " >&6; }
 if test ${ac_cv_prog_MANFILTER+y}
@@ -3817,7 +3817,7 @@ do
   esac
     for ac_exec_ext in '' $ac_executable_extensions; do
   if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
-    ac_cv_prog_MANFILTER=""
+    ac_cv_prog_MANFILTER="iconv -f euc-jp -t utf-8"
     printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
     break 2
   fi

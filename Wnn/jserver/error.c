@@ -135,6 +135,8 @@ vwrite_log(const char *format, va_list ap)
   time_t obakenoQ;
   struct tm *Q;
   char *chopped = NULL;
+  char eucmsg[2048];
+  char utf8msg[4096];
   char client_uname[WNN_ENVNAME_LEN];
   unsigned int formlen;
   long abs_timezone_offset;
@@ -178,11 +180,17 @@ vwrite_log(const char *format, va_list ap)
   }
       
   if(chopped != NULL) {
-    vfprintf(fplog, chopped, ap);	/*TODO transcode here*/
+    vsnprintf(eucmsg, sizeof (eucmsg), chopped, ap);
     free(chopped);
   } else {
-    vfprintf(fplog, format, ap);	/*TODO transcode here*/
+    vsnprintf(eucmsg, sizeof (eucmsg), format, ap);
   }
+#ifdef UTF8SUPPORT
+  eujis_to_utf8(utf8msg, eucmsg, strlen(eucmsg)+1/*terminator*/);
+#else
+  strcpy(utf8msg, eucmsg);
+#endif
+  fputs(utf8msg, fplog);
 
 #ifdef PRINT_ERRNO	/* I don't know it's useful ... (aono) */
   fprintf(fplog, " ,errno=%d", saved_errno);

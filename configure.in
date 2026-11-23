@@ -309,7 +309,7 @@ AC_ARG_WITH(utf8support,
 MANFILTER=""
 if test x$with_utf8support = xyes ; then
   if test -z "$MANFILTER" ; then
-    AC_CHECK_PROG(MANFILTER, iconv [iconv -f euc-jp -t utf-8])
+    AC_CHECK_PROG(MANFILTER, iconv, [iconv -f euc-jp -t utf-8])
   fi
   if test -z "$MANFILTER" ; then
     AC_CHECK_PROG(MANFILTER, nkf  , [nkf -E -w])

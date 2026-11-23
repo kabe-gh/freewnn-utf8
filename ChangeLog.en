@@ -1,3 +1,10 @@
+Mon, Nov 23 2026 15:41:47   T.Kabe <kabe@>
+
+	* jserver: Support UTF-8 log output, if
+          ./configure --with-utf8support is given.
+	  Does not read LANG environment and unconditionaly output as UTF-8
+	  as LANG is seldom set when invoked as a daemon.
+
 Mon, Nov 23 2026 13:35:32   T.Kabe <kabe@>
 
 	* SECURITY: jserver: disallow wnnkill kill the jserver by default.
