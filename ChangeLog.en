@@ -1,3 +1,11 @@
+Mon, Nov 23 2026 22:09:07   T.Kabe <kabe@>
+
+	* Wnn/jlib/js.c:
+
+	- Cleanup socket connection logic in cd_open_in().
+	  Create a fake struct addrinfo in AF_INET only mode, and
+	  make logic cleaner.
+
 Mon, Nov 23 2026 16:35:44   T.Kabe <kabe@>
 
 	* uum:

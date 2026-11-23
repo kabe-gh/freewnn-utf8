@@ -136,7 +136,7 @@ static int writen FRWNN_PARAMS((int));
 static char *get_unixdomain_of_serv_defs FRWNN_PARAMS((const char *lang));
 static char *get_service_of_serv_defs FRWNN_PARAMS((const char *));
 static int get_port_num_of_serv_defs FRWNN_PARAMS((const char *));
-#if DEBUG
+#if DEBUG || 1
 void xerror FRWNN_PARAMS((const char *));
 #endif
 
@@ -259,6 +259,15 @@ cd_open_in (server, lang, timeout)
 #else
   struct sockaddr_in saddr_in;                  /** ソケット **/
   register struct hostent *hp;
+  struct psuedo_addrinfo;
+  struct psuedo_addrinfo {
+    int ai_family;
+    int ai_socktype;
+    int ai_protocol;
+    unsigned int ai_addrlen;
+    struct sockaddr_in *ai_addr;
+    struct psuedo_addrinfo *ai_next;
+  } *res, *res0, *newresp;
 #endif
   struct servent *sp = NULL;
   int serverNO, port_num;
@@ -289,7 +298,7 @@ cd_open_in (server, lang, timeout)
       strcpy (sserver, SERVERNAME);
     }
 /*
-    if ((sp = getservbyname(serv_name,"tcp")) != NULL) {
+    if ((sp = getservbyname(serv_name,"tcp")) != NULL)
 */
   if ((sp = getservbyname (sserver, "tcp")) != NULL)
     {
@@ -319,78 +328,122 @@ cd_open_in (server, lang, timeout)
 #endif
       return -1;
     }
-  for (res = res0; res ; res = res->ai_next) {
-    if (res->ai_family == AF_INET || res->ai_family == AF_INET6){
-      if ((sd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) != ERROR){
 #else
+  /* INET4 */
   if ((hp = gethostbyname (pserver)) == NULL)
     {
+      xerror ("gethostbyname failed");
       return -1;
     }
-  bzero ((char *) &saddr_in, sizeof (saddr_in));
-  bcopy (hp->h_addr, (char *) &saddr_in.sin_addr, hp->h_length);
-  saddr_in.sin_family = AF_INET;
-  saddr_in.sin_port = htons (serverNO);
-  if ((sd = socket (AF_INET, SOCK_STREAM, 0)) == ERROR)
-    {
-#if DEBUG
-      xerror ("jslib:Can't create inet socket.\n");
-#endif
-      return -1;
-    }
-#endif
+  /* create fake struct addrinfo */
+  {
+    char **haddr;
+    res = NULL;
+    for (haddr = hp->h_addr_list; *haddr; haddr++)
+      {
+        newresp = malloc (sizeof (*newresp));
+        newresp->ai_family = AF_INET;
+        newresp->ai_socktype = SOCK_STREAM;
+        newresp->ai_protocol = 0;
+        newresp->ai_addrlen = sizeof (struct sockaddr_in);
 
-  if (timeout != 0 && timeout > 0)
-    {
-      signal (SIGALRM, connect_timeout);
-      alarm (timeout);
-    }
-#ifdef INET6
-  ret = connect (sd, res->ai_addr, res->ai_addrlen);
-#else
-  ret = connect (sd, (struct sockaddr *) &saddr_in, sizeof (saddr_in));
-#endif
-  if (timeout != 0 && timeout > 0)
-    {
-      alarm (0);
-      signal (SIGALRM, SIG_IGN);
-    }
-  if (ret == ERROR)
-    {
-#if DEBUG
-#ifdef INET6
-      if (res->ai_family == AF_INET)
-	xerror ("jslib:Can't connect inet socket.\n");
-      else if (res->ai_family == AF_INET6)
-	xerror ("jslib:Can't connect inet6 socket.\n");
-#else
-      xerror ("jslib:Can't connect inet socket.\n");
-#endif
-#endif
-#ifdef HAVE_CLOSESOCKET
-      closesocket (sd);
-#else
-      close (sd);
-#endif
-#ifdef INET6
-	  sd = ERROR;
-	} else
-	  break;
-      } else {
-#if DEBUG
-      if (res->ai_family == AF_INET)
-	xerror ("jslib:Can't create inet socket.\n");
-      else if (res->ai_family == AF_INET6)
-	xerror ("jslib:Can't create inet6 socket.\n");
-#endif
+        newresp->ai_addr = malloc (sizeof (struct sockaddr_in));
+        bzero (newresp->ai_addr, sizeof (struct sockaddr_in));
+      /*newresp->ai_addr->sin_len = sizeof (struct sockaddr_in);*/
+        newresp->ai_addr->sin_family = AF_INET;
+        bcopy (*haddr, &newresp->ai_addr->sin_addr, hp->h_length);
+        newresp->ai_addr->sin_port = htons (serverNO);
+
+        newresp->ai_next = res;
+        res = newresp;
       }
-    }
+      res0 = res;
   }
-  freeaddrinfo(res0);
-  if (sd == ERROR) {
+#endif /*!INET6*/
+
+  for (res = res0; res ; res = res->ai_next)
+  {
+    /* restrict to IPv4 and IPv6 only */
+    switch (res->ai_family)
+    {
+    case AF_INET:  break;
+#ifdef AF_INET6
+    case AF_INET6: break;
 #endif
-      return -1;
+    default: continue;
     }
+
+    sd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    if (sd == ERROR)
+      {
+        switch (res->ai_family)
+          {
+          case AF_INET:
+            xerror ("jslib:Can't create inet socket.\n");
+            break;
+#ifdef AF_INET6
+            xerror ("jslib:Can't create inet6 socket.\n");
+            break;
+#endif
+          default:
+            xerror ("jslib:Can't create socket.\n");
+            break;
+          }
+        continue; /* try next res */
+      } /* socket() error */
+
+    if (timeout != 0 && timeout > 0)
+      {
+        signal (SIGALRM, connect_timeout);
+        alarm (timeout);
+      }
+
+    ret = connect (sd, res->ai_addr, res->ai_addrlen);
+
+    if (timeout != 0 && timeout > 0)
+      {
+        alarm (0);
+        signal (SIGALRM, SIG_IGN);
+      }
+    if (ret == ERROR)
+      {
+#if DEBUG
+        switch (res->ai_family)
+          {
+          case AF_INET:
+            xerror ("jslib:Can't connect inet socket.\n");
+            break;
+#ifdef AF_INET6
+          case AF_INET6:
+            xerror ("jslib:Can't connect inet6 socket.\n");
+            break;
+#endif
+          default:
+            xerror ("jslib:Can't connect socket.\n");
+            break;
+          }
+#endif /*DEBUG*/
+#ifdef HAVE_CLOSESOCKET
+        closesocket (sd);
+#else
+        close (sd);
+#endif
+        continue; /* try next res */
+      } /* connect() error */
+    /* we now have connected sd */
+    break;
+  } /* for res */
+#ifdef INET6
+  freeaddrinfo(res0);
+#else
+  for (res = res0; res ; )
+    {
+      newresp = res;
+      res = res->ai_next;
+      free (newresp->ai_addr);
+      free (newresp);
+    }
+#endif /*INET6*/
   return sd;
 }
 
@@ -691,7 +744,7 @@ Strcpy (s1, s2)
 
 
 /*      Debug Subroutines       */
-#if DEBUG
+#if DEBUG || 1
 void
 xerror (s)
      const char *s;
@@ -702,6 +755,7 @@ xerror (s)
 void
 dmp (p, c)
      char *p;
+     int c;
 {
   int i, j;
   for (i = 0;; i += 16)
