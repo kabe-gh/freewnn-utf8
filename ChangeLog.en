@@ -1,3 +1,12 @@
+Mon, Nov 23 2026 11:08:33   T.Kabe <kabe@>
+
+	* Wnn/etc/xucstab.h: Add. Includes UCS<->iujis conversion table
+
+	* Wnn/etc/xutoj.c:
+	- Add functions:
+	  iujis_to_utf8(), eujis_to_utf8(), utf8_to_iujis(),
+	  utf8_to_eujis(), utf8_to_jis8(), jis_to_utf8()
+
 Sun, Nov 22 2026 14:57:50   T.Kabe <kabe@>
 
 	* Wnn/etc/xutoj.c:

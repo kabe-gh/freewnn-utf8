@@ -18,7 +18,7 @@ extern char *getenv (const char *);
 
 #include "etc.h"
 
-#include "xucstab.h"
+//#include "xucstab.h"
 
 int
 main(int argc, char *argv[])

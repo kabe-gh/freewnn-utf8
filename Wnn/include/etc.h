@@ -86,6 +86,12 @@ extern int sjis_to_jis8 FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int jis_to_iujis FRWNN_PARAMS((w_char *, const unsigned char *, int));
 extern int jis_to_sjis FRWNN_PARAMS((unsigned char *, unsigned char *, int));
 extern int eujis_to_iujis FRWNN_PARAMS((w_char *, unsigned char *, int));
+extern int iujis_to_utf8 FRWNN_PARAMS((unsigned char *, const w_char *, int));
+extern int eujis_to_utf8 FRWNN_PARAMS((unsigned char *, unsigned char *, const int));
+extern int utf8_to_iujis FRWNN_PARAMS((w_char *, const unsigned char *, int));
+extern int utf8_to_eujis FRWNN_PARAMS((unsigned char *, const unsigned char *, int));
+extern int utf8_to_jis8 FRWNN_PARAMS((unsigned char *, const unsigned char *, int));
+extern int jis_to_utf8 FRWNN_PARAMS((unsigned char *, const unsigned char *, const int));
 #endif	/* JAPANESE */
 #ifdef  CHINESE
 extern int ecns_to_icns FRWNN_PARAMS((w_char *, unsigned char *, int));
