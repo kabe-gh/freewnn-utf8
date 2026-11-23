@@ -1050,6 +1050,15 @@ socket_init_in (void)
   char sport[6];
 #else
   struct sockaddr_in saddr_in;
+  struct psuedo_addrinfo;
+  struct psuedo_addrinfo {
+    int ai_family;
+    int ai_socktype;
+    int ai_protocol;
+    unsigned int ai_addrlen;
+    struct sockaddr_in *ai_addr;
+    struct psuedo_addrinfo *ai_next;
+  } *res, *res0, *newresp;
 #endif
   int sock_d_in;
 
@@ -1086,83 +1095,135 @@ socket_init_in (void)
     {
       xerror (gai_strerror(error));
     }
-  for (res = res0; res; res = res->ai_next) {
-    if (res->ai_family == AF_INET || res->ai_family == AF_INET6){
-      if ((sock_d_in = socket (res->ai_family, res->ai_socktype, res->ai_protocol)) == ERROR)
 #else
-  saddr_in.sin_family = AF_INET;
-  saddr_in.sin_port = htons (port);
-  saddr_in.sin_addr.s_addr = htonl (INADDR_ANY);
-  if ((sock_d_in = socket (AF_INET, SOCK_STREAM, 0)) == ERROR)
+  /* INET4 */
+  /* make fake single struct addrinfo */
+  res = NULL;
+  newresp = malloc (sizeof (*newresp));
+  newresp->ai_family = AF_INET;
+  newresp->ai_socktype = SOCK_STREAM;
+  newresp->ai_protocol = 0;
+  newresp->ai_addrlen = sizeof (struct sockaddr_in);
+
+  newresp->ai_addr = malloc (sizeof (struct sockaddr_in));
+  bzero (newresp->ai_addr, sizeof (struct sockaddr_in));
+/*newresp->ai_addr->sin_len = sizeof (struct sockaddr_in);*/
+  newresp->ai_addr->sin_family = AF_INET;
+  newresp->ai_addr->sin_addr.s_addr = htonl (INADDR_ANY);
+  newresp->ai_addr->sin_port = htons (port);
+
+  newresp->ai_next = res;
+  res = newresp;
+
+  res0 = res;
 #endif
+  for (res = res0; res; res = res->ai_next)
     {
-#ifdef INET6
-      if (res->ai_family == AF_INET6)
-        xerror ("could not create inet6 socket");
-      else if (res->ai_family == AF_INET)
+    /* restrict to IPv4 and IPv6 only */
+    switch (res->ai_family)
+      {
+      case AF_INET:  break;
+  #ifdef AF_INET6
+      case AF_INET6: break;
+  #endif
+      default: continue;
+      }
+    if ((sock_d_in = socket (res->ai_family, res->ai_socktype, res->ai_protocol)) == ERROR)
+      {
+        switch (res->ai_family)
+          {
+          case AF_INET:
+            xerror ("could not create inet socket"); break;
+#ifdef AF_INET6
+          case AF_INET6:
+            xerror ("could not create inet6 socket"); break;
 #endif
-      xerror ("could not create inet socket");
-    }
-  setsockopt (sock_d_in, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof (int));
+          default:
+            xerror ("could not create socket"); break;
+          }
+        continue; /* try next res */
+      } /* socket() error */
+    setsockopt (sock_d_in, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof (int));
 #ifdef SO_DONTLINGER
-  setsockopt (sock_d_in, SOL_SOCKET, SO_DONTLINGER, (char *) 0, 0);
+    setsockopt (sock_d_in, SOL_SOCKET, SO_DONTLINGER, (char *) 0, 0);
 #else
 # ifdef SO_LINGER
-  linger.l_onoff = 0;
-  linger.l_linger = 0;
-  setsockopt (sock_d_in, SOL_SOCKET, SO_LINGER, (char *) &linger, sizeof linger);
+    linger.l_onoff = 0;
+    linger.l_linger = 0;
+    setsockopt (sock_d_in, SOL_SOCKET, SO_LINGER, (char *) &linger, sizeof linger);
 # endif /* SO_LINGER */
 #endif /* SO_DONTLINGER */
 
 #ifdef INET6
 # ifdef IPV6_V6ONLY
-  /* only bind on IPv6, since we would individually bind to v6 and v4 socket. */
-  if (res->ai_family == AF_INET6)
-    {
-      const int one = 1;
-      setsockopt (sock_d_in, IPPROTO_IPV6, IPV6_V6ONLY, &one, sizeof(int));
-    }
+    /* only bind on IPv6, since we would individually bind to v6 and v4 socket. */
+    if (res->ai_family == AF_INET6)
+      {
+        const int one = 1;
+        setsockopt (sock_d_in, IPPROTO_IPV6, IPV6_V6ONLY, &one, sizeof(int));
+      }
 # endif
 #endif
 
+    if (bind (sock_d_in, res->ai_addr, res->ai_addrlen) == ERROR)
+      {
+        shutdown (sock_d_in, 2/*SHUT_RDWR*/);
+        switch (res->ai_family)
+        {
+        case AF_INET:
+          xerror ("can't bind inet socket"); break;
 #ifdef INET6
-  if (bind (sock_d_in, res->ai_addr, res->ai_addrlen) == ERROR)
-#else
-  if (bind (sock_d_in, (struct sockaddr *) &saddr_in, sizeof (saddr_in)) == ERROR)
+        case AF_INET6:
+          xerror ("can't bind inet6 socket"); break;
 #endif
-    {
-      shutdown (sock_d_in, 2);
+        default:
+          xerror ("can't bind socket"); break;
+        }
+        continue; /* try next res */
+      } /* bind error */
+
+    if (listen (sock_d_in, 5) == ERROR)
+      {
+        shutdown (sock_d_in, 2/*SHUT_RDWR*/);
+        switch (res->ai_family)
+        {
+        case AF_INET:
+          xerror ("can't listen inet socket"); break;
 #ifdef INET6
-      if (res->ai_family == AF_INET6)
-        xerror ("can't bind inet6 socket");
-      else if (res->ai_family == AF_INET)
+        case AF_INET6:
+          xerror ("can't listen inet6 socket"); break;
 #endif
-      xerror ("can't bind inet socket");
-    }
-  if (listen (sock_d_in, 5) == ERROR)
-    {
-      shutdown (sock_d_in, 2);
-#ifdef INET6
-      if (res->ai_family == AF_INET6)
-        xerror ("can't listen inet6 socket");
-      else if (res->ai_family == AF_INET)
-#endif
-      xerror ("can't listen inet socket");
-    }
+        default:
+          xerror ("can't listen socket"); break;
+        }
+        continue; /* try next res */
+      } /* listen error */
+    /* got listen socket as sock_d_in */
+
 #if DEBUG
-  log_debug ("sock_d_in = %d", sock_d_in);
+    log_debug ("sock_d_in = %d family = %d", sock_d_in, res->ai_family);
 #endif
-  FD_SET (sock_d_in, all_socks);
+    FD_SET (sock_d_in, all_socks);
+    switch (res->ai_family)
+      {
+      case AF_INET:
+        accept_blk[INET_ACPT].sd = sock_d_in; break;
+  #ifdef INET6
+      case AF_INET6:
+        accept_blk[INET6_ACPT].sd = sock_d_in; break;
+  #endif
+      }
+    } /* for res */
 #ifdef INET6
-      if (res->ai_family == AF_INET)
-	accept_blk[INET_ACPT].sd = sock_d_in;
-      else if (res->ai_family == AF_INET6)
-	accept_blk[INET6_ACPT].sd = sock_d_in;
-    }
-  }
   freeaddrinfo(res0);
 #else
-  accept_blk[INET_ACPT].sd = sock_d_in;
+  for (res = res0; res ; )
+    {
+      newresp = res;
+      res = res->ai_next;
+      free (newresp->ai_addr);
+      free (newresp);
+    }
 #endif
 }
 

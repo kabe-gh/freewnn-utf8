@@ -332,7 +332,9 @@ cd_open_in (server, lang, timeout)
   /* INET4 */
   if ((hp = gethostbyname (pserver)) == NULL)
     {
+#if DEBUG
       xerror ("gethostbyname failed");
+#endif
       return -1;
     }
   /* create fake struct addrinfo */
