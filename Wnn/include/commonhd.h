@@ -136,6 +136,7 @@ typedef unsigned char UCHAR;
 #define J_EUJIS 1
 #define J_JIS   2
 #define J_SJIS  3
+#define J_UTF8  8	/* artificial */
 
 #define C_IUGB  0
 #define C_EUGB  1

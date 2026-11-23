@@ -73,5 +73,6 @@ struct msg_cat
 extern struct msg_cat *msg_open FRWNN_PARAMS((char *, char *, const char *));
 extern char *msg_get FRWNN_PARAMS((struct msg_cat *, int id, char *, register char *lang));
 extern void msg_close FRWNN_PARAMS((register struct msg_cat *));
+extern void set_term_and_lang FRWNN_PARAMS((int *, char []));
 
 #endif  /* WNN_MSG_H */

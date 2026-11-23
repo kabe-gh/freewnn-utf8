@@ -406,6 +406,54 @@ msg_close (cd)
     free (cd);
 }
 
+/* Set langbuf to "ja_JP" if LANG was ja_JP.eucJP */
+/* Set *ocode to J_EUJIS if LANG was ja_JP.eucJP */
+void
+set_term_and_lang (int *ocode, char langbuf[])
+{
+  char llangbuf[64];
+  char *p;
+  char *lang = getenv ("LANG");
+  if (!lang)
+    return; /* change nothing */
+  strcpy(llangbuf, lang);
+
+  p = strchr(llangbuf, '.');
+  if (p == NULL)
+    {
+      if (langbuf)
+        strcpy (langbuf, llangbuf); /* was plain "ja_JP" without '.' */
+      return;
+    }
+  *p++ = '\0'; /* truncate to "ja_JP" */
+  if (langbuf)
+    strcpy (langbuf, llangbuf); /* "ja_JP" */
+
+  /* switch by ".eucJP" part */
+  if (0 == strncmp (llangbuf, "ja_JP", 3))
+    {
+      if (0 == strncasecmp (p, "eucJP", 3))
+          *ocode = J_EUJIS;
+      if (0 == strncasecmp (p, "sjis", 4))
+          *ocode = J_SJIS;
+      if (0 == strncasecmp (p, "utf-8", 5) || 0 == strncasecmp (p, "utf8", 4))
+          *ocode = J_UTF8;
+      return;
+    }
+  if (0 == strncmp (llangbuf, "zh_", 3))
+    {
+      if (0 == strncasecmp (p, "euc", 3))
+          *ocode = C_EUGB;
+      return;
+    }
+  if (0 == strncmp (llangbuf, "ko_KR", 3))
+    {
+      if (0 == strncasecmp (p, "eucKR", 3))
+          *ocode = K_EUKSC;
+      return;
+    }
+}
+
 #ifdef  not_use
 /* test */
 main ()

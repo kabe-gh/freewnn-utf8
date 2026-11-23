@@ -1,3 +1,11 @@
+Mon, Nov 23 2026 12:35:53   T.Kabe <kabe@>
+
+	* wnnstat: First implementation of UTF-8 message output,
+	  and output encoding switching by LANG environment.
+
+	* Wnn/etc/msg.c: add set_term_and_lang() to detect and switch
+	  output encoding according to LANG environment.
+
 Mon, Nov 23 2026 11:08:33   T.Kabe <kabe@>
 
 	* Wnn/etc/xucstab.h: Add. Includes UCS<->iujis conversion table

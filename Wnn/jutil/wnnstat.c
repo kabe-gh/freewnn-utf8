@@ -142,10 +142,11 @@ main (argc, argv)
     if (*lang == '\0')
 */
   strcpy (lang, WNN_DEFAULT_LANG);
+  set_term_and_lang(&ocode, lang);
 
 
 #ifdef JAPANESE
-#  define OPTSTRING "weEdDfFUSJVL:"
+#  define OPTSTRING "weEdDfFUSJTVL:"
 #endif
 #ifdef  CHINESE
 #  define OPTSTRING "weEdDfFUBCVL:"
@@ -211,6 +212,9 @@ main (argc, argv)
           ocode = C_ECNS11643 + 6;
           break;
 #endif /* CHINESE */
+        case 'T':
+          ocode = J_UTF8;
+          break;
         case 'L':
           strcpy (lang, optarg);
           break;
@@ -354,7 +358,7 @@ static void
 usage ()
 {
 #ifdef JAPANESE
-  fprintf (stderr, "wnnstat [-weEdDfFUSJV] [-L lang_name] [server_name]\n");
+  fprintf (stderr, "wnnstat [-weEdDfFUSJTV] [-L lang_name] [server_name]\n");
 #endif /* JAPANESE */
 #ifdef  CHINESE
   fprintf (stderr, "cwnnstat [-weEdDfFUBCV] [-L lang_name] [server_name]\n");
@@ -568,6 +572,9 @@ out (const char * format, ...)
       break;
     case J_SJIS:
       eujis_to_sjis (jbuf, buf, len + 1);
+      break;
+    case J_UTF8:
+      eujis_to_utf8 (jbuf, buf, len + 1);
       break;
 #endif
 #ifdef  CHINESE
