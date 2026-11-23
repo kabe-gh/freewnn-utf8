@@ -10,6 +10,9 @@ Mon, Nov 23 2026 16:35:44   T.Kabe <kabe@>
 	- Set default pty/tty encoding by LANG environ, if it was
 	  ja_JP.eucJP or ja_JP.UTF-8 .
 
+	* uum.man:
+	- Add simple tutorial.
+
 Mon, Nov 23 2026 15:41:47   T.Kabe <kabe@>
 
 	* jserver: Support UTF-8 log output, if
