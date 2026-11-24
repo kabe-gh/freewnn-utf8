@@ -1380,7 +1380,13 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          listenspec[listenspecs++] = "unix";
+          if (listenspecs < MAX_LISTENSPEC)
+            listenspec[listenspecs++] = "unix";
+          else
+            {
+              printf ("Too many listen specifiers.\n");
+              exit (1);
+            }
 	  break;
 
         case '4':
@@ -1389,7 +1395,13 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          listenspec[listenspecs++] = "0.0.0.0";
+          if (listenspecs < MAX_LISTENSPEC)
+            listenspec[listenspecs++] = "0.0.0.0";
+          else
+            {
+              printf ("Too many listen specifiers.\n");
+              exit (1);
+            }
 	  break;
 
 #ifdef INET6
@@ -1399,7 +1411,13 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          listenspec[listenspecs++] = "::";
+          if (listenspecs < MAX_LISTENSPEC)
+            listenspec[listenspecs++] = "::";
+          else
+            {
+              printf ("Too many listen specifiers.\n");
+              exit (1);
+            }
           break;
 #endif /* INET6 */
 
