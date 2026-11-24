@@ -104,11 +104,7 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #endif /* INET6 */
 
 /*      Accept Socket   */
-#ifdef INET6
-#define MAX_ACCEPTS     3
-#else
-#define MAX_ACCEPTS     2
-#endif
+#define MAX_ACCEPTS     32
 
 #define PROTO_ALL	0x1
 #define PROTO_UN	0x2
@@ -1138,9 +1134,9 @@ socket_init_in (void)
     switch (res->ai_family)
       {
       case AF_INET:  break;
-  #ifdef AF_INET6
+#ifdef AF_INET6
       case AF_INET6: break;
-  #endif
+#endif
       default: continue;
       }
 
