@@ -106,13 +106,12 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 /*      Accept Socket   */
 #define MAX_ACCEPTS     32
 
-#define PROTO_ALL	0x1
-#define PROTO_UN	0x2
-#define PROTO_INET	0x4
-#ifdef INET6
-#define PROTO_INET6	0x8
-#endif
-static int listen_proto = PROTO_ALL;
+#define MAX_LISTENSPEC   16
+static char *listenspec[MAX_LISTENSPEC] = {
+  "0.0.0.0", "::", "unix",
+};
+static int listenspecs = 3; /*valid entries in listenspec[] */
+static int explicit_listenspec = 0; /*bool*/
 
 jmp_buf client_dead;
 
@@ -181,7 +180,7 @@ static void daemon_fin_in (int);
 static int  rcv_1_client (int);
 static void snd_1_client (int, int);
 static void socket_init_un (void);
-static void socket_init_in (void);
+static void socket_init_in (const char *);
 static int  socket_accept_un (int);
 static int  socket_accept_in (int);
 static void xerror (const char*);
@@ -591,6 +590,7 @@ del_client (void)
 static void
 daemon_init (void)               /* initialize Daemon */
 {
+  int i;
   /*
   signal (SIGHUP, SIG_IGN);
   signal (SIGINT, SIG_IGN);
@@ -610,17 +610,19 @@ daemon_init (void)               /* initialize Daemon */
   clientp = 0;                  /* V3.0 */
   cur_clp = 0;                  /* V3.0 */
   socket_disc_init ();
-#ifdef INET6
-  if (listen_proto&(PROTO_ALL|PROTO_INET|PROTO_INET6))
-      socket_init_in ();
-#else
-  if (listen_proto&(PROTO_ALL|PROTO_INET))
-      socket_init_in ();
+
+  for (i = 0; i < listenspecs; i++)
+    {
+       if(NULL == listenspec[i]) continue;
+#ifdef AF_UNIX
+      if (!strcmp(listenspec[i], "unix"))
+        {
+          socket_init_un ();
+          continue;
+        }
 #endif
-#ifdef  AF_UNIX
-  if (listen_proto&(PROTO_ALL|PROTO_UN))
-      socket_init_un ();
-#endif /* AF_UNIX */
+      socket_init_in (listenspec[i]);
+    }
 }
 
 /**     サーバを終わる  **/
@@ -1044,7 +1046,7 @@ socket_init_un (void)
 
 /*      Inet V3.0 */
 static void
-socket_init_in (void)
+socket_init_in (const char *listenspec)
 {
 #ifndef SOLARIS
   int on = 1;
@@ -1060,6 +1062,7 @@ socket_init_in (void)
   int error;
   char sport[6];
 #else
+  struct hostent *hp;
   struct sockaddr_in saddr_in;
   struct psuedo_addrinfo;
   struct psuedo_addrinfo {
@@ -1092,16 +1095,11 @@ socket_init_in (void)
 #endif
 #ifdef INET6
   memset(&hints, 0, sizeof(hints));
-  if (listen_proto&PROTO_INET && !(listen_proto&PROTO_INET6))
-      hints.ai_family = PF_INET;
-  else if (listen_proto&PROTO_INET6 && !(listen_proto&PROTO_INET))
-      hints.ai_family = PF_INET6;
-  else
-      hints.ai_family = PF_UNSPEC;
+  hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags = AI_PASSIVE;
   sprintf(sport, "%d", port);
-  error = getaddrinfo(NULL, sport, &hints, &res0);
+  error = getaddrinfo(listenspec, sport, &hints, &res0);
   if (error)
     {
       xerror (gai_strerror(error));
@@ -1109,24 +1107,37 @@ socket_init_in (void)
 #else
   /* INET4 */
   /* make fake single struct addrinfo */
-  res = NULL;
-  newresp = malloc (sizeof (*newresp));
-  newresp->ai_family = AF_INET;
-  newresp->ai_socktype = SOCK_STREAM;
-  newresp->ai_protocol = 0;
-  newresp->ai_addrlen = sizeof (struct sockaddr_in);
+  if ((hp = gethostbyname (listenspec)) == NULL)
+    {
+#if DEBUG
+      xerror ("gethostbyname failed");
+#endif
+      return;
+    }
+  /* create fake struct addrinfo */
+  {
+    char **haddr;
+    res = NULL;
+    for (haddr = hp->h_addr_list; *haddr; haddr++)
+      {
+        newresp = malloc (sizeof (*newresp));
+        newresp->ai_family = AF_INET;
+        newresp->ai_socktype = SOCK_STREAM;
+        newresp->ai_protocol = 0;
+        newresp->ai_addrlen = sizeof (struct sockaddr_in);
 
-  newresp->ai_addr = malloc (sizeof (struct sockaddr_in));
-  bzero (newresp->ai_addr, sizeof (struct sockaddr_in));
-/*newresp->ai_addr->sin_len = sizeof (struct sockaddr_in);*/
-  newresp->ai_addr->sin_family = AF_INET;
-  newresp->ai_addr->sin_addr.s_addr = htonl (INADDR_ANY);
-  newresp->ai_addr->sin_port = htons (port);
+        newresp->ai_addr = malloc (sizeof (struct sockaddr_in));
+        bzero (newresp->ai_addr, sizeof (struct sockaddr_in));
+      /*newresp->ai_addr->sin_len = sizeof (struct sockaddr_in);*/
+        newresp->ai_addr->sin_family = AF_INET;
+        bcopy (*haddr, &newresp->ai_addr->sin_addr, hp->h_length);
+        newresp->ai_addr->sin_port = htons (port);
 
-  newresp->ai_next = res;
-  res = newresp;
-
-  res0 = res;
+        newresp->ai_next = res;
+        res = newresp;
+      }
+      res0 = res;
+  }
 #endif
   for (res = res0; res; res = res->ai_next)
     {
@@ -1364,19 +1375,31 @@ get_options (int argc, char **argv)
 	  break;
 
         case 'u':
-	  listen_proto &= ~PROTO_ALL;
-	  listen_proto |= PROTO_UN;
+          if (!explicit_listenspec)
+            {
+              explicit_listenspec = 1;
+              listenspecs = 0;
+            }
+          listenspec[listenspecs++] = "unix";
 	  break;
 
         case '4':
-	  listen_proto &= ~PROTO_ALL;
-	  listen_proto |= PROTO_INET;
+          if (!explicit_listenspec)
+            {
+              explicit_listenspec = 1;
+              listenspecs = 0;
+            }
+          listenspec[listenspecs++] = "0.0.0.0";
 	  break;
 
 #ifdef INET6
         case '6':
-	  listen_proto &= ~PROTO_ALL;
-	  listen_proto |= PROTO_INET6;
+          if (!explicit_listenspec)
+            {
+              explicit_listenspec = 1;
+              listenspecs = 0;
+            }
+          listenspec[listenspecs++] = "::";
           break;
 #endif /* INET6 */
 
