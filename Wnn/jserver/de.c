@@ -702,36 +702,39 @@ void
 daemon_fin (void)
 {
   int fd;
-#ifdef  AF_UNIX
-  int sock_d_un = accept_blk[UNIX_ACPT].sd;
-#endif /* AF_UNIX */
-  int sock_d_in = accept_blk[INET_ACPT].sd;
-#ifdef INET6
-  int sock_d_in6 = accept_blk[INET6_ACPT].sd;
-#endif
-
+  int i;
   /*
      accept all pending connection from new clients,
      avoiding kernel hangup.
    */
-#ifdef  AF_UNIX
-  daemon_fin_un (sock_d_un);
+  for (i = 0; i < MAX_ACCEPTS; i++ )
+    {
+      switch (accept_blk[i].family)
+      {
+#ifdef AF_UNIX
+      case AF_UNIX:
+        daemon_fin_un (accept_blk[i].sd);
+        FD_CLR (accept_blk[i].sd, all_socks);
+        break;
 #endif
-  daemon_fin_in (sock_d_in);
-#ifdef INET6
-  daemon_fin_in (sock_d_in6);
+#ifdef AF_INET
+      case AF_INET:
+        daemon_fin_in (accept_blk[i].sd);
+        FD_CLR (accept_blk[i].sd, all_socks);
+        break;
 #endif
+#ifdef AF_INET6
+      case AF_INET6:
+        daemon_fin_in (accept_blk[i].sd);
+        FD_CLR (accept_blk[i].sd, all_socks);
+        break;
+#endif
+      }
+    } /*for i*/ 
 
   for (fd = nofile - 1; fd >= 0; fd--)
     {
-      if ((fd != sock_d_in) &&
-#ifdef INET6
-          (fd != sock_d_in6) &&
-#endif
-#ifdef AF_UNIX
-          (fd != sock_d_un) &&
-#endif /* AF_UNIX */
-          FD_ISSET (fd, all_socks))
+      if (FD_ISSET (fd, all_socks))
         {
           shutdown (fd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
