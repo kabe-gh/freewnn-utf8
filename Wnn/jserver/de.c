@@ -130,6 +130,7 @@ static int serverNO = 0;
 
 struct cmblk
 {
+  int family;                   /** AF_UNIX, AF_INET, AF_INET6 **/
   int sd;                       /** ソケットのfd        **/
 };
 #define COMS_BLOCK      struct  cmblk
@@ -453,6 +454,7 @@ static void
 new_client (void)               /* NewClient */
 {
   int sd;
+  int sdfamily = 0;
   int full, i;
   FILE *f[3];
   char gomi[1024];
@@ -467,6 +469,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[UNIX_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_un (accept_blk[UNIX_ACPT].sd);
+      sdfamily = AF_UNIX;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 0;
 #endif
@@ -479,6 +482,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[INET6_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_in (accept_blk[INET6_ACPT].sd);
+      sdfamily = AF_INET6;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 1;
 #endif
@@ -490,6 +494,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[INET_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_in (accept_blk[INET_ACPT].sd);
+      sdfamily = AF_INET;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 1;
 #endif
@@ -555,6 +560,7 @@ new_client (void)               /* NewClient */
   }
 #endif /*  HAVE_LIBWRAP */
 
+  cblk[clientp].family = sdfamily;
   cblk[clientp].sd = sd;
   FD_SET (sd, all_socks);
   for (i = 0; i < WNN_MAX_ENV_OF_A_CLIENT; i++)
@@ -1026,6 +1032,7 @@ socket_init_un (void)
       log_debug ("sock_d_un = %d", sock_d_un);
 #endif
       accept_blk[UNIX_ACPT].sd = sock_d_un;
+      accept_blk[UNIX_ACPT].family = AF_UNIX;
       FD_SET (sock_d_un, all_socks);
     }
 }
@@ -1207,9 +1214,11 @@ socket_init_in (void)
     switch (res->ai_family)
       {
       case AF_INET:
+        accept_blk[INET_ACPT].family = res->ai_family;
         accept_blk[INET_ACPT].sd = sock_d_in; break;
   #ifdef INET6
       case AF_INET6:
+        accept_blk[INET6_ACPT].family = res->ai_family;
         accept_blk[INET6_ACPT].sd = sock_d_in; break;
   #endif
       }
