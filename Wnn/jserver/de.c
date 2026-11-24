@@ -454,7 +454,6 @@ static void
 new_client (void)               /* NewClient */
 {
   int sd;
-  int sdfamily = 0;
   int full, i;
   FILE *f[3];
   char gomi[1024];
@@ -462,112 +461,114 @@ new_client (void)               /* NewClient */
   int is_internet_socket;
   struct request_info tcpd_request;
 #endif /* HAVE_LIBWRAP */
-#ifdef  AF_UNIX
-  if ((serverNO == 0) &&
-      (FD_ISSET (accept_blk[UNIX_ACPT].sd, ready_socks)))
+
+  for (i = 0 ; i < MAX_ACCEPTS; i++ )
     {
-      FD_CLR (accept_blk[UNIX_ACPT].sd, ready_socks);
-      no_of_ready_socks--;
-      sd = socket_accept_un (accept_blk[UNIX_ACPT].sd);
-      sdfamily = accept_blk[UNIX_ACPT].family;
+      if (!(FD_ISSET (accept_blk[i].sd, ready_socks)))
+        continue;
+
 #ifdef  HAVE_LIBWRAP
-      is_internet_socket = 0;
+      is_internet_socket = 1;
 #endif
-    }
-  else
+      switch (accept_blk[i].family)
+        {
+#ifdef AF_UNIX
+        case AF_UNIX:
+          if (serverNO != 0) continue;
+          /* serverNO == 0 */
+          FD_CLR (accept_blk[i].sd, ready_socks);
+          no_of_ready_socks--;
+          sd = socket_accept_un (accept_blk[i].sd);
+#ifdef  HAVE_LIBWRAP
+          is_internet_socket = 0;
+#endif
+          break;
 #endif
 #ifdef INET6
-  if (FD_ISSET (accept_blk[INET6_ACPT].sd, ready_socks))
-    {
-      FD_CLR (accept_blk[INET6_ACPT].sd, ready_socks);
-      no_of_ready_socks--;
-      sd = socket_accept_in (accept_blk[INET6_ACPT].sd);
-      sdfamily = accept_blk[INET6_ACPT].family;
-#ifdef  HAVE_LIBWRAP
-      is_internet_socket = 1;
+        case AF_INET6:
+          FD_CLR (accept_blk[i].sd, ready_socks);
+          no_of_ready_socks--;
+          sd = socket_accept_in (accept_blk[i].sd);
+          break;
 #endif
-    }
-  else
-#endif
-  if (FD_ISSET (accept_blk[INET_ACPT].sd, ready_socks))
-    {
-      FD_CLR (accept_blk[INET_ACPT].sd, ready_socks);
-      no_of_ready_socks--;
-      sd = socket_accept_in (accept_blk[INET_ACPT].sd);
-      sdfamily = accept_blk[INET_ACPT].family;
-#ifdef  HAVE_LIBWRAP
-      is_internet_socket = 1;
-#endif
-    }
-  else
-    {
-      return;
-    }
-  log_debug ("new client: sd = %d", sd);
-  /* reserve 2 fd */
-  for (full = i = 0; i < 2; i++)
-    {
-      if (NULL == (f[i] = fopen ("/dev/null", "r")))
-        {
-          full = 1;
-        }
-    }
-  for (i = 0; i < 2; i++)
-    {
-      if (NULL != f[i])
-        fclose (f[i]);
-    }
+        case AF_INET:
+          FD_CLR (accept_blk[i].sd, ready_socks);
+          no_of_ready_socks--;
+          sd = socket_accept_in (accept_blk[i].sd);
+          break;
+        default:
+          /* cannot happen */
+          continue;
+        } /*switch family*/
 
-  if (full || sd >= nofile || clientp >= max_client)
-    {
-      log_err ("no more client.");
+      /* accepted sd */
+
+      log_debug ("new client: sd = %d", sd);
+      /* reserve 2 fd */
+      for (full = i = 0; i < 2; i++)
+        {
+          if (NULL == (f[i] = fopen ("/dev/null", "r")))
+            {
+              full = 1;
+            }
+        }
+      for (i = 0; i < 2; i++)
+        {
+          if (NULL != f[i])
+            fclose (f[i]);
+        }
+
+      if (full || sd >= nofile || clientp >= max_client)
+        {
+          log_err ("no more client.");
 #ifdef HAVE_RECV
-      recv (sd, gomi, 1024, 0);
+          recv (sd, gomi, 1024, 0);
 #else
-      read (sd, gomi, 1024);
+          read (sd, gomi, 1024);
 #endif
-      shutdown (sd, 2/*SHUT_RDWR*/);
+          shutdown (sd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
-      closesocket (sd);
+          closesocket (sd);
 #else
-      close (sd);
+          close (sd);
 #endif
-      return;
-    }
+          return;
+        }
 
 #ifdef HAVE_LIBWRAP
-  if (is_internet_socket) {
-    request_init (&tcpd_request,RQ_DAEMON, WNN_DAEMON_NAME,
-		  RQ_FILE, sd, NULL);
-    fromhost (&tcpd_request);
-    if (!hosts_access (&tcpd_request))
-      {
-	log_err ("reject client."); /* should be log_info? */
-				    /* should we log IP address / hostname? */
+      if (is_internet_socket) {
+        request_init (&tcpd_request,RQ_DAEMON, WNN_DAEMON_NAME,
+                      RQ_FILE, sd, NULL);
+        fromhost (&tcpd_request);
+        if (!hosts_access (&tcpd_request))
+          {
+            log_err ("reject client."); /* should be log_info? */
+                                        /* should we log IP address / hostname? */
 #ifdef HAVE_RECV
-	recv (sd, gomi, 1024, 0);
+            recv (sd, gomi, 1024, 0);
 #else
-	read (sd, gomi, 1024);
+            read (sd, gomi, 1024);
 #endif
-	shutdown (sd, 2/*SHUT_RDWR*/);
+            shutdown (sd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
-	closesocket (sd);
+            closesocket (sd);
 #else
-	close (sd);
+            close (sd);
 #endif
-	return;
+            continue;
+          }
       }
-  }
 #endif /*  HAVE_LIBWRAP */
 
-  cblk[clientp].family = sdfamily;
-  cblk[clientp].sd = sd;
-  FD_SET (sd, all_socks);
-  for (i = 0; i < WNN_MAX_ENV_OF_A_CLIENT; i++)
-    {
-      (client[clientp].env)[i] = -1;
-    }
-  clientp++;
+      cblk[clientp].family = accept_blk[i].family;
+      cblk[clientp].sd = sd;
+      FD_SET (sd, all_socks);
+      for (i = 0; i < WNN_MAX_ENV_OF_A_CLIENT; i++)
+        {
+          (client[clientp].env)[i] = -1;
+      }
+      clientp++;
+    } /* for i */
 }
 
 /**     クライアントをcblkから削除する  **/
