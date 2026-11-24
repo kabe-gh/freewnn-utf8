@@ -109,11 +109,6 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #else
 #define MAX_ACCEPTS     2
 #endif
-#define UNIX_ACPT       0
-#define INET_ACPT       1
-#ifdef INET6
-#define INET6_ACPT      2
-#endif
 
 #define PROTO_ALL	0x1
 #define PROTO_UN	0x2
@@ -139,6 +134,7 @@ static COMS_BLOCK *cblk;
                 /** クライアントごとのソケットを管理するテーブル **/
 
 static COMS_BLOCK accept_blk[MAX_ACCEPTS];      /*accept sock blocks */
+static int accept_blk_len = 0;
 
 
 /*      Communication Buffers           */
@@ -1002,6 +998,13 @@ socket_init_un (void)
     {
       saddr_un.sun_family = AF_UNIX;
       struct stat tmp_stat;
+
+      if (accept_blk_len >= MAX_ACCEPTS)
+        {
+          log_err ("too many listen sockets");
+          return;
+        }
+
       if (stat (sockname, &tmp_stat) == 0)
         if (unlink (sockname))
 	  {
@@ -1035,8 +1038,9 @@ socket_init_un (void)
 #ifdef DEBUG
       log_debug ("sock_d_un = %d", sock_d_un);
 #endif
-      accept_blk[UNIX_ACPT].sd = sock_d_un;
-      accept_blk[UNIX_ACPT].family = AF_UNIX;
+      accept_blk[accept_blk_len].sd = sock_d_un;
+      accept_blk[accept_blk_len].family = AF_UNIX;
+      accept_blk_len++;
       FD_SET (sock_d_un, all_socks);
     }
 }
@@ -1139,6 +1143,13 @@ socket_init_in (void)
   #endif
       default: continue;
       }
+
+    if (accept_blk_len >= MAX_ACCEPTS)
+      {
+        log_err ("too many listen sockets");
+        return;
+      }
+
     if ((sock_d_in = socket (res->ai_family, res->ai_socktype, res->ai_protocol)) == ERROR)
       {
         switch (res->ai_family)
@@ -1215,19 +1226,9 @@ socket_init_in (void)
     log_debug ("sock_d_in = %d family = %d", sock_d_in, res->ai_family);
 #endif
     FD_SET (sock_d_in, all_socks);
-    switch (res->ai_family)
-      {
-      case AF_INET:
-        accept_blk[INET_ACPT].family = res->ai_family;
-        accept_blk[INET_ACPT].sd = sock_d_in;
-        break;
-#ifdef INET6
-      case AF_INET6:
-        accept_blk[INET6_ACPT].family = res->ai_family;
-        accept_blk[INET6_ACPT].sd = sock_d_in;
-        break;
-#endif
-      }
+    accept_blk[accept_blk_len].family = res->ai_family;
+    accept_blk[accept_blk_len].sd = sock_d_in;
+    accept_blk_len++;
     } /* for res */
 #ifdef INET6
   freeaddrinfo(res0);
