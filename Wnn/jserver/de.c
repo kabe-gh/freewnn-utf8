@@ -458,7 +458,7 @@ new_client (void)               /* NewClient */
   struct request_info tcpd_request;
 #endif /* HAVE_LIBWRAP */
 
-  for (i = 0 ; i < MAX_ACCEPTS; i++ )
+  for (i = 0 ; i < accept_blk_len; i++ )
     {
       if (!(FD_ISSET (accept_blk[i].sd, ready_socks)))
         continue;
@@ -704,7 +704,7 @@ daemon_fin (void)
      accept all pending connection from new clients,
      avoiding kernel hangup.
    */
-  for (i = 0; i < MAX_ACCEPTS; i++ )
+  for (i = 0; i < accept_blk_len; i++ )
     {
       switch (accept_blk[i].family)
       {
