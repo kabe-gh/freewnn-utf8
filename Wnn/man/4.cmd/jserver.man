@@ -27,14 +27,13 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 .\"
-.TH JSERVER \  "23 June 2001" 
+.TH JSERVER 1 "24 November 2026"
 .na
-.fi
 .ad l
 .SH 名称
 .sv 1
 .ta 0.1i 2i
-jserver	日本語マルチクライアントサーバ（インターネット対応版）
+jserver \- 日本語マルチクライアントサーバ（インターネット対応版）
 .SH 形式
 .sv 1
 .nf
@@ -55,7 +54,8 @@ jserver	日本語マルチクライアントサーバ（インターネット対応版）
 jserver は、起動時に
 .BR /usr/local/lib/wnn/ja_JP/jserverrc (4)
 に設定された辞書を読み込む。
-jserver は、全ユーザの頻度、登録可能辞書を一括して管理する。
+.B jserver
+は、全ユーザの頻度、登録可能辞書を一括して管理する。
 それらの管理のためのディレクトリは jserverrc 中の jserver_dir というエントリ
 で指定される。
 .SH 起動形式
@@ -71,13 +71,17 @@ jserver は、全ユーザの頻度、登録可能辞書を一括して管理する。
 \fB\-f\fP \fIfile\fP
 .fi
 .ad l
-デフォルトの jserverrc の代わりに、file を初期化ファイル
+デフォルトの jserverrc の代わりに、
+.I file
+を初期化ファイル
 として読み込む
 .TP 8
 \fB\-s\fP \fIfile\fP
 .fi
 .ad l
-jserver のログファイルを取る。file が、 "\fB-\fP" の時には、
+jserver のログファイルを取る。
+.I file
+が、 "\fB\-\fP" の時には、
 標準エラー出力に出力される。
 .TP 8
 \fB\-h\fP \fIfile\fP
@@ -88,22 +92,30 @@ jserver のログファイルを取る。file が、 "\fB-\fP" の時には、
 \fB\-N\fP \fI数字\fP
 .fi
 .ad l
-serverNO を指定した数字に設定する。serverNO は、jserver を複数立ち上げ
-た時に、それぞれを区別する番号である。jserver を一つしか動かさない場合
+serverNO を指定した数字に設定する。 serverNO は、
+.B jserver
+を複数立ち上げ
+た時に、それぞれを区別する番号である。
+.B jserver
+を一つしか動かさない場合
 は serverNO の指定は不要で、デフォルト値として 0 が使われる。2つめ以降
-の jserver を起動する時は -N 1, -N 2, -N 3 というように一つづつ 
+の jserver を起動する時は \-N 1, \-N 2, \-N 3 というように一つづつ 
 serverNO を増やして立ち上げなければならない。
 .TP 8
 \fB\-p\fP \fI数字\fP
 .fi
 .ad l
 ポート番号の基準値を指定した数字に設定する。serverNO を指定していない
-場合(つまり jserver を一つしか動かしていない場合)は、この値がそのまま
-ポート番号として使われる。複数の jserver を動かしている場合は、実際の
+場合 (つまり
+.B jserver
+を一つしか動かしていない場合) は、この値がそのまま
+ポート番号として使われる。複数の
+.B jserver
+を動かしている場合は、実際の
 ポート番号はこの値に serverNO を足した値となる。このオプションを省略し
-た場合はデフォルト値として getservbyname で取得された値が使われる。
+た場合はデフォルト値として getservbyname ("wnn4",...) で取得された値が使われる。
 getservbyname で取得できない場合はヘッダファイル jd_sock.h で定義され
-ている WNN_PORT_IN の値が使われる。
+ている WNN_PORT_IN (22273) の値が使われる。
 .TP 8
 \fB\-u\fP
 .fi
@@ -125,7 +137,7 @@ inet6 socket を使用する。
 \fB\-D\fP
 .fi
 .ad l
-フォアグラウンドのままで起動する。fork() でデーモン化しない。
+フォアグラウンドのままで起動する。 fork() でデーモン化しない。
 .TP 8
 \fB\-d\fP
 デバッグ出力を有効にする。
@@ -142,6 +154,6 @@ jserverのバージョン(とヘルプ)を表示する。 (サーバとしては起動しない)
 .sv 1
 .nf
 .BR jserverrc (4)
-.SH バグ
-現在の jlib の実装は unix domain, inet, inet6 の全ての port で接続可能
-であることを要求しているため \-u, \-4, \-6 の各オプションは現在は役に立たない。
+.\".SH バグ
+.\"現在の jlib の実装は unix domain, inet, inet6 の全ての port で接続可能
+.\"であることを要求しているため \-u, \-4, \-6 の各オプションは現在は役に立たない。
