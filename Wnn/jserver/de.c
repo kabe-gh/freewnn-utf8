@@ -189,7 +189,7 @@ static int  rcv_1_client (int);
 static void snd_1_client (int, int);
 static void socket_init_un (void);
 static void socket_init_in (void);
-static int  socket_accept_un (void);
+static int  socket_accept_un (int);
 static int  socket_accept_in (int);
 static void xerror (const char*);
 static void get_options (int, char **);
@@ -466,7 +466,7 @@ new_client (void)               /* NewClient */
     {
       FD_CLR (accept_blk[UNIX_ACPT].sd, ready_socks);
       no_of_ready_socks--;
-      sd = socket_accept_un ();
+      sd = socket_accept_un (accept_blk[UNIX_ACPT].sd);
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 0;
 #endif
@@ -521,7 +521,7 @@ new_client (void)               /* NewClient */
 #else
       read (sd, gomi, 1024);
 #endif
-      shutdown (sd, 2);
+      shutdown (sd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
       closesocket (sd);
 #else
@@ -544,7 +544,7 @@ new_client (void)               /* NewClient */
 #else
 	read (sd, gomi, 1024);
 #endif
-	shutdown (sd, 2);
+	shutdown (sd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
 	closesocket (sd);
 #else
@@ -649,7 +649,7 @@ daemon_fin_un (int sock_d_un)
             break;
           /* EWOULDBLOCK EXPECTED, but we don't check */
         }
-      shutdown (sock_d_un, 2);
+      shutdown (sock_d_un, 2/*SHUT_RDWR*/);
       close (sock_d_un);
       unlink (sockname);
     }
@@ -684,7 +684,7 @@ daemon_fin_in (int sock_d_in)
         break;
       /* EWOULDBLOCK EXPECTED, but we don't check */
     }
-  shutdown (sock_d_in, 2);
+  shutdown (sock_d_in, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
   closesocket (sock_d_in);
 #else
@@ -727,7 +727,7 @@ daemon_fin (void)
 #endif /* AF_UNIX */
           FD_ISSET (fd, all_socks))
         {
-          shutdown (fd, 2);
+          shutdown (fd, 2/*SHUT_RDWR*/);
 #ifdef HAVE_CLOSESOCKET
           closesocket (fd);
 #else
@@ -1008,14 +1008,14 @@ socket_init_un (void)
         }
       if (bind (sock_d_un, (struct sockaddr *) &saddr_un, strlen (saddr_un.sun_path) + 2) == ERROR)
         {
-          shutdown (sock_d_un, 2);
+          shutdown (sock_d_un, 2/*SHUT_RDWR*/);
           snprintf (xbuf, sizeof(xbuf), "could not bind unix domain socket %s", sockname);
           xerror (xbuf);
           return;
         }
       if (listen (sock_d_un, 5) == ERROR)
         {
-          shutdown (sock_d_un, 2);
+          shutdown (sock_d_un, 2/*SHUT_RDWR*/);
           snprintf (xbuf, sizeof(xbuf), "could not listen unix domain socket %s", sockname);
           xerror (xbuf);
           return;
@@ -1231,13 +1231,13 @@ socket_init_in (void)
 /**     accept new client socket        **/
 #ifdef  AF_UNIX
 static int
-socket_accept_un (void)
+socket_accept_un (int fd)
 {
   struct sockaddr_un addr;
   socklen_t addrlen;
 
   addrlen = sizeof (addr);
-  return accept (accept_blk[UNIX_ACPT].sd, (struct sockaddr *) &addr, &addrlen);
+  return accept (fd, (struct sockaddr *) &addr, &addrlen);
 }
 #endif /* AF_UNIX */
 
