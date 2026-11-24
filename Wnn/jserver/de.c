@@ -469,7 +469,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[UNIX_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_un (accept_blk[UNIX_ACPT].sd);
-      sdfamily = AF_UNIX;
+      sdfamily = accept_blk[UNIX_ACPT].family;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 0;
 #endif
@@ -482,7 +482,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[INET6_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_in (accept_blk[INET6_ACPT].sd);
-      sdfamily = AF_INET6;
+      sdfamily = accept_blk[INET6_ACPT].family;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 1;
 #endif
@@ -494,7 +494,7 @@ new_client (void)               /* NewClient */
       FD_CLR (accept_blk[INET_ACPT].sd, ready_socks);
       no_of_ready_socks--;
       sd = socket_accept_in (accept_blk[INET_ACPT].sd);
-      sdfamily = AF_INET;
+      sdfamily = accept_blk[INET_ACPT].family;
 #ifdef  HAVE_LIBWRAP
       is_internet_socket = 1;
 #endif
@@ -1215,12 +1215,14 @@ socket_init_in (void)
       {
       case AF_INET:
         accept_blk[INET_ACPT].family = res->ai_family;
-        accept_blk[INET_ACPT].sd = sock_d_in; break;
-  #ifdef INET6
+        accept_blk[INET_ACPT].sd = sock_d_in;
+        break;
+#ifdef INET6
       case AF_INET6:
         accept_blk[INET6_ACPT].family = res->ai_family;
-        accept_blk[INET6_ACPT].sd = sock_d_in; break;
-  #endif
+        accept_blk[INET6_ACPT].sd = sock_d_in;
+        break;
+#endif
       }
     } /* for res */
 #ifdef INET6
