@@ -107,10 +107,8 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #define MAX_ACCEPTS     32
 
 #define MAX_LISTENSPEC   16
-static char *listenspec[MAX_LISTENSPEC] = {
-  "0.0.0.0", "::", "unix",
-};
-static int listenspecs = 3; /*valid entries in listenspec[] */
+static char *listenspec[MAX_LISTENSPEC];
+static int listenspecs = 0; /*valid entries in listenspec[] */
 static int explicit_listenspec = 0; /*bool*/
 
 jmp_buf client_dead;
@@ -184,6 +182,7 @@ static void socket_init_in (const char *);
 static int  socket_accept_un (int);
 static int  socket_accept_in (int);
 static void xerror (const char*);
+       int  add_listenspec(const char *);
 static void get_options (int, char **);
 static void usage (void);
 static void print_version (void);
@@ -243,6 +242,14 @@ main (int argc, char *argv[])
   option_flag = (OPT_FORK & ~OPT_VERBOSE);
 
   setuid (geteuid ());
+
+  /* default listeners */
+  add_listenspec ("unix");
+  add_listenspec ("0.0.0.0");
+#ifdef INET6
+  add_listenspec ("::");
+#endif
+
   get_options (argc, argv);
   print_version();
   log_debug("invoked as %s.", argv[0]);
@@ -1298,6 +1305,28 @@ dmp (char *p, int n)
 }
 #endif
 
+int /* return nonzero on error */
+add_listenspec(const char *new_listner)
+{
+  char *newp;
+
+  if (listenspecs >= MAX_LISTENSPEC)
+    {
+      log_err ("too many listeners specified");
+      return -1;
+    }
+
+  newp = malloc (strlen(new_listner)+1); /*never freed*/
+  if (!newp)
+    {
+      log_err ("malloc() failed");
+      return -1;
+    }
+  strcpy (newp, new_listner);
+  listenspec[listenspecs++] = newp;
+  return 0;
+}
+
 static void
 get_options (int argc, char **argv)
 {
@@ -1380,13 +1409,7 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          if (listenspecs < MAX_LISTENSPEC)
-            listenspec[listenspecs++] = "unix";
-          else
-            {
-              printf ("Too many listen specifiers.\n");
-              exit (1);
-            }
+          add_listenspec ("unix");
 	  break;
 
         case '4':
@@ -1395,13 +1418,7 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          if (listenspecs < MAX_LISTENSPEC)
-            listenspec[listenspecs++] = "0.0.0.0";
-          else
-            {
-              printf ("Too many listen specifiers.\n");
-              exit (1);
-            }
+          add_listenspec ("0.0.0.0");
 	  break;
 
 #ifdef INET6
@@ -1411,13 +1428,7 @@ get_options (int argc, char **argv)
               explicit_listenspec = 1;
               listenspecs = 0;
             }
-          if (listenspecs < MAX_LISTENSPEC)
-            listenspec[listenspecs++] = "::";
-          else
-            {
-              printf ("Too many listen specifiers.\n");
-              exit (1);
-            }
+          add_listenspec ("::");
           break;
 #endif /* INET6 */
 
@@ -1506,3 +1517,5 @@ print_version (void)
   printf ("%s (%s) Nihongo Multi Client Server\n", cmd_name, SER_VERSION);
 #endif /* CHINESE */
 }
+
+/* vi:set fileencodings=euc-jp fileencoding=euc-jp shiftwidth=2 expandtab: */
