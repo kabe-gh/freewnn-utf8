@@ -38,8 +38,8 @@ jserver \- 日本語マルチクライアントサーバ（インターネット対応版）
 .sv 1
 .nf
 .ta 0.1i 3i 
-/usr/local/bin/Wnn4/jserver [\fB\-f\fP \fIfile\fP] [\fB\-s\fP \fIfile\fP] [\fB\-h\fP \fIfile\fP] [\fB\-N\fP #]
-                            [\fB\-p\fP \fIport\fP] [\fB\-u46\fP] [\fB\-D\fP] [\fB\-d\fP]
+/usr/local/bin/Wnn4/jserver [\fB\-f\fP \fjserverrc\fP] [\fB\-s\fP \fIoutfIfile\fP] [\fB\-h\fP \fIfile\fP] [\fB\-N\fP #]
+                            [\fB\-p\fP \fIport\fP] [\fB\-u46\fP] [\fB\-a\fP \fIaddr\fP] [\fB\-D\fP] [\fB\-d\fP]
 .br
 /usr/local/bin/Wnn4/jserver \fB\-v\fP
 .SH 機能
@@ -66,7 +66,7 @@ jserver は、起動時に
 
   /usr/local/bin/Wnn4/jserver
 
-以下のオプションによって、動作を指定する。
+.SH オプション
 .TP 8
 \fB\-f\fP \fIfile\fP
 .fi
@@ -79,7 +79,9 @@ jserver は、起動時に
 \fB\-s\fP \fIfile\fP
 .fi
 .ad l
-jserver のログファイルを取る。
+.B jserver
+のログファイルの出力先を指定する。
+デフォルトでは syslog に出力する。
 .I file
 が、 "\fB\-\fP" の時には、
 標準エラー出力に出力される。
@@ -120,19 +122,26 @@ getservbyname で取得できない場合はヘッダファイル jd_sock.h で定義され
 \fB\-u\fP
 .fi
 .ad l
-unix domain socket を使用する。
+unix domain socket で待ち受ける。
 .TP 8
 \fB\-4\fP
 .fi
 .ad l
-inet socket を使用する。
+inet socket で待ち受ける。
+.fi
+.ad l
 .TP 8
 \fB\-6\fP
 .fi
 .ad l
-inet6 socket を使用する。
+inet6 socket で待ち受ける。
+.TP 8
+\fB\-a\fP \fIlistenaddr\fP
+.I listenaddr
+で待ち受ける。複数指定可。
 .br
-\-u, \-4, \-6 のいずれも指定しない場合は、 全てのプロトコルが使用される。
+.nf
+\-u, \-4, \-6, \-a のいずれも指定しない場合は、 全てのプロトコルが使用される。
 .TP 8
 \fB\-D\fP
 .fi
