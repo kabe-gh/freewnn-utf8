@@ -109,7 +109,7 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #define MAX_LISTENSPEC   16
 static char *listenspec[MAX_LISTENSPEC];
 static int listenspecs = 0; /*valid entries in listenspec[] */
-static int explicit_listenspec = 0; /*bool*/
+static int clear_on_add_listenspec = 0; /*bool*/
 
 jmp_buf client_dead;
 
@@ -249,6 +249,7 @@ main (int argc, char *argv[])
 #ifdef INET6
   add_listenspec ("::");
 #endif
+  clear_on_add_listenspec = 1;
 
   get_options (argc, argv);
   print_version();
@@ -1309,6 +1310,15 @@ int /* return nonzero on error */
 add_listenspec(const char *new_listner)
 {
   char *newp;
+  int i;
+
+  if (clear_on_add_listenspec)
+    {
+      for (i = 0; i < listenspecs; i++)
+        if (listenspec[i]) { free (listenspec[i]); listenspec[i] = NULL; }
+      listenspecs = 0;
+      clear_on_add_listenspec = 0;
+    }
 
   if (listenspecs >= MAX_LISTENSPEC)
     {
@@ -1316,7 +1326,7 @@ add_listenspec(const char *new_listner)
       return -1;
     }
 
-  newp = malloc (strlen(new_listner)+1); /*never freed*/
+  newp = malloc (strlen(new_listner)+1);
   if (!newp)
     {
       log_err ("malloc() failed");
@@ -1404,30 +1414,15 @@ get_options (int argc, char **argv)
 	  break;
 
         case 'u':
-          if (!explicit_listenspec)
-            {
-              explicit_listenspec = 1;
-              listenspecs = 0;
-            }
           add_listenspec ("unix");
 	  break;
 
         case '4':
-          if (!explicit_listenspec)
-            {
-              explicit_listenspec = 1;
-              listenspecs = 0;
-            }
           add_listenspec ("0.0.0.0");
 	  break;
 
 #ifdef INET6
         case '6':
-          if (!explicit_listenspec)
-            {
-              explicit_listenspec = 1;
-              listenspecs = 0;
-            }
           add_listenspec ("::");
           break;
 #endif /* INET6 */
