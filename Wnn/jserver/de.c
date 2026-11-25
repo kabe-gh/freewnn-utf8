@@ -109,7 +109,6 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #define MAX_LISTENSPEC   16
 static char *listenspec[MAX_LISTENSPEC];
 static int listenspecs = 0; /*valid entries in listenspec[] */
-static int clear_on_add_listenspec = 0; /*bool*/
 
 jmp_buf client_dead;
 
@@ -242,15 +241,6 @@ main (int argc, char *argv[])
   option_flag = (OPT_FORK & ~OPT_VERBOSE);
 
   setuid (geteuid ());
-
-  /* default listeners */
-  add_listenspec ("unix");
-  add_listenspec ("0.0.0.0");
-#ifdef INET6
-  add_listenspec ("::");
-#endif
-  clear_on_add_listenspec = 1;
-
   get_options (argc, argv);
   print_version();
   log_debug("invoked as %s.", argv[0]);
@@ -290,6 +280,17 @@ main (int argc, char *argv[])
       signal (SIGINT, terminate_hand);
     }
   read_default ();
+
+  if (listenspecs == 0) /* no option, no listenaddr in jserverrc */
+    {
+      /* default listeners */
+      add_listenspec ("unix");
+      add_listenspec ("0.0.0.0");
+#ifdef INET6
+      add_listenspec ("::");
+#endif
+    }
+
   daemon_init ();
 
   env_init ();
@@ -1310,15 +1311,6 @@ int /* return nonzero on error */
 add_listenspec(const char *new_listner)
 {
   char *newp;
-  int i;
-
-  if (clear_on_add_listenspec)
-    {
-      for (i = 0; i < listenspecs; i++)
-        if (listenspec[i]) { free (listenspec[i]); listenspec[i] = NULL; }
-      listenspecs = 0;
-      clear_on_add_listenspec = 0;
-    }
 
   if (listenspecs >= MAX_LISTENSPEC)
     {
@@ -1326,7 +1318,7 @@ add_listenspec(const char *new_listner)
       return -1;
     }
 
-  newp = malloc (strlen(new_listner)+1);
+  newp = malloc (strlen(new_listner)+1); /*never freed*/
   if (!newp)
     {
       log_err ("malloc() failed");
