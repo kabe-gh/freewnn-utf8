@@ -276,6 +276,7 @@ extern void putc_cur (int);
 extern void putc_purge (void);
 extern void js_who (void);
 extern void js_kill (void);
+extern int add_listenspec (const char *);
 /* dispatch.c */
 extern void do_command ();
 extern char *get_file_name (char*, size_t);

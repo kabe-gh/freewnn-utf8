@@ -181,7 +181,6 @@ static void socket_init_in (const char *);
 static int  socket_accept_un (int);
 static int  socket_accept_in (int);
 static void xerror (const char*);
-       int  add_listenspec(const char *);
 static void get_options (int, char **);
 static void usage (void);
 static void print_version (void);
