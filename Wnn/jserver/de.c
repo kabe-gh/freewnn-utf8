@@ -98,9 +98,9 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #endif
 
 #ifndef INET6
-#  define OPTIONARGS  "dDf:s:h:N:p:vu4"
+#  define OPTIONARGS  "a:Df:s:h:N:p:vu4"
 #else
-#  define OPTIONARGS  "dDf:s:h:N:p:vu46"
+#  define OPTIONARGS  "a:dDf:s:h:N:p:vu46"
 #endif /* INET6 */
 
 /*      Accept Socket   */
@@ -1347,6 +1347,7 @@ get_options (int argc, char **argv)
 	{"inet",	0, NULL, '4'},
 	{"inet6",	0, NULL, '6'},
 	{"jserverrc",	1, NULL, 'f'},
+	{"listenaddr",	1, NULL, 'a'},
 	{"version",	0, NULL, 'v'},
 	{"debug",	0, NULL, 'd'},
 	{0, 0, 0, 0}
@@ -1417,6 +1418,10 @@ get_options (int argc, char **argv)
           add_listenspec ("::");
           break;
 #endif /* INET6 */
+
+        case 'a':
+          add_listenspec (optarg);
+          break;
 
 	case 'd':
           noisy = 1; option_flag |= OPT_VERBOSE;
