@@ -1486,9 +1486,9 @@ usage (void)
 {
   fprintf(stderr, 
 #ifdef INET6
-	  "usage: %s [-Du46][-f <init_file> -s <log_file(\"-\" for stderr)> -h <pos_file> -N <serverNO> -p <port_base>]\n",
+	  "usage: %s [-Ddu46][-f <init_file> -a <listenaddr> -s <log_file(\"-\" for stderr)> -h <pos_file> -N <serverNO> -p <port_base>]\n",
 #else
-	  "usage: %s [-Du4][-f <init_file> -s <log_file(\"-\" for stderr)> -h <pos_file> -N <serverNO> -p <port_base>]\n",
+	  "usage: %s [-Ddu4][-f <init_file> -a <listenaddr> -s <log_file(\"-\" for stderr)> -h <pos_file> -N <serverNO> -p <port_base>]\n",
 #endif
 	  cmd_name);
   fprintf(stderr,
