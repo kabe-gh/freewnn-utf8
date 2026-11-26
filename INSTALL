@@ -113,6 +113,7 @@ FreeWnn 独自の configure option のうち、主なものは以下の通りです。
   --enable-unsafe-path  jserverdir 以外のディレクトリに jserver がファイル
                         を作成するのを許可します。(注7)
   --enable-client	uum を作成及びインストールします。
+  --enable-wnnkill      一般ユーザでも wnnkill で jserver を停止できます。
 
   configure中で必要性・ライブラリの存在を確認するもの:
   --with-libwrap	TCP wrapperのlibwrapを使用し、jserverの接続時点での
@@ -136,6 +137,7 @@ FreeWnn 独自の configure option のうち、主なものは以下の通りです。
 			制御します。指定しない場合は、
 			--enable-traditional-layout オプションが有効の時には
 			有効、無効の時には無効となります。(注6)
+  --with-utf8support    manマニュアル、デーモンのログ出力を UTF-8 にします。
 
 注6: いわゆるFHS (File Hierarchy Standard)に近づけることを意図しています。
   現時点ではパラメータにより、インストールするパスに以下の変化があります。

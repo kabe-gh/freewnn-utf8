@@ -107,6 +107,7 @@ Below are the main configure option of FreeWnn.
   --enable-ipv6         enable IPv6 feature.
   --enable-unsafe-path  allow creating files in jserver_dir (*7).
   --enable-client	compile and install uum.
+  --enable-wnnkill      allow unpriviledged users to use wnnkill to kill jserver
 
   auto determine by default:
   --with-libwrap	use libwrap (in TCP wrapper) for jserver
@@ -130,6 +131,7 @@ Below are the main configure option of FreeWnn.
 			--enable-traditional-layout option. (Enable if
 			--enable-traditional-layout specified, disable
 			otherwise.) (*6)
+  --with-utf8support    make manpages and daemon log output as UTF-8
 
 *6: We intend to follow installation path like FHS (File Hierarchy
   Standard). Currently difference between specifying parameter 
