@@ -34,7 +34,7 @@ top_builddir = ../../../..
 
 INSTALL         = @INSTALL@ $(INSTALLFLAGS)
 
-MANSUFFIX = 4
+MANSUFFIX = 5
 MANUALS = 2a_ctrl.man fzk.data.man fzk.u.man jserverrc.man mode.man uumkey.man uumrc.man wnnenvrc.man ujis_dic.man 2b_romkana.man cvt_key_tbl.man hinsi_data.man serverdefs.man
 
 install.man:: $(MANUALS)
