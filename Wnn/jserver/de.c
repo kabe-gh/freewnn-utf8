@@ -98,7 +98,7 @@ static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 #endif
 
 #ifndef INET6
-#  define OPTIONARGS  "a:Df:s:h:N:p:vu4"
+#  define OPTIONARGS  "a:dDf:s:h:N:p:vu4"
 #else
 #  define OPTIONARGS  "a:dDf:s:h:N:p:vu46"
 #endif /* INET6 */
