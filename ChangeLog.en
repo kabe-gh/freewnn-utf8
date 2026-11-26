@@ -1,3 +1,8 @@
+Thu, Nov 26 2026 20:24:31   T.Kabe <kabe@>
+
+	* makerule.mk.in: install in ${prefix}/include/freewnn/,
+	  not wnn/ (could clash with Wnn6/Wnn8)
+
 Thu, Nov 26 2026 09:47:42   T.Kabe <kabe@>
 
 	* jserver:
