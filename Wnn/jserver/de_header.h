@@ -86,8 +86,10 @@
 #define REMOTE  0
 
 /* SERVER OPTIONS */
+/* option_flag */
 #define OPT_FORK	0x01
 #define OPT_VERBOSE	0x02
+#define OPT_LISTENER	0x04
 
 
 /*

@@ -39,6 +39,10 @@ readfile	sys/QianMa.dic
 
 readfile	sys/full.con
 
+;listenaddr unix
+;listenaddr 0.0.0.0
+;listenaddr ::
+
 max_client	32
 max_sticky_env	10
 

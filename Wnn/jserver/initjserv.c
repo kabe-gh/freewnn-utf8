@@ -215,6 +215,22 @@ read_default (void)
 	    }
           log_debug ("max_client=%d", max_client);
         }
+      else if (strcmp (code, "listenaddr") == 0)
+        {
+	  num = sscanf (data , "%s %s ", code, param);
+	  if (num != 2)
+	    {
+	      log_err ("command %s invalid.", code);
+	      continue;
+	    }
+          if (option_flag & OPT_LISTENER)
+            {
+              log_debug ("listenaddr=%s (ignored, command line option specified)", param);
+              continue;
+            }
+          log_debug ("listenaddr=%s", param);
+          add_listenspec (param);
+        }
       else if (strcmp (code, "max_sticky_env") == 0)
         {
           num = sscanf (data, "%s %d ", code, &max_sticky_env);
@@ -275,7 +291,7 @@ read_default (void)
             }
         }
 #endif
-    }
+    } /* while fgets */
   fclose (fp);
   return (0);
 }

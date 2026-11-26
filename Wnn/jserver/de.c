@@ -1412,15 +1412,18 @@ get_options (int argc, char **argv)
 	  break;
 
         case 'u':
+          option_flag |= OPT_LISTENER;
           add_listenspec ("unix");
 	  break;
 
         case '4':
+          option_flag |= OPT_LISTENER;
           add_listenspec ("0.0.0.0");
 	  break;
 
 #ifdef INET6
         case '6':
+          option_flag |= OPT_LISTENER;
           add_listenspec ("::");
           break;
 #endif /* INET6 */
