@@ -27,16 +27,17 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 .\"
-.TH JSERVERRC \  "28 January 1992" 
+.TH JSERVERRC 5 "26 November 2026"
 .SH 名称
 .sv 1
 .nf
 .ta 0.1i 2i
-jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
+jserverrc \- 日本語マルチクライアントサーバ (jserver) の初期化ファイル
 .fi
 .SH 形式
 .sv 1
 .nf
+.ad l
 .ta 0.1i 3i 
 /usr/local/lib/wnn/ja_JP/jserverrc
 .fi
@@ -64,7 +65,15 @@ jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
 接続できるクライアントの最大数を指定する。
 デフォルトは、32 である。
 
-3. スティッキーな環境の最大数
+3. jserver が \fBbind\fP(2) するアドレス
+
+  listenaddr <アドレス>
+
+jserver が接続を受け付けるソケットのアドレスを指定する。
+複数行指定可。
+デフォルトは unix, 0.0.0.0, :: 。
+
+4. スティッキーな環境の最大数
 
   max_sticky_env <スティッキーな環境の最大数>
 
@@ -73,7 +82,7 @@ jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
 これは、次にその環境を使用する時に、立上りが早くなる。
 デフォルトは、10 である。
 
-4. サーバが辞書を管理するディレクトリ
+5. サーバが辞書を管理するディレクトリ
 
   jserver_dir <文字列>
 
@@ -88,7 +97,7 @@ jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
             である。cserverの場合は、"zh_CN、tserverの場合は、"zh_TW"
             である。
 
-5. かな漢字変換のパラメータ値
+6. かな漢字変換のパラメータ値
 
   def_param <数字0> <数字1> <数字2> <数字3>
             <数字4> <数字5> <数字6> <数字7>
@@ -122,7 +131,7 @@ jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
 デフォルトの値は、<2> <5> <10> <3> <50> <1> <128> <5> <1> <50> <10> <1>
 である。
 
-4. 疑似品詞の「英数」の文字コードの指定
+7. 疑似品詞の「英数」の文字コードの指定
 
 指定した文字コードのものが、英数字に加えて疑似品詞「英数」と
 して、疑似文節の変換に使用される。
@@ -137,9 +146,10 @@ jserverrc	日本語マルチクライアントサーバ (jserver) の初期化ファイル
   '―'       --->  '―'
 
 などの書き方ができる。
+.\"
 .SH 関連項目
 .sv 1
 .nf
-jserver(1)
+.BR jserver (1)
 
 
