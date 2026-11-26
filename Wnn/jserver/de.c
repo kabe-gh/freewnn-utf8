@@ -393,10 +393,14 @@ socket_disc_init (void)
       nofile = FD_SETSIZE;
     }
   all_socks = (fd_set *) malloc (sizeof (fd_set));
+  if (!all_socks) { write (2, "malloc () failed\n", 17); exit (1); }
   FD_ZERO (all_socks);
   ready_socks = (fd_set *) malloc (sizeof (fd_set));
+  if (!ready_socks) { write (2, "malloc () failed\n", 17); exit (1); }
   dummy1_socks = (fd_set *) malloc (sizeof (fd_set));
+  if (!dummy1_socks) { write (2, "malloc () failed\n", 17); exit (1); }
   dummy2_socks = (fd_set *) malloc (sizeof (fd_set));
+  if (!dummy2_socks) { write (2, "malloc () failed\n", 17); exit (1); }
 }
 
 /**     全てのソケットについて待つ      **/
@@ -608,11 +612,11 @@ daemon_init (void)               /* initialize Daemon */
 
   if ((cblk = (COMS_BLOCK *) malloc (max_client * sizeof (COMS_BLOCK))) == NULL)
     {
-      xerror ("daemon_init: ");
+      write (2, "malloc () failed\n", 17); exit (1);
     }
   if ((client = (CLIENT *) malloc (max_client * sizeof (CLIENT))) == NULL)
     {
-      xerror ("daemon_init: ");
+      write (2, "malloc () failed\n", 17); exit (1);
     }
   SDRAND (time (NULL));
   clientp = 0;                  /* V3.0 */
@@ -1320,7 +1324,7 @@ add_listenspec(const char *new_listner)
   newp = malloc (strlen(new_listner)+1); /*never freed*/
   if (!newp)
     {
-      log_err ("malloc() failed");
+      write (2, "malloc () failed\n", 17); exit (1);
       return -1;
     }
   strcpy (newp, new_listner);
