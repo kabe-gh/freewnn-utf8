@@ -3961,7 +3961,11 @@ EOF
 	    # We should set the runpath_var.
 	    rpath=
 	    for dir in $perm_rpath; do
-	      rpath="$rpath$dir:"
+	      ## do not add sys_lib_search_path
+	      case " $sys_lib_search_path " in
+	      *" $dir "*) ;;
+	      *) rpath="$rpath$dir:";;
+	      esac
 	    done
 	    eval "$runpath_var='$rpath\$$runpath_var'; export $runpath_var"
 	  fi
@@ -4543,7 +4547,13 @@ EOF
 	elif test -n "$runpath_var"; then
 	  case "$finalize_perm_rpath " in
 	  *" $libdir "*) ;;
-	  *) finalize_perm_rpath="$finalize_perm_rpath $libdir" ;;
+	  *)
+            ## do not add sys_lib_search_path
+            case " $sys_lib_search_path " in
+            *" $libdir "*) ;;
+            *) finalize_perm_rpath="$finalize_perm_rpath $libdir" ;;
+            esac
+	    ;;
 	  esac
 	fi
       done
