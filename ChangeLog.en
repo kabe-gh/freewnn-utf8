@@ -7,6 +7,9 @@ Fri, Nov 27 2026 00:22:11   T.Kabe <kabe@>
 	  We need original execute bit for rpmbuild to extract
 	  debuginfo and Provides.
 
+	* Wnn/etc/bdic.c: Tighten user hindo/dic file mode from
+	  0664 (overly permissive) to 0640.
+
 Thu, Nov 26 2026 20:24:31   T.Kabe <kabe@>
 
 	* makerule.mk.in: install in ${prefix}/include/freewnn/,

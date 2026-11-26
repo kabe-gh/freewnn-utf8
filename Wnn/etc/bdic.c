@@ -94,8 +94,8 @@ extern int xgetc_cur ();
 # define max(a, b) (((a) < (b))? (b) : (a))
 #endif
 
-#define MODE_USERDIC   0664
-#define MODE_USERHINDO 0664
+#define MODE_USERDIC   0640
+#define MODE_USERHINDO 0640
 
 /* XXX: function prototypes to be moved to some header file. */
 /* bdic.c */
