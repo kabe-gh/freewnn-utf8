@@ -469,10 +469,11 @@ if test $debug = true; then
     else
       CDEBUGFLAGS=${CDEBUGFLAGS:-""}
     fi
-    INSTPGMFLAGS=
+    ## make it overridable
+    : ${INSTPGMFLAGS=}
 else
     CDEBUGFLAGS=${CDEBUGFLAGS:-""}
-    INSTPGMFLAGS="-s"
+    : ${INSTPGMFLAGS=-s}
 fi
 AC_SUBST(CCOPTIONS)
 AC_SUBST(CDEBUGFLAGS)
