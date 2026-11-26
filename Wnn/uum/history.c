@@ -119,6 +119,7 @@ make_history (wstr, n)
         end_of_history->hbuffer = (w_char *) malloc (sizeof (w_char));
       else
         end_of_history->hbuffer = (w_char *) realloc (end_of_history->hbuffer, (end_of_history->num + 1) * sizeof (w_char));
+      if (!end_of_history->hbuffer) { write (2, "malloc () failed\n", 17); return (-1); }
       Strncpy (end_of_history->hbuffer + end_of_history->num, wstr, 1);
       if (++(end_of_history->num) >= maxchg)
         wchar_holding = 0;
@@ -139,6 +140,7 @@ make_history (wstr, n)
   if (end_of_history->hbuffer != NULL)
     free (end_of_history->hbuffer);
   end_of_history->hbuffer = (w_char *) malloc (n * sizeof (w_char));
+  if (!end_of_history->hbuffer) { write (2, "malloc () failed\n", 17); return (-1); }
   Strncpy (end_of_history->hbuffer, wstr, n);
   end_of_history->num = n;
 

@@ -305,6 +305,7 @@ expand_file_name (buffer, buffer_size)
  {
    char *p, *pp, *p0;
    p = pp = p0 = malloc(strlen(buffer)+1);
+   if (!p) { write (2, "malloc () failed\n", 17); exit (1); }
    for  (q = buffer; *q; p++, q++) {
      if (*q == '/') {
        while (*(q+1) == '/')

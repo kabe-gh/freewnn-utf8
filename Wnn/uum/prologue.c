@@ -304,6 +304,7 @@ connect_jserver (first)
       if (servername == NULL && def_servername && *def_servername)
         {
           servername = malloc (strlen (def_servername) + 1);
+          if (!servername) { write (2, "malloc () failed\n", 17); return (-1); }
           strcpy (servername, def_servername);
         }
       if (bun_data_ == NULL)
@@ -353,6 +354,7 @@ connect_jserver (first)
           if (reverse_servername == NULL && def_reverse_servername && *def_reverse_servername)
             {
               reverse_servername = malloc (strlen (def_reverse_servername) + 1);
+              if (!reverse_servername) { write (2, "malloc () failed\n", 17); return (-1); }
               strcpy (reverse_servername, def_reverse_servername);
             }
           env_reverse = jl_connect_lang (environment, reverse_servername, lang_dir, uumrc_name, yes_no_func, puts_func, WNN_TIMEOUT);

@@ -1331,6 +1331,7 @@ get_new_env (rev)
   register WnnEnv *p;
 
   p = (WnnEnv *) malloc (sizeof (WnnEnv));
+  if (!p) { write (2, "malloc () failed\n", 17); exit (1); }
   p->host_name = NULL;
   p->env = NULL;
   p->sticky = 0;

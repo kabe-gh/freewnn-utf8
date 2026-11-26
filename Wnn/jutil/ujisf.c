@@ -633,7 +633,9 @@ init_heap (hpb, yhpb, l, rl, ipf)
      FILE *ipf;
 {
   jehp = je_heap = (struct je *) malloc ((rl * sizeof (struct je)));
+  if (!jehp) { write (2, "malloc () failed\n", 17); return (-1); }
   hp = heap = (UCHAR *) malloc (hpb);
+  if (!hp) { write (2, "malloc () failed\n", 17); return (-1); }
   yhp = yomi_heap = (w_char *) malloc ((yhpb * sizeof (w_char)));
   if ((jeary = (struct je **) calloc (l, sizeof (struct je *))) == NULL)
     {

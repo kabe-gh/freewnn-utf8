@@ -314,11 +314,13 @@ uumrc_set_entry (data, dn)
               if (def_servername && *def_servername)
                 {
                   servername = (char *) malloc (strlen (def_servername) + 1);
+                  if (!servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (servername, def_servername);
                 }
               else
                 {
                   servername = (char *) malloc (strlen (s[0]) + 1);
+                  if (!servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (servername, s[0]);
                 }
             }
@@ -327,6 +329,7 @@ uumrc_set_entry (data, dn)
               fprintf (stderr, "Can't expand %s.\r\n", s0or1);
             }
           envrcname = (char *) malloc (strlen (s0or1) + 1);
+          if (!envrcname) { write (2, "malloc () failed\n", 17); return (-1); }
           strcpy (envrcname, s0or1);
         }
     }
@@ -352,11 +355,13 @@ uumrc_set_entry (data, dn)
               if (def_reverse_servername && *def_reverse_servername)
                 {
                   reverse_servername = (char *) malloc (strlen (def_reverse_servername) + 1);
+                  if (!reverse_servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (reverse_servername, def_reverse_servername);
                 }
               else
                 {
                   reverse_servername = (char *) malloc (strlen (s[0]) + 1);
+                  if (!reverse_servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (reverse_servername, s[0]);
                 }
             }
@@ -365,6 +370,7 @@ uumrc_set_entry (data, dn)
               fprintf (stderr, "Can't expand %s.\r\n", s0or1);
             }
           reverse_envrcname = (char *) malloc (strlen (s0or1) + 1);
+          if (!reverse_envrcname) { write (2, "malloc () failed\n", 17); return (-1); }
           strcpy (reverse_envrcname, s0or1);
         }
     }
@@ -386,11 +392,13 @@ uumrc_set_entry (data, dn)
               if (def_servername && *def_servername)
                 {
                   servername = (char *) malloc (strlen (def_servername) + 1);
+                  if (!servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (servername, def_servername);
                 }
               else
                 {
                   servername = (char *) malloc (strlen (s[1]) + 1);
+                  if (!servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (servername, s[1]);
                 }
             }
@@ -399,6 +407,7 @@ uumrc_set_entry (data, dn)
               fprintf (stderr, "Can't expand %s.\r\n", s0or1);
             }
           envrcname = (char *) malloc (strlen (s0or1) + 1);
+          if (!envrcname) { write (2, "malloc () failed\n", 17); return (-1); }
           strcpy (envrcname, s0or1);
           strcpy (env_name_s, s[0]);
         }
@@ -421,11 +430,13 @@ uumrc_set_entry (data, dn)
               if (def_reverse_servername && *def_reverse_servername)
                 {
                   reverse_servername = (char *) malloc (strlen (def_reverse_servername) + 1);
+                  if (!reverse_servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (reverse_servername, def_reverse_servername);
                 }
               else
                 {
                   reverse_servername = (char *) malloc (strlen (s[1]) + 1);
+                  if (!reverse_servername) { write (2, "malloc () failed\n", 17); return (-1); }
                   strcpy (reverse_servername, s[1]);
                 }
             }
@@ -434,6 +445,7 @@ uumrc_set_entry (data, dn)
               fprintf (stderr, "Can't expand %s.\r\n", s0or1);
             }
           reverse_envrcname = (char *) malloc (strlen (s0or1) + 1);
+          if (!reverse_envrcname) { write (2, "malloc () failed\n", 17); return (-1); }
           strcpy (reverse_envrcname, s0or1);
           strcpy (reverse_env_name_s, s[0]);
         }
