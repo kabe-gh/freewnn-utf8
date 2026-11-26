@@ -101,7 +101,7 @@ openTermData ()
 
   if ((strlen (Term_Name) > 2) && (strcmp (Term_Name + (strlen (Term_Name) - 2), "-j") == 0))
     {
-      fprintf (stderr, MSG_GET (4));
+      puteustring (MSG_GET (4), stderr);
       /*
          fprintf(stderr,"Uum:ｕｕｍからｕｕｍはおこせません。\n");
        */
