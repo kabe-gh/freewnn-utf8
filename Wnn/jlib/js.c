@@ -344,12 +344,14 @@ cd_open_in (server, lang, timeout)
     for (haddr = hp->h_addr_list; *haddr; haddr++)
       {
         newresp = malloc (sizeof (*newresp));
+        if (!newresp) { write (2, "malloc () failed\n", 17); exit (1); }
         newresp->ai_family = AF_INET;
         newresp->ai_socktype = SOCK_STREAM;
         newresp->ai_protocol = 0;
         newresp->ai_addrlen = sizeof (struct sockaddr_in);
 
         newresp->ai_addr = malloc (sizeof (struct sockaddr_in));
+        if (!newresp->ai_addr) { write (2, "malloc () failed\n", 17); exit (1); }
         bzero (newresp->ai_addr, sizeof (struct sockaddr_in));
       /*newresp->ai_addr->sin_len = sizeof (struct sockaddr_in);*/
         newresp->ai_addr->sin_family = AF_INET;
