@@ -766,7 +766,7 @@ open_uumrc ()
       return fp;
     }
 error:
-  fprintf (stderr, MSG_GET (14));
+  puteustring (MSG_GET (14), stderr);
 /*
     fprintf(stderr , "uumrc ファイルがありません。");
 */
