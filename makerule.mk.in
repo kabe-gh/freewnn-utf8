@@ -106,7 +106,7 @@ FZK_PP = @FZK_PP@
      INSTPGMFLAGS = @INSTPGMFLAGS@
      INSTBINFLAGS = -m 0755
      INSTUIDFLAGS = -m 4711
-     INSTLIBFLAGS = -m 0644
+     INSTLIBFLAGS =
      INSTINCFLAGS = -m 0444
      INSTMANFLAGS = -m 0444
      ## allow update by Wnn/jutil/wnntouch *.dic during install

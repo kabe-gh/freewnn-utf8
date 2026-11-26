@@ -3,6 +3,10 @@ Fri, Nov 27 2026 00:22:11   T.Kabe <kabe@>
 	* configure.in: make INSTPGMFLAGS=-s overridable.
 	  We do not want -s (strip) for rpmbuild.
 
+	* makerule.mk.in: make INSTLIBFLAGS = -m 0644 to blank.
+	  We need original execute bit for rpmbuild to extract
+	  debuginfo and Provides.
+
 Thu, Nov 26 2026 20:24:31   T.Kabe <kabe@>
 
 	* makerule.mk.in: install in ${prefix}/include/freewnn/,
