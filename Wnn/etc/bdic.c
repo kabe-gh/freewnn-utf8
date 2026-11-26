@@ -94,6 +94,9 @@ extern int xgetc_cur ();
 # define max(a, b) (((a) < (b))? (b) : (a))
 #endif
 
+#define MODE_USERDIC   0664
+#define MODE_USERHINDO 0664
+
 /* XXX: function prototypes to be moved to some header file. */
 /* bdic.c */
 /* following functions are only used in bdic.c
@@ -1120,11 +1123,11 @@ create_null_dic (
     }
 
 #if HAVE_FCHMOD
-  fchmod (fileno (fp), 0664);
+  fchmod (fileno (fp), MODE_USERDIC);
   fclose (fp);
 #else /* !HAVE_FCHMOD */
   fclose (fp);
-  chmod (fn, 0664);
+  chmod (fn, MODE_USERDIC);
 #endif /* !HAVE_FCHMOD */
   return (0);
 }
@@ -1183,11 +1186,11 @@ create_hindo_file (
 #endif /* BDIC_WRITE_CHECK */
 
 #if HAVE_FCHMOD
-  fchmod (fileno (fp), 0664);
+  fchmod (fileno (fp), MODE_USERHINDO);
   fclose (fp);
 #else /* !HAVE_FCHMOD */
   fclose (fp);
-  chmod (fn, 0664);
+  chmod (fn, MODE_USERHINDO);
 #endif /* !HAVE_FCHMOD */
   return (0);
 }
