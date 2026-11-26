@@ -93,7 +93,8 @@ distclean::
 	-$(RM) makerule.mk config.h config.status config.cache config.log
 	-$(RM) configure.lineno
 	-$(RM) libtool
-	-$(RM) -r autom4te.cache
+	-$(RM) -fr autom4te.cache
+	-$(RM) -f configure~ # created by autoconf
 	find . -name Makefile -exec $(RM) {} \;
 
 # ----------------------------------------------------------------------
