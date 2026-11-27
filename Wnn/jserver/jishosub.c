@@ -270,8 +270,8 @@ inspect_sd (dic_no, serial, yomi, jd)
 
 static int
 get_fst_serial (hopter, hontaistart)
+     UCHAR *hopter;
      UCHAR *hontaistart;
-     char *hopter;
 {
   int tsize;
   int k;
