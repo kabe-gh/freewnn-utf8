@@ -41,7 +41,7 @@
 #endif	/* __STDC__ */
 
 static int inspect_sd FRWNN_PARAMS((int, int, w_char *, struct jdata *));
-static int get_fst_serial FRWNN_PARAMS((char *, UCHAR *));
+static int get_fst_serial FRWNN_PARAMS((UCHAR *, UCHAR *));
 static int inspect_ud FRWNN_PARAMS((int, int, w_char *, struct jdata *));
 
 int
