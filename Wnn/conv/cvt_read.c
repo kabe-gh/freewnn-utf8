@@ -666,7 +666,7 @@ convert_key_setup (filename, flg)
 
   if (CHANGE_MAX < div_up (ENTRY_CNT, BITSIZ))
     {
-      fprintf (stderr, "%s%s%d%s", "Sorry, please set CHANGE_MAX(in file ", "conv/cvt_head.h) larger than ", div_up (ENTRY_CNT, BITSIZ) - 1, ",\r\nand recompile.\r\n");
+      fprintf (stderr, "%s%s%lu%s", "Sorry, please set CHANGE_MAX(in file ", "conv/cvt_head.h) larger than ", (unsigned long)div_up (ENTRY_CNT, BITSIZ) - 1, ",\r\nand recompile.\r\n");
       return (-1);
     }
 
