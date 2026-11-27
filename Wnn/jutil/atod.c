@@ -69,7 +69,7 @@ UJIS 形式を、辞書登録可能形式, 及び固定形式辞書に変換するプログラム。
 #include "jutil.h"
 #include "etc.h"
 
-extern int wnn_loadhinsi FRWNN_PARAMS((unsigned char*)),
+const extern int wnn_loadhinsi FRWNN_PARAMS((const char*)),
   init_heap FRWNN_PARAMS((int,int,int,int,FILE*)),
   little_endian FRWNN_PARAMS(()),
   Sorted FRWNN_PARAMS((register char*,register int,int,int (*sort_fun)(const void*,const void*))),
@@ -142,7 +142,7 @@ struct uind1 *tary;             /* index 1 */
 int tnum = 0;
 struct uind2 *uhopter;
 
-unsigned char *hinsi_file_name = NULL;
+char *hinsi_file_name = NULL;
 
 void
 init (int argc, char **argv)

@@ -289,7 +289,7 @@ w_stradd (cp, str)
 
 int
 wnn_loadhinsi (fname)
-     unsigned char *fname;
+     const char *fname;
 {
   FILE *fp;
   char buf[SIZE];
@@ -307,7 +307,7 @@ wnn_loadhinsi (fname)
 #endif /* JSERVER */
       strcpy (tmp, LIBDIR);
       strcat (tmp, HINSIDATA_FILE);
-      fname = (unsigned char *) tmp;
+      fname = tmp;
     }
 
 #ifdef  JSERVER

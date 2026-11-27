@@ -117,7 +117,7 @@ extern int asshuku FRWNN_PARAMS((int));
 extern int motoni2 FRWNN_PARAMS((int));
 
 /* gethinsi.c */
-extern int wnn_loadhinsi FRWNN_PARAMS((unsigned char *fname));
+extern int wnn_loadhinsi FRWNN_PARAMS((const char *fname));
 #ifdef JSERVER
 extern w_char *wnn_hinsi_name FRWNN_PARAMS((int));
 extern int wnn_hinsi_number FRWNN_PARAMS((w_char *));
