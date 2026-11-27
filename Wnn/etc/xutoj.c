@@ -596,11 +596,11 @@ columnlen_w (ieuc)
 int
 ieuc_to_eeuc (eeuc, ieuc, iesiz)
      unsigned char *eeuc;
-     w_char *ieuc;
+     const w_char *ieuc;
      int iesiz;
 {
   register int x;
-  register w_char *ie;
+  register const w_char *ie;
   register unsigned char *ee;
   register int cs_id, mask, non_limit = 0;
   ie = ieuc;
@@ -638,12 +638,12 @@ ieuc_to_eeuc (eeuc, ieuc, iesiz)
 int
 eeuc_to_ieuc (ieuc, eeuc, eesiz)
      w_char *ieuc;
-     unsigned char *eeuc;
+     const unsigned char *eeuc;
      register int eesiz;
 {
   register unsigned char x;
   register w_char *ie;
-  register unsigned char *ee;
+  register const unsigned char *ee;
   register int cs_id = 0, non_limit = 0;
   ie = ieuc;
   ee = eeuc;

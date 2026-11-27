@@ -61,8 +61,8 @@ extern int get_cswidth_by_char FRWNN_PARAMS((register unsigned char));
 extern int get_cs_mask FRWNN_PARAMS((int));
 extern int columnlen FRWNN_PARAMS((unsigned char *));
 extern int columnlen_w FRWNN_PARAMS((w_char *));
-extern int ieuc_to_eeuc FRWNN_PARAMS((unsigned char *, w_char *, int));
-extern int eeuc_to_ieuc FRWNN_PARAMS((w_char *, unsigned char *, register int));
+extern int ieuc_to_eeuc FRWNN_PARAMS((unsigned char *, const w_char *, int));
+extern int eeuc_to_ieuc FRWNN_PARAMS((w_char *, const unsigned char *, register int));
 #ifdef nodef
 extern void wnn_delete_ss2 FRWNN_PARAMS((register unsigned int *, register int n));
 extern int wnn_byte_count FRWNN_PARAMS((register int));
