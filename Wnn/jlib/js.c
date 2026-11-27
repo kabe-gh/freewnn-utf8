@@ -251,7 +251,7 @@ cd_open_in (server, lang, timeout)
      register char *lang;
      register int timeout;
 {
-  int sd;
+  int sd = -1;
 #ifdef INET6
   struct addrinfo hints, *res, *res0;
   int error;

@@ -510,6 +510,9 @@ file_all ()
            */
           d = msg_get (cd, 15, "Gram", NULL);
           break;
+        default:
+          d = "unknown";
+          break;
         }
       out ("%d\t%s\t%s\t%d\t%s\n", w->fid, d, w->localf ? "LOCAL" : "REMOTE", w->ref_count, w->name);
     }

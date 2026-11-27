@@ -66,7 +66,7 @@ renbn_kai (int yomi_sno,	/* 解析文字列 start index */
   struct BZD *rbzdptr;          /* 決定の対象となるノード top pointer */
   struct BZD *brbzdptr,        /* work pointer */
    *dicide_bp = 0,              /* 決定した大文節の top pointer */
-   *dicide_np,                  /* 決定した大文節への pointer */
+   *dicide_np = NULL,           /* 決定した大文節への pointer */
    *wkbzdptr,                   /* work pointer         */
    *maxbzd;                     /* 決定の対象となっている大文節の */
   /* 最大の評価値を持つノードへの pointer */

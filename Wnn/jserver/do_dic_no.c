@@ -489,7 +489,7 @@ void
 js_hinsi_dicts ()
 {
   int envi;
-  w_char *name;
+  w_char *name = NULL;
   register int k;
   int cnt;
   struct JT *jtl;
