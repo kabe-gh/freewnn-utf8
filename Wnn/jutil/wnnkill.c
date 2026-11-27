@@ -176,7 +176,7 @@ main (int argc, char** argv)
 
   if (!*serv)
     {
-      if (serv = _wnn_get_machine_of_serv_defs (lang))
+      if ( (serv = _wnn_get_machine_of_serv_defs (lang)) )
         {
           if ((js = js_open_lang (serv, lang, WNN_TIMEOUT)) == NULL)
             {

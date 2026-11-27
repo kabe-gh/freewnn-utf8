@@ -273,7 +273,7 @@ Strcmpud (ui1p, yomi, jtl)
   if (yomi[0] == 0)
     return (ui1p->yomi1 > 0);
   y1 = yomi[0] << 16 | yomi[1];
-  if (tmp = (ui1p->yomi1 - y1))
+  if ( (tmp = (ui1p->yomi1 - y1)) )
     {
       return ((ui1p->yomi1 > y1) ? 1 : -1);
     }
@@ -282,7 +282,7 @@ Strcmpud (ui1p, yomi, jtl)
   if (yomi[2] == 0)
     return (ui1p->yomi2 > 0);
   y2 = yomi[2] << 16 | yomi[3];
-  if (tmp = (ui1p->yomi2 - y2))
+  if ( (tmp = (ui1p->yomi2 - y2)) )
     {
       return ((ui1p->yomi2 > y2) ? 1 : -1);
     }

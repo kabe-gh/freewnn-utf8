@@ -295,7 +295,7 @@ Wscpy (d, s)
 {
   register Wchar *p = d, ch;
 
-  while (ch = *s++)
+  while ( (ch = *s++) )
     {
       *p++ = ch;
     }
@@ -452,7 +452,7 @@ internhinshi (str, flag)
   for (s = str; *s; s++)
     key += (int) *s;
   key = ((unsigned) key & HINSHIBUFINDEXMASK);
-  for (pp = partsofspeech + key; p = *pp; pp = &(p->next))
+  for (pp = partsofspeech + key; (p = *pp); pp = &(p->next))
     {
       if (!Wscmp (p->hinshi, str))
         {
@@ -496,7 +496,7 @@ replace_hinshi ()
       (void) fprintf (stderr, "%s: can not open the table file of parts of speech \"%s\".\n", program, hinshi_table);
       exit (1);
     }
-  while (s = Fgetws (readbuf, READBUFSIZE, f))
+  while ( (s = Fgetws (readbuf, READBUFSIZE, f)) )
     {
       from = extstr (s, &s, 0);
       to = extstr (s, &s, 0);
@@ -657,7 +657,7 @@ interndesc (hin, tan, yom)
   for (s = hin; *s; s++)
     key += (int) *s;
   key = ((unsigned) key & HINSHIBUFINDEXMASK);
-  for (pp = description + key; p = *pp; pp = &(p->next))
+  for (pp = description + key; (p = *pp); pp = &(p->next) )
     {
       if (!Wscmp (p->hinshi, hin))
         {
@@ -716,7 +716,7 @@ searchdesc (hin)
   for (s = hin; *s; s++)
     key += (int) *s;
   key = ((unsigned) key & HINSHIBUFINDEXMASK);
-  for (pp = description + key; p = *pp; pp = &(p->next))
+  for (pp = description + key; (p = *pp); pp = &(p->next))
     {
       if (!Wscmp (p->hinshi, hin))
         {
@@ -743,7 +743,7 @@ store_description ()
       (void) fprintf (stderr, "%s: can not open the table file of parts of speech \"%s\".\n", program, description_table);
       exit (1);
     }
-  while (s = Fgetws (readbuf, READBUFSIZE, f))
+  while ( (s = Fgetws (readbuf, READBUFSIZE, f)) )
     {
       Wchar nl[1];
 
@@ -917,7 +917,7 @@ intern (key, yomi, kouho, hinshi, hindo, kind, stat, flags)
     }
 
   key = ((unsigned) key & DICBUFINDEXMASK);
-  for (pp = dic + key; p = *pp; pp = &(p->next))
+  for (pp = dic + key; (p = *pp); pp = &(p->next))
     {
       if (!Wscmp (p->yomi, yomi) && !Wscmp (p->tango, kouho) && ((flags & IGNORE_HINSHI) || !Wscmp (p->hinshi->hinshi, hinshi)) && ((flags & IGNORE_KIND) || ((p->kind & kind) == kind)))
         {
@@ -1002,7 +1002,7 @@ storepd (file)
   long kindbit;
   struct dicpack *dicentry;
 
-  while (p = Fgetws (readbuf, READBUFSIZE, file))
+  while ( (p = Fgetws (readbuf, READBUFSIZE, file)) )
     {
       key = 0;
       yomi = extstr (p, &p, &tkey);
@@ -1040,7 +1040,7 @@ comparepd (file)
   struct dicpack *dicentry;
   long kindbit, flags = 0L;
 
-  while (p = Fgetws (readbuf, READBUFSIZE, file))
+  while ( (p = Fgetws (readbuf, READBUFSIZE, file)) )
     {
       key = 0;
       yomi = extstr (p, &p, &tkey);
@@ -1369,15 +1369,15 @@ diccompar (const void *vp1, const void *vp2)
   const struct dicpack * const * p1 = vp1;
   const struct dicpack * const * p2 = vp2;
   int n;
-  if (n = Wscmp ((*p1)->yomi, (*p2)->yomi))
+  if ( (n = Wscmp ((*p1)->yomi, (*p2)->yomi)) )
     {
       return n;
     }
-  else if (n = Wscmp ((*p1)->tango, (*p2)->tango))
+  else if ( (n = Wscmp ((*p1)->tango, (*p2)->tango)) )
     {
       return n;
     }
-  else if (n = Wscmp ((*p1)->hinshi->hinshi, (*p2)->hinshi->hinshi))
+  else if ( (n = Wscmp ((*p1)->hinshi->hinshi, (*p2)->hinshi->hinshi)) )
     {
       return n;
     }
@@ -1393,19 +1393,19 @@ dichindocompar (const void *vp1, const void *vp2)
   const struct dicpack * const * p1 = vp1;
   const struct dicpack * const * p2 = vp2;
   int n;
-  if (n = Wscmp ((*p1)->yomi, (*p2)->yomi))
+  if ( (n = Wscmp ((*p1)->yomi, (*p2)->yomi)) )
     {
       return n;
     }
-  else if (n = ((*p2)->hindo - (*p1)->hindo))
+  else if ( (n = ((*p2)->hindo - (*p1)->hindo)) )
     {
       return n;
     }
-  else if (n = Wscmp ((*p1)->tango, (*p2)->tango))
+  else if ( (n = Wscmp ((*p1)->tango, (*p2)->tango)) )
     {
       return n;
     }
-  else if (n = Wscmp ((*p1)->hinshi->hinshi, (*p2)->hinshi->hinshi))
+  else if ( (n = Wscmp ((*p1)->hinshi->hinshi, (*p2)->hinshi->hinshi)) )
     {
       return n;
     }

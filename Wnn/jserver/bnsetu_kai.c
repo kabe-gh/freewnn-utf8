@@ -620,7 +620,7 @@ getgiji (yomi_sno, yomi_eno, sbnptr, fzkbnp, fzkcnt, bnst_num)
     }
 
 /* 接続可能か */
-  if (sbnptr->status_bkwd = kan_ck_vector (giji_hinsi, vector) == WNN_CONNECT_BK)
+  if ( (sbnptr->status_bkwd = kan_ck_vector (giji_hinsi, vector) == WNN_CONNECT_BK) )
     goto _Can_connect;
 #ifdef  nodef
   /* 数字に接続できないが,アスキには接続できる */

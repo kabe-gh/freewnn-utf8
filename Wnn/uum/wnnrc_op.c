@@ -732,9 +732,9 @@ open_uumrc ()
   FILE *fp;
   char *n, buf[1024];
 
-  if (n = getenv (WNN_UUM_ENV))
+  if ( (n = getenv (WNN_UUM_ENV)) )
     {
-      if (fp = fopen (n, "r"))
+      if ( (fp = fopen (n, "r")) )
         {
           if (verbose_option)
             fprintf (stderr, "uumrc: using uumrc %s\r\n", n);
@@ -745,10 +745,10 @@ open_uumrc ()
           goto error;
         }
     }
-  if (n = getenv ("HOME"))
+  if ( (n = getenv ("HOME")) )
     {
       strcat (strcpy (buf, n), USR_UUMRC);
-      if (fp = fopen (buf, "r"))
+      if ( (fp = fopen (buf, "r")) )
         {
           if (verbose_option)
             fprintf (stderr, "uumrc: using uumrc %s\r\n", buf);

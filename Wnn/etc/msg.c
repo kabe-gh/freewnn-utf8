@@ -382,7 +382,7 @@ msg_get (catd, id, msg, lang)
         }
     }
 
-  if (msg_bd = get_msg_bd (cd, id))
+  if ( (msg_bd = get_msg_bd (cd, id)) )
     return (msg_bd);
 error:
   if (msg != 0 && *msg != '\0')

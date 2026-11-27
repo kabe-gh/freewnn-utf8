@@ -297,7 +297,7 @@ main (int argc, char **argv)
         {
           server_env = WNN_DEF_SERVER_ENV;
         }
-      if (name = getenv (server_env))
+      if ( (name = getenv (server_env)) )
         {
           strncpy(def_servername, name, PATHNAMELEN-1);
           def_servername[PATHNAMELEN-1] = '\0';

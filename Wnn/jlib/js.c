@@ -708,7 +708,7 @@ static void
 getscom (p)
      register char *p;
 {
-  while (*p++ = get1com ())
+  while ( (*p++ = get1com ()) )
     ;
 }
 
@@ -717,7 +717,7 @@ static void
 getwscom (p)
      w_char register *p;
 {
-  while (*p++ = get2com ())
+  while ( (*p++ = get2com ()) )
     ;
 }
 

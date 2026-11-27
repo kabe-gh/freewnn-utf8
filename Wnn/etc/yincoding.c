@@ -449,14 +449,14 @@ pzy_yincod (one_yuyin, len)
 
   *len = 0;
   /* for Pinyin */
-  if (ret = pzy_get_sheng_yun (one_yuyin, ss, sheng_raw, yun_raw, CWNN_PINYIN))
+  if ( (ret = pzy_get_sheng_yun (one_yuyin, ss, sheng_raw, yun_raw, CWNN_PINYIN)) )
     if (is_pinyin (sheng_raw[0], yun_raw[0]) != -1)
       {
         *len = ret;
         return (create_yincod (sheng_raw[0], yun_raw[0], ss[0]));
       }
   /* for Zhuyin */
-  if (ret = pzy_get_sheng_yun (one_yuyin, ss, sheng_raw, yun_raw, CWNN_ZHUYIN))
+  if ( (ret = pzy_get_sheng_yun (one_yuyin, ss, sheng_raw, yun_raw, CWNN_ZHUYIN)) )
     {
       zytmp = zhuyin_tbl[sheng_raw[0] * ZY_NUM_YUNMU + yun_raw[0]];
       if (is_zhuyin (sheng_raw[0], yun_raw[0]) != -1)

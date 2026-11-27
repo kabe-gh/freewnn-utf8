@@ -224,12 +224,12 @@ to_hankata (in, outp)
     default:
       if (is_kata (in))
         {
-          for (p = (uns_chr *) hankdata[in - KATBGN]; c = *p; p++)
+          for (p = (uns_chr *) hankdata[in - KATBGN]; (c = *p); p++)
             *out++ = (c << 8) + *++p;
         }
       else if (is_hira (in))
         {
-          for (p = (uns_chr *) hankdata[in - HIRBGN]; c = *p; p++)
+          for (p = (uns_chr *) hankdata[in - HIRBGN]; (c = *p); p++)
             *out++ = (c << 8) + *++p;
         }
       else

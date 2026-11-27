@@ -538,7 +538,7 @@ read_id ()
     error_format ("Cannot open hinsi.data\n");
   for (idn = 0; idn < mhinsi; idn++)
     {
-      if (d = wnn_get_hinsi_name (idn))
+      if ( (d = wnn_get_hinsi_name (idn)) )
         {
           set_heap (&id[id_num].str, d);
           id[id_num++].bit = idn;

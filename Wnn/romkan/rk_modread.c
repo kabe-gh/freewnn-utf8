@@ -1312,7 +1312,7 @@ static void
 mystrcpy (s1, s2)
      char *s1, *s2;
 {
-  while (*s1++ = codeeval (&s2));
+  while ( (*s1++ = codeeval (&s2)) );
 }
 
  /**    一文字の解釈を行う。普通の文字はそのまま、'\（8進）;'は実際のコードに

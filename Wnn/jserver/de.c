@@ -914,7 +914,7 @@ void
 puts_cur (char *p)
 {
   int c;
-  while (c = *p++)
+  while ( (c = *p++) )
     putc_cur (c);
   putc_cur (0);
 }
@@ -934,7 +934,7 @@ void
 putws_cur (w_char *p)
 {
   int c;
-  while (c = *p++)
+  while ( (c = *p++) )
     put2_cur (c);
   put2_cur (0);
 }

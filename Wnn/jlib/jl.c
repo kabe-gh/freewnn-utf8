@@ -421,7 +421,7 @@ delete_file_from_env (env, id)
   jl_env_p = find_jl_env (env);
   if (!jl_env_p->file)
     return (0);
-  for (prev = &jl_env_p->file; f = *prev; prev = &f->next)
+  for (prev = &jl_env_p->file; (f = *prev); prev = &f->next)
     {
       if (f->id == id)
         {
@@ -474,7 +474,7 @@ jl_connect_lang (env_n, server_n, lang, wnnrc_n, error_handler, message_handler,
   if (!server_n || !*server_n)
     {
       /* find server machine name from table by lang */
-      if (server_n = _wnn_get_machine_of_serv_defs (p_lang))
+      if ( (server_n = _wnn_get_machine_of_serv_defs (p_lang)) )
         {
           if ((js = find_same_server (server_n, p_lang)) == NULL)
             {
