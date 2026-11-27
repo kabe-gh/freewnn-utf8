@@ -214,7 +214,6 @@ static void father_sighandler (const int sig)
 int
 main (int argc, char *argv[])
 {
-  int tmpttyfd;
   char *cswidth_name;
 
   char nlspath[64];
@@ -336,11 +335,14 @@ main (int argc, char *argv[])
 #  define TIOCNOTTY     _IO('t', 113)
 # endif /* !defined(TIOCNOTTY) && defined(SVR4) */
 #ifndef HITACHI
+      {
+      int tmpttyfd;
       if ((tmpttyfd = open ("/dev/tty", O_RDWR)) >= 0)
 	{
 	  ioctl (tmpttyfd, TIOCNOTTY, 0);
 	  close (tmpttyfd);
 	}
+      }
 #endif /* HITACHI */
 #endif /* SETPGRP_VOID */
     }
@@ -1338,14 +1340,12 @@ static void
 get_options (int argc, char **argv)
 {
   int c;
-  int digit_optind = 0;
 
   strcpy (jserverrcfile, LIBDIR);       /* usr/local/lib/wnn */
   strcat (jserverrcfile, SERVER_INIT_FILE);     /* ja_JP/jserverrc */
 
   while (1)
     {
-      int this_option_optind = optind ? optind : 1;
       int option_index = 0;
       static struct option long_options[] =
       {

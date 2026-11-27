@@ -196,7 +196,6 @@ repeat:
       /*
          sprintf(message , "現在 %d文節解析法を用いています。何文節解析法を用いますか ?" , paraary[0]);
        */
-      char buf[256];
       sprintf (message, MSG_GET (45), paraary[0]);
     }
   else
