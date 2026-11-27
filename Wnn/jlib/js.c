@@ -895,7 +895,7 @@ js_close (server)
      WNN_JSERVER_ID *server;
 {
   register int x;
-  WNN_JSERVER_ID tmp_js_id;
+  static WNN_JSERVER_ID tmp_js_id;
   if (server == 0)
     return (-1);
   tmp_js_id = *server;
