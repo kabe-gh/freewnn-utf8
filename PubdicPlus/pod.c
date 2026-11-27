@@ -971,24 +971,6 @@ intern (key, yomi, kouho, hinshi, hindo, kind, stat, flags)
   return (struct dicpack *) 0;
 }
 
-/* 登録されているエントリに対して fn を実行する */
-
-static void
-for_all_interned (fn)
-     void (*fn) ();
-{
-  int i;
-  struct dicpack *p;
-
-  for (i = 0; i < DICBUFSIZE; i++)
-    {
-      for (p = dic[i]; p; p = p->next)
-        {
-          (*fn) (p);
-        }
-    }
-}
-
 static void
 storepd (file)
      FILE *file;
@@ -1253,17 +1235,6 @@ printentry (cf, p)
   else
     {
       entry_out (cf, p, p->hinshi->hinshi, p->hinshi->nhinshis, p->extdata);
-    }
-}
-
-static void
-showdeleted (p)
-     struct dicpack *p;
-{
-  if (!(p->flags & COMMON))
-    {
-      (void) printf ("- ");
-      printentry (stdout, p);
     }
 }
 
