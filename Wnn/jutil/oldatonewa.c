@@ -92,7 +92,11 @@ main (void)
 {
   char buffer[LINE_SIZE];
 
-  fgets (buffer, LINE_SIZE, stdin);
+  if (NULL == fgets (buffer, LINE_SIZE, stdin))
+    {
+      fprintf (stderr, "failed to read stdin\n");
+      exit (1);
+    }
   printf ("\\total %s", buffer);
   for (; fgets (buffer, LINE_SIZE, stdin) != NULL;)
     {

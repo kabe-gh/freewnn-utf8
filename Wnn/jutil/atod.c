@@ -825,7 +825,12 @@ get_pwd (char* fname, char* crypted)
       fprintf (stderr, "No password_file %s.\n", fname);
       exit (1);
     }
-  fgets (pwd, WNN_PASSWD_LEN, fp);
+  if (NULL == fgets (pwd, WNN_PASSWD_LEN, fp))
+    {
+      pwd[0] = '\0';
+      fprintf (stderr, "No password provided in %s.\n", fname);
+      exit (1);
+    }
   fclose (fp);
   new_pwd (pwd, crypted);
 }

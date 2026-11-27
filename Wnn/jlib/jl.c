@@ -1675,7 +1675,8 @@ get_pwd (pwd_dic, pwd)
           wnn_errorno = WNN_CANT_OPEN_PASSWD_FILE;
           return (-1);
         }
-      fgets (pwd, WNN_PASSWD_LEN, fp);
+      if (!fgets (pwd, WNN_PASSWD_LEN, fp))
+        return -1;
       fclose (fp);
     }
   else
