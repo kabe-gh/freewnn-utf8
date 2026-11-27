@@ -62,7 +62,7 @@ static char pan_tmp[256];
 
 static int ud_biki (struct JT *, w_char *);
 static int sd_biki (struct JT *, w_char *);
-static int sd_biki_one (char *, int, w_char *);
+static int sd_biki_one (UCHAR *, int, w_char *);
 static int sdbinary (register w_char, register w_char *, int tsize);
 
 int
@@ -400,7 +400,7 @@ sd_biki (jtl, yomi)
 
 static int
 sd_biki_one (hopter, level, yomi)
-     char *hopter;
+     UCHAR *hopter;
      w_char *yomi;
      int level;
 {

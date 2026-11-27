@@ -292,7 +292,7 @@ wnn_loadhinsi (fname)
      unsigned char *fname;
 {
   FILE *fp;
-  UCHAR buf[SIZE];
+  char buf[SIZE];
   unsigned short fukugou_str[MAXHINSI];
   int sep;
   int h;
