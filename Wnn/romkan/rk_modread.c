@@ -106,27 +106,36 @@ struct kwdpair
 }
 modfn[] =
 {
-  "defmode", 0,
-    "if", XY2INT (2, 0), "when", XY2INT (2, 1), "path", 0, "search", 0, "on_dispmode", XY2INT (5, 0), "off_dispmode", XY2INT (5, 1), "on_unchg", XY2INT (6, 0), "off_unchg", XY2INT (6, 1), NULL};      /* 下を見よ キーワード定義表はまだあと二つあるのだ */
+  {"defmode",      0},
+  {"if",           XY2INT (2, 0)},
+  {"when",         XY2INT (2, 1)},
+  {"path",         0},
+  {"search",       0},
+  {"on_dispmode",  XY2INT (5, 0)},
+  {"off_dispmode", XY2INT (5, 1)},
+  {"on_unchg",     XY2INT (6, 0)},
+  {"off_unchg",    XY2INT (6, 1)},
+  {NULL, 0},
+};      /* 下を見よ キーワード定義表はまだあと二つあるのだ */
 
 struct kwdpair modcond[] = {
-  "not", XY2INT (3, 0),
-  "and", XY2INT (3, 1),
-  "or", XY2INT (3, 2),
-  "true", XY2INT (3, 3),
-  "false", XY2INT (3, 4),
-  "=", XY2INT (3, 5),
-  "!=", XY2INT (3, 6),
-  "<", XY2INT (3, 7),
-  ">", XY2INT (3, 8),
-  NULL
+  {"not",   XY2INT (3, 0)},
+  {"and",   XY2INT (3, 1)},
+  {"or",    XY2INT (3, 2)},
+  {"true",  XY2INT (3, 3)},
+  {"false", XY2INT (3, 4)},
+  {"=",     XY2INT (3, 5)},
+  {"!=",    XY2INT (3, 6)},
+  {"<",     XY2INT (3, 7)},
+  {">",     XY2INT (3, 8)},
+  {NULL, 0},
 };
 int condarg[] = { 1, 2, 2, 0, 0, 2, 2, 2, 2 };  /* 条件判断関数の引数個数 */
 
 struct kwdpair swstat[] = {
-  "on", 0,
-  "off", 0,
-  NULL
+  {"on",  0},
+  {"off", 0},
+  {NULL, 0},
 };
  /* 1×2^24代はモード名、4×2^24代はモード表示文字列、7×2^24代はモード状態定
     数の内部表現に使っている */
