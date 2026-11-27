@@ -3271,7 +3271,7 @@ make_dir1 (env, dirname, error_handler, message_handler)
      register char *dirname;
      int (*error_handler) (const char *), (*message_handler) (const char *);
 {
-  char gomi[128];
+  char gomi[256];
   if (dirname[0] == C_LOCAL)
     {
       if (*(dirname + 1) == 0)
@@ -3292,7 +3292,7 @@ make_dir1 (env, dirname, error_handler, message_handler)
     }
   if (error_handler != WNN_CREATE)
     {
-      sprintf (gomi, "%s \"%s\" %s%s", msg_get (wnn_msg_cat, 210, NULL, env->lang), dirname, msg_get (wnn_msg_cat, 201, NULL, env->lang), msg_get (wnn_msg_cat, 202, NULL, env->lang));
+      snprintf (gomi, sizeof (gomi), "%s \"%s\" %s%s", msg_get (wnn_msg_cat, 210, NULL, env->lang), dirname, msg_get (wnn_msg_cat, 201, NULL, env->lang), msg_get (wnn_msg_cat, 202, NULL, env->lang));
       /*
          "directry \"%s\" が無いよ。作る?(Y/N)",
        */
