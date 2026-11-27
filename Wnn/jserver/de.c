@@ -28,7 +28,6 @@
 /*
         Jserver         (Nihongo Daemon)
 */
-static char rcs_id[] = "$Id: de.c,v 1.37 2013/09/02 11:01:39 itisango Exp $";
 
 #if defined(HAVE_CONFIG_H)
 #  include <config.h>

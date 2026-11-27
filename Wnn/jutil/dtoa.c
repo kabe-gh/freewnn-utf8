@@ -33,10 +33,6 @@
   辞書を ASCII 形式の辞書に変換するプログラム。
   */
 
-#ifndef lint
-static char *rcs_id = "$Id: dtoa.c,v 1.10 2013/09/02 11:01:39 itisango Exp $";
-#endif /* lint */
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

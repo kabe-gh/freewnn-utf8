@@ -25,8 +25,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static char rcs_id[] = "$Id: renbn_kai.c,v 1.5 2011/04/10 16:51:16 aonoto Exp $";
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

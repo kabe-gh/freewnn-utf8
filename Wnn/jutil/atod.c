@@ -33,10 +33,6 @@
 UJIS 形式を、辞書登録可能形式, 及び固定形式辞書に変換するプログラム。
 */
 
-#ifndef lint
-static char *rcs_id = "$Id: atod.c,v 1.14 2013/09/02 11:01:39 itisango Exp $";
-#endif /* lint */
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

@@ -25,8 +25,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static char rcs_id[] = "$Id: initjserv.c,v 1.16 2003/05/11 18:43:15 hiroo Exp $";
-
 #if defined(HAVE_CONFIG_H)
 #include <config.h>
 #endif

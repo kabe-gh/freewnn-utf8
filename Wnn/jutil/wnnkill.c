@@ -29,10 +29,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef lint
-static char *rcs_id = "$Id: wnnkill.c,v 1.12 2015/05/09 23:42:04 itisango Exp $";
-#endif /* lint */
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

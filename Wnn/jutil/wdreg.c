@@ -33,10 +33,6 @@
  * UJIS ファイルを読みとって、単語登録を行なう。
  */
 
-#ifndef lint
-static char *rcs_id = "$Id: wdreg.c,v 1.10 2013/09/02 11:01:39 itisango Exp $";
-#endif /* lint */
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

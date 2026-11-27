@@ -20,10 +20,6 @@
  * PERFORMANCE OF THIS SOFTWARE. 
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: pod.c,v 1.7 2005/12/10 18:50:43 aonoto Exp $";
-#endif
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

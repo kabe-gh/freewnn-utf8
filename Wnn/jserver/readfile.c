@@ -28,7 +28,6 @@
 /*
   (Updatable, Stable) dictionary read routine.
 */
-static char rcs_id[] = "$Id: readfile.c,v 1.10 2013/09/02 11:01:39 itisango Exp $";
 
 #if defined(HAVE_CONFIG_H)
 #include <config.h>

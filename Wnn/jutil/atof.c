@@ -35,10 +35,6 @@
   Standard output jserver format.
   */
 
-#ifndef lint
-static char *rcs_id = "$Id: atof.c,v 1.8 2013/09/02 11:01:39 itisango Exp $";
-#endif /* lint */
-
 /*
   UJIS FORMAT
 

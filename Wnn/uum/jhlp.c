@@ -31,10 +31,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef lint
-static char *rcs_id = "$Id: jhlp.c,v 1.26 2013/09/02 11:01:40 itisango Exp $";
-#endif /* lint */
-
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
